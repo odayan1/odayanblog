@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>小田木正邦 | 家庭教師・KATEぷら主宰</title>
+<meta name="description" content="山梨県山梨市で家庭教師をしている小田木正邦の個人サイト。指導歴10年以上、AIを活用した1対1指導。KATEぷら主宰。">
+<meta property="og:title" content="小田木正邦 | 家庭教師・KATEぷら主宰">
+<meta property="og:description" content="基礎を固め、高校で花開く。山梨県山梨市の家庭教師・KATEぷら主宰。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://odayanblog.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#1e1c17;
+  --ink-soft:#5b564a;
+  --ink-faint:rgba(30,28,23,.14);
+  --seal:#a5301f;
+  --seal-deep:#7e2417;
+  --gold:#c28a00;
+  --gold-deep:#9a6d00;
+  --paper:#efe8d6;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:auto}
+body{
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--ink);
+  background:var(--paper);
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+.mincho{font-family:'Shippori Mincho',serif}
+a{color:inherit;text-decoration:none}
+::selection{background:var(--seal);color:#fdf6ea}
+
+/* ===== custom cursor ===== */
+#cursor{
+  pointer-events:none;position:fixed;top:0;left:0;z-index:9999;
+  width:14px;height:14px;border-radius:50%;background:var(--seal);
+  transform:translate(-50%,-50%);opacity:0;
+  transition:opacity .25s ease, width .2s ease, height .2s ease;
+  mix-blend-mode:multiply;
+}
+#cursor.hov{width:40px;height:40px;background:rgba(165,48,31,.7)}
+@media (hover:none),(pointer:coarse){#cursor{display:none}}
+
+/* ===== fixed paper base + grain ===== */
+#bg{
+  position:fixed;inset:0;z-index:-3;
+  background:var(--paper);
+  transition:background-color 1.1s cubic-bezier(.4,0,.2,1);
+}
+#bg::after{
+  content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;mix-blend-mode:multiply;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* ===== ink mountains (sumi-e landscape, fixed, subtle parallax) ===== */
+.ink-mountains{position:fixed;left:0;right:0;bottom:0;width:100%;height:54vh;z-index:-2;pointer-events:none}
+.ink-mountains .ridge{fill:var(--ink)}
+.ink-mountains .far{opacity:.06}
+.ink-mountains .mid{opacity:.11}
+.ink-mountains .near{opacity:.19}
+.ink-mountains .mistband{fill:#f7f2e4;opacity:.5;filter:blur(16px)}
+.ink-mountains .moon-rim{fill:none;stroke:#8f6a00;stroke-width:1.4;opacity:.3}
+.ink-mountains .bird{fill:none;stroke:var(--ink);stroke-width:2;stroke-linecap:round;opacity:.16}
+.ink-mountains .bird-group{transition:transform 1.3s cubic-bezier(.3,.6,.2,1),opacity 1.1s ease}
+.ink-mountains .bird-group.fly{transform:translate(340px,-240px) scale(.5);opacity:0}
+@keyframes birdFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.ink-mountains .bird-group:nth-of-type(1) .bird{animation:birdFloat 4.2s ease-in-out infinite}
+.ink-mountains .bird-group:nth-of-type(2) .bird{animation:birdFloat 5.1s ease-in-out .8s infinite}
+.ink-mountains .bird-group:nth-of-type(3) .bird{animation:birdFloat 3.6s ease-in-out 1.6s infinite}
+
+/* giant kanji watermark that crossfades per scene */
+#bgKanji{
+  position:fixed;z-index:-1;right:-2vw;top:50%;transform:translateY(-50%);
+  font-family:'Shippori Mincho',serif;font-weight:800;line-height:1;
+  font-size:clamp(300px,58vh,640px);color:rgba(30,28,23,.05);
+  transition:opacity .8s ease;pointer-events:none;user-select:none;
+  writing-mode:vertical-rl;letter-spacing:.1em;filter:blur(.4px);
+}
+
+/* ===== progress rail ===== */
+#rail{
+  position:fixed;right:26px;top:50%;transform:translateY(-50%);z-index:90;
+  display:flex;flex-direction:column;gap:16px;align-items:center;
+}
+#rail a{
+  width:8px;height:8px;background:rgba(30,28,23,.22);transform:rotate(45deg);
+  transition:background .3s, transform .3s;
+}
+#rail a.on{background:var(--seal);transform:rotate(45deg) scale(1.5)}
+@media(max-width:860px){#rail{display:none}}
+
+/* ===== nav ===== */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px clamp(20px,5vw,60px);
+  background:rgba(239,232,214,.72);backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--ink-faint);
+}
+.nav__logo{display:flex;align-items:center;gap:12px}
+.nav__card{
+  width:26px;height:36px;transform:rotate(-4deg);flex-shrink:0;
+  filter:drop-shadow(0 2px 3px rgba(30,28,23,.18));
+}
+.nav__name{font-family:'Shippori Mincho',serif;font-weight:700;font-size:1rem;letter-spacing:.08em;color:var(--ink)}
+.nav__links{display:flex;gap:24px;font-size:.8rem;font-weight:500;letter-spacing:.05em}
+.nav__links a{color:var(--ink-soft);transition:color .2s;position:relative}
+.nav__links a::after{content:"";position:absolute;left:0;bottom:-5px;width:100%;height:1px;background:var(--seal);transform:scaleX(0);transform-origin:right;transition:transform .3s ease}
+.nav__links a:hover{color:var(--seal)}
+.nav__links a:hover::after{transform:scaleX(1);transform-origin:left}
+@media(max-width:900px){.nav__links{display:none}}
+
+/* ===== scenes ===== */
+.scene{
+  min-height:100vh;position:relative;
+  display:flex;align-items:center;
+  padding:120px clamp(24px,6vw,80px);
+}
+.scene__inner{max-width:1080px;margin:0 auto;width:100%;position:relative;z-index:2}
+
+/* scene label 縦書き */
+.scene__label{
+  position:absolute;left:clamp(6px,2vw,30px);top:50%;transform:translateY(-50%);
+  writing-mode:vertical-rl;font-family:'Shippori Mincho',serif;
+  font-size:.8rem;letter-spacing:.5em;color:var(--seal);opacity:.85;
+  display:flex;align-items:center;gap:14px;
+}
+.scene__label::before{content:"";width:1px;height:60px;background:var(--seal);opacity:.4}
+@media(max-width:860px){.scene__label{display:none}}
+
+/* kicker */
+.kicker{
+  display:inline-flex;align-items:center;gap:12px;
+  font-size:.72rem;font-weight:700;letter-spacing:.34em;color:var(--seal);
+  text-transform:uppercase;margin-bottom:26px;
+}
+.kicker::before{content:"";width:34px;height:1px;background:var(--seal)}
+
+/* big scene titles: char-by-char reveal */
+.big{
+  font-family:'Shippori Mincho',serif;font-weight:800;
+  font-size:clamp(2.3rem,7vw,4.9rem);line-height:1.4;letter-spacing:.02em;
+  margin-bottom:34px;color:var(--ink);
+}
+.big .ch{display:inline-block;opacity:0;transform:translateY(.55em) rotate(3deg);filter:blur(2px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.6,.2,1),filter .55s ease}
+.scene.armed .big .ch{opacity:1;transform:none;filter:blur(0)}
+.big em{
+  font-style:normal;color:var(--gold-deep);
+  text-shadow:0 0 22px rgba(194,138,0,.25);
+  background:linear-gradient(transparent 62%, rgba(194,138,0,.20) 62%, rgba(194,138,0,.20) 90%, transparent 90%);
+}
+
+.lead{
+  font-size:clamp(.98rem,1.9vw,1.14rem);max-width:620px;
+  color:var(--ink-soft);
+  opacity:0;transform:translateY(26px);transition:opacity .8s ease .5s,transform .8s ease .5s;
+}
+.scene.armed .lead{opacity:1;transform:none}
+
+/* generic fade-up unit with stagger */
+.fx{opacity:0;transform:translateY(34px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.6,.2,1)}
+.scene.armed .fx{opacity:1;transform:none}
+.scene.armed .fx:nth-child(1){transition-delay:.15s}
+.scene.armed .fx:nth-child(2){transition-delay:.3s}
+.scene.armed .fx:nth-child(3){transition-delay:.45s}
+.scene.armed .fx:nth-child(4){transition-delay:.6s}
+
+/* ===== hero specifics ===== */
+#s-hero .scene__inner{display:flex;flex-direction:column;justify-content:center}
+.hero__card{
+  width:92px;height:129px;transform:rotate(-5deg);
+  margin-bottom:34px;
+  filter:drop-shadow(0 10px 22px rgba(30,28,23,.24));
+  opacity:0;animation:sealIn .9s cubic-bezier(.2,.7,.3,1.2) .2s forwards;
+  transition:transform .4s cubic-bezier(.2,.7,.3,1.2);
+}
+.hero__card:hover{transform:rotate(0deg) scale(1.06)}
+.hero__card svg{width:100%;height:100%;display:block}
+@keyframes sealIn{from{opacity:0;transform:rotate(-40deg) scale(.4)}to{opacity:1;transform:rotate(-5deg) scale(1)}}
+.hero__scrollhint{
+  position:absolute;bottom:40px;left:50%;transform:translateX(-50%);
+  font-size:.68rem;letter-spacing:.34em;color:var(--ink-soft);
+  display:flex;flex-direction:column;align-items:center;gap:12px;z-index:5;
+}
+.hero__scrollhint::after{content:"";width:1px;height:52px;background:linear-gradient(var(--seal),transparent);animation:drop 1.8s infinite}
+@keyframes drop{0%{transform:scaleY(0);transform-origin:top}45%{transform:scaleY(1);transform-origin:top}55%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* ===== cards ===== */
+.deck{display:grid;gap:22px;grid-template-columns:repeat(3,1fr);margin-top:14px}
+.deck--2{grid-template-columns:repeat(2,1fr)}
+.panel{
+  position:relative;padding:34px 30px;
+  background:rgba(30,28,23,.035);
+  border:1px solid var(--ink-faint);
+  transition:transform .3s ease,border-color .3s ease,background .3s ease;
+}
+.panel:hover{transform:translateY(-7px);border-color:var(--seal);background:rgba(30,28,23,.06)}
+.panel::before{content:"";position:absolute;top:-1px;left:-1px;width:30px;height:3px;background:var(--seal)}
+.panel h3{font-family:'Shippori Mincho',serif;font-size:1.1rem;font-weight:700;margin-bottom:12px;color:var(--ink)}
+.panel p{font-size:.88rem;color:var(--ink-soft)}
+.panel .ico{font-size:1.4rem;margin-bottom:16px;display:block}
+.panel .tag{
+  display:inline-block;font-size:.7rem;font-weight:700;letter-spacing:.08em;
+  color:#fdf6ea;background:var(--seal);padding:4px 13px;margin-bottom:16px;
+}
+
+/* timeline horizontal */
+.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px;position:relative}
+.tl::before{content:"";position:absolute;top:5px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--seal),rgba(165,48,31,.1))}
+.tl li{list-style:none;padding:26px 18px 0 0;position:relative}
+.tl li::before{content:"";position:absolute;top:0;left:0;width:10px;height:10px;background:var(--seal);transform:rotate(45deg)}
+.tl b{display:block;font-family:'Shippori Mincho',serif;font-size:1rem;color:var(--ink);font-weight:700;margin-bottom:6px}
+.tl span{font-size:.8rem;color:var(--ink-soft)}
+
+/* stats row */
+.stats{display:flex;gap:clamp(20px,4vw,54px);margin-top:44px;flex-wrap:wrap}
+.stat{border-left:2px solid var(--seal);padding-left:18px}
+.stat b{display:block;font-family:'Shippori Mincho',serif;font-size:1.15rem;font-weight:700;color:var(--ink);line-height:1.5}
+.stat span{font-size:.76rem;letter-spacing:.1em;color:var(--ink-soft)}
+
+/* pull-quote */
+.pullquote{
+  margin-top:34px;padding-left:22px;border-left:2px solid var(--ink-faint);
+  font-family:'Shippori Mincho',serif;font-size:1.05rem;color:var(--ink-soft);font-style:normal;
+}
+
+/* interest tags */
+.tags{display:flex;flex-wrap:wrap;gap:14px;margin-top:36px}
+.tag-chip{
+  display:flex;align-items:center;gap:10px;
+  border:1px solid var(--ink-faint);padding:12px 22px 12px 14px;
+  font-size:.9rem;color:var(--ink-soft);
+  transition:border-color .3s,background .3s,color .3s;
+}
+.tag-chip:hover{border-color:var(--seal);background:rgba(165,48,31,.06);color:var(--ink)}
+.tag-chip i{width:16px;height:16px;background:var(--seal);border-radius:2px;flex-shrink:0;transform:rotate(-4deg)}
+
+/* closing */
+#s-close{text-align:center}
+#s-close .scene__inner{display:flex;flex-direction:column;align-items:center}
+.close__card{
+  width:70px;height:98px;transform:rotate(4deg);
+  margin-bottom:30px;
+  filter:drop-shadow(0 8px 18px rgba(30,28,23,.22));
+}
+.close__card svg{width:100%;height:100%;display:block}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:16px 38px;font-weight:700;font-size:.9rem;letter-spacing:.1em;
+  background:var(--seal);color:#fdf6ea;border:none;cursor:pointer;
+  transition:background .25s,transform .25s,box-shadow .25s;
+}
+.btn:hover{background:var(--seal-deep);transform:translateY(-3px);box-shadow:0 16px 34px rgba(165,48,31,.28)}
+
+.footer{
+  text-align:center;padding:46px 20px;font-size:.78rem;
+  color:var(--ink-soft);position:relative;z-index:2;
+}
+.footer b{color:var(--seal);font-family:'Shippori Mincho',serif}
+
+@media(max-width:860px){
+  .deck,.deck--2{grid-template-columns:1fr}
+  .tl{grid-template-columns:1fr;gap:8px}
+  .tl::before{display:none}
+  .tl li{border-left:1px solid var(--ink-faint);padding:0 0 18px 20px}
+  .tl li::before{left:-6px}
+  #bgKanji{font-size:56vw;right:-14vw;opacity:.5}
+  .ink-mountains{height:30vh}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<!-- karuta picture-card symbol: sun / steep peak / mist / open book (絵札・文字なし) -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="karutaCard" viewBox="0 0 60 84">
+      <!-- washi card with double frame -->
+      <rect x="1" y="1" width="58" height="82" rx="4" fill="#f6efdd" stroke="#1e1c17" stroke-opacity=".55" stroke-width="1.6"/>
+      <rect x="4.5" y="4.5" width="51" height="75" rx="2" fill="none" stroke="#1e1c17" stroke-opacity=".22" stroke-width=".7"/>
+      <!-- vermillion sun, hanafuda-style -->
+      <circle cx="19" cy="20" r="8.5" fill="#a5301f"/>
+      <!-- far pale ridge -->
+      <path d="M5,46 L14,38 L21,43 L28,36 L34,42 L34,79 L5,79 Z" fill="#1e1c17" opacity=".13"/>
+      <!-- near steep peak, rising right (甲斐駒) -->
+      <path d="M22,58 L33,34 L38,42 L44,28 L49,38 L55,48 L55,79 L22,79 Z" fill="#1e1c17" opacity=".72"/>
+      <!-- mist band -->
+      <ellipse cx="26" cy="52" rx="20" ry="4.5" fill="#f6efdd" opacity=".85"/>
+      <!-- tiny bird -->
+      <path d="M12,32 q3,-4 6,0 q3,-4 6,0" fill="none" stroke="#1e1c17" stroke-width="1.1" stroke-linecap="round" opacity=".5"/>
+      <!-- open book at the foot of the mountain (教育) -->
+      <g stroke="#1e1c17" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" fill="#f6efdd">
+        <path d="M14,72 Q21,68 28,71 L28,62 Q21,59 14,63 Z"/>
+        <path d="M42,72 Q35,68 28,71 L28,62 Q35,59 42,63 Z"/>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<div id="bg"></div>
+<svg class="ink-mountains" aria-hidden="true" viewBox="0 0 1600 560" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <filter id="inkTexture" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.05" numOctaves="2" seed="7" result="noise"/>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="14" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+    <filter id="softBlurFar"><feGaussianBlur stdDeviation="7"/></filter>
+    <filter id="softBlurMid"><feGaussianBlur stdDeviation="3.5"/></filter>
+    <radialGradient id="moonGold" cx="44%" cy="38%" r="72%">
+      <stop offset="0%" stop-color="#e3b64a"/>
+      <stop offset="62%" stop-color="#d4a02c"/>
+      <stop offset="100%" stop-color="#b98a14"/>
+    </radialGradient>
+    <radialGradient id="moonHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="50%" stop-color="#d4a02c" stop-opacity="0"/>
+      <stop offset="74%" stop-color="#d4a02c" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#d4a02c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="moonBlur"><feGaussianBlur stdDeviation="1.6"/></filter>
+  </defs>
+
+  <!-- far ridge: soft, most distant — rises and sharpens toward the right (甲斐駒イメージ) -->
+  <path class="ridge far" filter="url(#softBlurFar)" d="M-20,300 L60,270 L140,290 L220,235 L300,210 L360,155 L420,110 L460,95 L500,135 L560,175 L630,150 L700,190 L770,160 L840,200 L910,175 L980,205 L1050,180 L1120,210 L1190,190 L1260,215 L1340,195 L1420,218 L1500,200 L1580,222 L1620,215 L1620,560 L-20,560 Z"/>
+
+  <!-- mid ridge — steeper flanks, same rightward climb -->
+  <path class="ridge mid" filter="url(#softBlurMid)" d="M-20,390 L90,362 L170,380 L250,340 L330,358 L410,315 L470,285 L530,260 L590,295 L660,325 L730,275 L790,235 L850,200 L910,240 L980,275 L1050,245 L1120,280 L1190,255 L1260,285 L1330,265 L1400,290 L1470,270 L1540,292 L1620,280 L1620,560 L-20,560 Z"/>
+
+  <!-- near ridge: brushed ink edge, jagged rock faces, sharp 甲斐駒-like summit far right -->
+  <path class="ridge near" filter="url(#inkTexture)" d="M-20,470 L120,444 L200,460 L280,418 L360,436 L440,390 L520,414 L600,366 L660,384 L725,350 L790,356 L860,376 L940,338 L1020,356 L1100,308 L1180,330 L1260,272 L1300,225 L1320,202 L1350,170 L1370,178 L1400,212 L1430,244 L1460,270 L1500,288 L1550,272 L1600,286 L1620,282 L1620,560 L-20,560 Z"/>
+
+  <!-- mist bands between the ranges: classic sumi-e negative space -->
+  <ellipse class="mistband" cx="380" cy="330" rx="380" ry="26"/>
+  <ellipse class="mistband" cx="1120" cy="305" rx="430" ry="30"/>
+
+  <!-- 琳派風・金の満月（デフォルメ）＋月に叢雲 (左上・余白側) -->
+  <g class="moon-group">
+    <circle cx="225" cy="95" r="120" fill="url(#moonHalo)"/>
+    <circle cx="225" cy="95" r="62" fill="url(#moonGold)" opacity=".9"/>
+    <circle class="moon-rim" cx="225" cy="95" r="62"/>
+    <!-- ほのかな面の揺らぎ -->
+    <g filter="url(#moonBlur)" fill="#9a6d00">
+      <circle cx="204" cy="76" r="13" opacity=".10"/>
+      <circle cx="244" cy="112" r="16" opacity=".08"/>
+      <circle cx="218" cy="122" r="9" opacity=".07"/>
+    </g>
+    <!-- 叢雲：月を横切る霞 -->
+    <ellipse cx="212" cy="118" rx="105" ry="13" fill="#f2ebd9" opacity=".85" filter="url(#softBlurMid)"/>
+    <ellipse cx="285" cy="132" rx="80" ry="9" fill="#f2ebd9" opacity=".7" filter="url(#softBlurMid)"/>
+  </g>
+
+  <!-- distant birds, clear of the moon and the summit — fly off when the cursor nears -->
+  <g class="bird-group">
+    <path class="bird" d="M980,64 q10,-14 20,0 q10,-14 20,0"/>
+  </g>
+  <g class="bird-group">
+    <path class="bird" d="M1060,94 q8,-11 16,0 q8,-11 16,0"/>
+  </g>
+  <g class="bird-group">
+    <path class="bird" d="M1020,46 q6,-9 12,0 q6,-9 12,0"/>
+  </g>
+</svg>
+<div id="bgKanji" aria-hidden="true">道</div>
+
+<nav class="nav">
+  <a href="#s-hero" class="nav__logo">
+    <svg class="nav__card" aria-hidden="true"><use href="#karutaCard"/></svg>
+    <span class="nav__name">小田木正邦</span>
+  </a>
+  <div class="nav__links">
+    <a href="#s-profile">プロフィール</a>
+    <a href="#s-ai">AI×指導</a>
+    <a href="#s-kate">KATEぷら</a>
+    <a href="#s-mind">指導方針</a>
+  </div>
+</nav>
+
+<div id="rail">
+  <a href="#s-hero" data-r="s-hero"></a>
+  <a href="#s-profile" data-r="s-profile"></a>
+  <a href="#s-ai" data-r="s-ai"></a>
+  <a href="#s-kate" data-r="s-kate"></a>
+  <a href="#s-mind" data-r="s-mind"></a>
+  <a href="#s-close" data-r="s-close"></a>
+</div>
+
+<!-- SCENE 1: HERO -->
+<section class="scene" id="s-hero" data-bg="#ece4cf" data-kanji="道">
+  <div class="scene__inner">
+    <div class="hero__card"><svg aria-hidden="true"><use href="#karutaCard"/></svg></div>
+    <h1 class="big" data-split>基礎を固め、|<em>高校で花開く。</em></h1>
+    <p class="lead">山梨県山梨市で家庭教師をしています、小田木正邦です。指導歴10年以上、3人の子の父。時代のトレンドであるAIを取り入れた指導をしています。ここは私の仕事と関心をまとめた、名刺代わりの場所です。</p>
+  </div>
+  <div class="hero__scrollhint">SCROLL</div>
+</section>
+
+<!-- SCENE 2: PROFILE -->
+<section class="scene" id="s-profile" data-bg="#efe8d6" data-kanji="今">
+  <span class="scene__label">壱 ・ プロフィール</span>
+  <div class="scene__inner">
+    <span class="kicker">Profile</span>
+    <h2 class="big" data-split>今、|<em>山梨市で</em>指導しています。</h2>
+    <p class="lead">家庭教師として10年以上、1対1の指導を重ねてきました。山梨県山梨市在住、3人の子の父です。時代のトレンドであるAI技術を取り入れた指導を行っています。</p>
+    <div class="stats fx">
+      <div class="stat"><b>10年以上</b><span>家庭教師としての活動歴</span></div>
+      <div class="stat"><b>山梨県山梨市</b><span>在住</span></div>
+      <div class="stat"><b>3人の子の父</b><span>家族構成</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 3: AI x TEACHING -->
+<section class="scene" id="s-ai" data-bg="#f1ecdc" data-kanji="智">
+  <span class="scene__label">弐 ・ AIと指導</span>
+  <div class="scene__inner">
+    <span class="kicker">AI × Teaching</span>
+    <h2 class="big" data-split>AIは、|1対1指導の<em>最高の相棒</em>。</h2>
+    <p class="lead">指導に活用しているのは Google Gemini と Claude（マルモクロードなど）。1対1の家庭教師指導とAIの相性は、非常に良いと感じています。</p>
+    <div class="deck">
+      <div class="panel fx"><span class="ico">🧩</span><h3>オーダーメイド教材</h3><p>生徒1人のためだけに最適化したアプリや教材を、専門知識なしですぐに作成。「2020年度の入試問題のアプリを」といったピンポイントな要望にも自由に応えられます。</p></div>
+      <div class="panel fx"><span class="ico">⚡</span><h3>その場でスピード教材化</h3><p>「ing形が理解できていない」と感じたら、5分ほどでその使い方を網羅した資料を作成。数学の類題も数字を変えてその場で生成。「文化史が苦手」など、事前に専用資料を用意することも。</p></div>
+      <div class="panel fx"><span class="ico">✍️</span><h3>添削の精度が上がる</h3><p>英文添削は自分の目だけでなくAIを通すことで見落としを防止。「別の言い回しに変えてほしい」といった要望にも、その場ですぐ対応できます。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 4: KATEPURA -->
+<section class="scene" id="s-kate" data-bg="#e4dcc3" data-kanji="塾">
+  <span class="scene__label">参 ・ KATEぷら</span>
+  <div class="scene__inner">
+    <span class="kicker">KATEぷら</span>
+    <h2 class="big" data-split>少人数の「KATEぷら」でも、|<em>AIを活用</em>。</h2>
+    <p class="lead">少人数で行う個別指導「KATEぷら」でも、AIを多角的に導入しています。</p>
+    <div class="deck">
+      <div class="panel fx"><span class="tag">生徒指導</span><h3>指導そのものをサポート。</h3><p>生徒指導への活用として、指導そのもののサポートにAIを利用しています。</p></div>
+      <div class="panel fx"><span class="tag">データ収集</span><h3>プリントを撮るだけで記録。</h3><p>基本はプリントで授業を行い、生徒が記入したプリントを写真で撮影・アップロード。学習データの蓄積や分析をとても簡単に行っています。</p></div>
+      <div class="panel fx"><span class="tag">リアルタイム対応</span><h3>授業その場で添削・サポート。</h3><p>授業の現場で即座に英文添削を行ったり、苦手分野のサポートを行っています。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 5: TEACHING MIND -->
+<section class="scene" id="s-mind" data-bg="#eee6d1" data-kanji="志">
+  <span class="scene__label">四 ・ 指導方針</span>
+  <div class="scene__inner">
+    <span class="kicker">Teaching Mind</span>
+    <h2 class="big" data-split>種は中学で蒔き、|花は<em>高校で咲く</em>。</h2>
+    <div class="deck deck--2">
+      <div class="panel fx"><span class="ico">🌱</span><h3>諦めない姿勢</h3><p>どんな生徒であっても、最初は成果が出にくくても、着実に一歩ずつ前に進めていくことを大切にしています。</p></div>
+      <div class="panel fx"><span class="ico">🎓</span><h3>得意なパターン（中3からの指導）</h3><p>中学校3年生から生徒を受け持ち、基礎を徹底的に固める指導を得意としています。その後、どの高校へ進学したとしても、進学先でしっかりと成果を出して「花を咲かせる」ことができる基盤作りを行います。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 6: CLOSING -->
+<section class="scene" id="s-close" data-bg="#f2ecdd" data-kanji="縁">
+  <div class="scene__inner">
+    <div class="close__card fx"><svg aria-hidden="true"><use href="#karutaCard"/></svg></div>
+    <h2 class="big" data-split>諦めなければ、|いつか<em>花は咲く</em>。</h2>
+    <p class="lead">どんな生徒であっても、着実に一歩ずつ。子どもたちが「花開く瞬間」に立ち会えることが、この仕事のいちばんの喜びです。</p>
+    <div class="fx" style="margin-top:36px"><a class="btn" href="#s-hero">もう一度はじめから ↑</a></div>
+  </div>
+</section>
+
+<footer class="footer">© 2026 <b>小田木 正邦</b> — odayanblog.com</footer>
+
+<script>
+/* ===== split chars ===== */
+document.querySelectorAll('[data-split]').forEach(el=>{
+  const parts=el.innerHTML.split('|');
+  el.innerHTML='';
+  parts.forEach((part,pi)=>{
+    const tmp=document.createElement('div');tmp.innerHTML=part;
+    const walk=(node,target)=>{
+      node.childNodes.forEach(n=>{
+        if(n.nodeType===3){
+          [...n.textContent].forEach((c,i)=>{
+            const s=document.createElement('span');s.className='ch';s.textContent=c;
+            target.appendChild(s);
+          });
+        }else{
+          const clone=n.cloneNode(false);target.appendChild(clone);walk(n,clone);
+        }
+      });
+    };
+    walk(tmp,el);
+    if(pi<parts.length-1)el.appendChild(document.createElement('br'));
+  });
+  // stagger
+  el.querySelectorAll('.ch').forEach((s,i)=>s.style.transitionDelay=(0.05+i*0.035)+'s');
+});
+
+/* ===== scene activation + paper tone morph + kanji swap ===== */
+const scenes=[...document.querySelectorAll('.scene')];
+const bg=document.getElementById('bg');
+const kanjiEl=document.getElementById('bgKanji');
+const railLinks={};document.querySelectorAll('#rail a').forEach(a=>railLinks[a.dataset.r]=a);
+let currentKanji='道';
+
+const sceneIO=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('armed');
+      bg.style.backgroundColor=e.target.dataset.bg;
+      const nk=e.target.dataset.kanji;
+      if(nk&&nk!==currentKanji){
+        currentKanji=nk;
+        kanjiEl.style.opacity=0;
+        setTimeout(()=>{kanjiEl.textContent=nk;kanjiEl.style.opacity=1},400);
+      }
+      Object.values(railLinks).forEach(a=>a.classList.remove('on'));
+      railLinks[e.target.id]?.classList.add('on');
+    }
+  });
+},{threshold:.45});
+scenes.forEach(s=>sceneIO.observe(s));
+
+/* re-arm scenes when far out of view so animations replay */
+const resetIO=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(!e.isIntersecting)e.target.classList.remove('armed')});
+},{threshold:0});
+scenes.forEach(s=>resetIO.observe(s));
+
+/* ===== parallax on giant kanji + ink mountains ===== */
+const mountains=document.querySelector('.ink-mountains');
+let ticking=false;
+addEventListener('scroll',()=>{
+  if(ticking)return;ticking=true;
+  requestAnimationFrame(()=>{
+    const y=scrollY*0.03;
+    kanjiEl.style.transform=`translateY(calc(-50% + ${y}px))`;
+    mountains.style.transform=`translateY(${scrollY*0.06}px)`;
+    ticking=false;
+  });
+},{passive:true});
+
+/* ===== birds fly away when the cursor comes near =====
+   (the bg SVG sits behind the page content, so CSS :hover can't fire —
+    we detect proximity in screen coordinates instead) */
+const birdGroups=[...document.querySelectorAll('.bird-group')];
+function checkBirds(x,y){
+  birdGroups.forEach(g=>{
+    if(g.classList.contains('fly'))return;
+    const r=g.getBoundingClientRect();
+    const cx=r.left+r.width/2, cy=r.top+r.height/2;
+    if(Math.hypot(x-cx,y-cy)<70){
+      g.classList.add('fly');
+      setTimeout(()=>g.classList.remove('fly'),5000); // glides back after a while
+    }
+  });
+}
+
+/* ===== custom cursor ===== */
+const cur=document.getElementById('cursor');
+let shown=false;
+addEventListener('mousemove',e=>{
+  if(!shown){cur.style.opacity=.9;shown=true}
+  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
+  checkBirds(e.clientX,e.clientY);
+});
+addEventListener('mouseout',e=>{if(!e.relatedTarget){cur.style.opacity=0;shown=false}});
+document.querySelectorAll('a,button,.panel,.tag-chip').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('hov'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('hov'));
+});
+
+/* smooth anchor scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  a.addEventListener('click',e=>{
+    const t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  });
+});
+</script>
+</body>
+</html>
