@@ -75,6 +75,14 @@ a{color:inherit;text-decoration:none}
 .ink-mountains .bird-group:nth-of-type(2) .bird{animation:birdFloat 5.1s ease-in-out .8s infinite}
 .ink-mountains .bird-group:nth-of-type(3) .bird{animation:birdFloat 3.6s ease-in-out 1.6s infinite}
 
+/* ===== moon (independent fixed element — never cropped) ===== */
+.moon-decor{
+  position:fixed;z-index:-2;pointer-events:none;
+  top:11vh;left:4vw;
+  width:clamp(170px,24vw,290px);height:auto;
+  opacity:.95;overflow:visible;
+}
+
 /* giant kanji watermark that crossfades per scene */
 #bgKanji{
   position:fixed;z-index:-1;right:-2vw;top:50%;transform:translateY(-50%);
@@ -273,6 +281,7 @@ a{color:inherit;text-decoration:none}
   .tl li::before{left:-6px}
   #bgKanji{font-size:56vw;right:-14vw;opacity:.5}
   .ink-mountains{height:30vh}
+  .moon-decor{top:8vh;left:3vw;width:42vw}
 }
 </style>
 </head>
@@ -341,22 +350,6 @@ a{color:inherit;text-decoration:none}
   <ellipse class="mistband" cx="380" cy="330" rx="380" ry="26"/>
   <ellipse class="mistband" cx="1120" cy="305" rx="430" ry="30"/>
 
-  <!-- 琳派風・金の満月（デフォルメ）＋月に叢雲 (左上・余白側) -->
-  <g class="moon-group">
-    <circle cx="225" cy="95" r="120" fill="url(#moonHalo)"/>
-    <circle cx="225" cy="95" r="62" fill="url(#moonGold)" opacity=".9"/>
-    <circle class="moon-rim" cx="225" cy="95" r="62"/>
-    <!-- ほのかな面の揺らぎ -->
-    <g filter="url(#moonBlur)" fill="#9a6d00">
-      <circle cx="204" cy="76" r="13" opacity=".10"/>
-      <circle cx="244" cy="112" r="16" opacity=".08"/>
-      <circle cx="218" cy="122" r="9" opacity=".07"/>
-    </g>
-    <!-- 叢雲：月を横切る霞 -->
-    <ellipse cx="212" cy="118" rx="105" ry="13" fill="#f2ebd9" opacity=".85" filter="url(#softBlurMid)"/>
-    <ellipse cx="285" cy="132" rx="80" ry="9" fill="#f2ebd9" opacity=".7" filter="url(#softBlurMid)"/>
-  </g>
-
   <!-- distant birds, clear of the moon and the summit — fly off when the cursor nears -->
   <g class="bird-group">
     <path class="bird" d="M980,64 q10,-14 20,0 q10,-14 20,0"/>
@@ -367,6 +360,33 @@ a{color:inherit;text-decoration:none}
   <g class="bird-group">
     <path class="bird" d="M1020,46 q6,-9 12,0 q6,-9 12,0"/>
   </g>
+</svg>
+<!-- 琳派風・金の満月（デフォルメ）＋叢雲：切り取りの影響を受けない独立要素として左上の空に配置 -->
+<svg class="moon-decor" aria-hidden="true" viewBox="100 -30 260 250" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="mGold" cx="44%" cy="38%" r="72%">
+      <stop offset="0%" stop-color="#e3b64a"/>
+      <stop offset="62%" stop-color="#d4a02c"/>
+      <stop offset="100%" stop-color="#b98a14"/>
+    </radialGradient>
+    <radialGradient id="mHalo" cx="50%" cy="50%" r="50%">
+      <stop offset="50%" stop-color="#d4a02c" stop-opacity="0"/>
+      <stop offset="74%" stop-color="#d4a02c" stop-opacity=".16"/>
+      <stop offset="100%" stop-color="#d4a02c" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="mBlur"><feGaussianBlur stdDeviation="1.6"/></filter>
+    <filter id="mCloud"><feGaussianBlur stdDeviation="3.5"/></filter>
+  </defs>
+  <circle cx="225" cy="95" r="120" fill="url(#mHalo)"/>
+  <circle cx="225" cy="95" r="62" fill="url(#mGold)" opacity=".9"/>
+  <circle cx="225" cy="95" r="62" fill="none" stroke="#8f6a00" stroke-width="1.4" opacity=".3"/>
+  <g filter="url(#mBlur)" fill="#9a6d00">
+    <circle cx="204" cy="76" r="13" opacity=".10"/>
+    <circle cx="244" cy="112" r="16" opacity=".08"/>
+    <circle cx="218" cy="122" r="9" opacity=".07"/>
+  </g>
+  <ellipse cx="212" cy="118" rx="105" ry="13" fill="#f2ebd9" opacity=".85" filter="url(#mCloud)"/>
+  <ellipse cx="285" cy="132" rx="80" ry="9" fill="#f2ebd9" opacity=".7" filter="url(#mCloud)"/>
 </svg>
 <div id="bgKanji" aria-hidden="true">道</div>
 
