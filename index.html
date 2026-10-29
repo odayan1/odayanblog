@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&text=%E9%81%93%E4%BB%8A%E5%B1%B1%E6%99%BA%E5%80%8B%E5%A1%BE%E5%BF%97%E7%B8%81&display=swap" rel="stylesheet">
 <style>
 @property --ink{syntax:'<color>';inherits:true;initial-value:#1e1c17}
 @property --ink-soft{syntax:'<color>';inherits:true;initial-value:#5b564a}
@@ -181,13 +181,12 @@ a{color:inherit;text-decoration:none}
 
 /* big scene titles: char-by-char reveal */
 .big{
-  font-family:'Yuji Boku','Shippori Mincho',serif;font-weight:400;
+  font-family:'Shippori Mincho',serif;font-weight:800;
   font-size:clamp(2.3rem,7vw,4.9rem);line-height:1.4;letter-spacing:.02em;
   margin-bottom:34px;color:var(--ink);
 }
 .big .ch{display:inline-block;opacity:0;transform:translateY(.55em) rotate(3deg);filter:blur(2px);transition:opacity .55s ease,transform .55s cubic-bezier(.2,.6,.2,1),filter .55s ease}
 .scene.armed .big .ch{opacity:1;transform:none;filter:blur(0)}
-.big .lat{font-family:'Shippori Mincho',serif;font-weight:800}
 .big em{
   font-style:normal;color:var(--gold-deep);
   text-shadow:0 0 22px rgba(194,138,0,.25);
@@ -573,7 +572,7 @@ document.querySelectorAll('[data-split]').forEach(el=>{
       node.childNodes.forEach(n=>{
         if(n.nodeType===3){
           [...n.textContent].forEach((c,i)=>{
-            const s=document.createElement('span');s.className=/[A-Za-z0-9]/.test(c)?'ch lat':'ch';s.textContent=c;
+            const s=document.createElement('span');s.className='ch';s.textContent=c;
             target.appendChild(s);
           });
         }else{
