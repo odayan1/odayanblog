@@ -43,7 +43,7 @@
 }
 /* 白→黒への反転：下の場面ほど夜（墨）になる */
 body{transition:--ink 1.1s ease,--ink-soft 1.1s ease,--ink-faint 1.1s ease,--seal 1.1s ease,--gold-deep 1.1s ease,--wash 1.1s ease,--wash2 1.1s ease,--mist 1.1s ease,--kanji 1.1s ease,--navbg 1.1s ease,--rail 1.1s ease}
-body[data-theme="dusk"]{--mist:#cdc5af;--kanji:rgba(30,28,23,.06)}
+body[data-theme="dusk"]{--mist:#a59b85;--ink-soft:#2f2b24;--ink-faint:rgba(30,28,23,.22);--wash:rgba(255,250,235,.10);--wash2:rgba(255,250,235,.16);--navbg:rgba(200,191,170,.78)}
 body[data-theme="night"]{
   --ink:#efe8d6;--ink-soft:#b9b19e;--ink-faint:rgba(239,232,214,.16);
   --seal:#d4553c;--gold-deep:#dcae3c;
@@ -80,7 +80,7 @@ a{color:inherit;text-decoration:none}
 #bg{
   position:fixed;inset:0;z-index:-3;
   background:var(--paper);
-  transition:background-color 1.1s cubic-bezier(.4,0,.2,1);
+  transition:background-color .25s linear;
 }
 #bg::after{
   content:"";position:absolute;inset:0;opacity:.05;pointer-events:none;mix-blend-mode:multiply;
@@ -299,7 +299,7 @@ a{color:inherit;text-decoration:none}
 .btn:hover{background:var(--seal-deep);transform:translateY(-3px);box-shadow:0 16px 34px rgba(165,48,31,.28)}
 
 .footer{
-  text-align:center;padding:46px 20px;font-size:.78rem;background:#0f0e0c;
+  text-align:center;padding:46px 20px;font-size:.78rem;background:#060605;
   color:var(--ink-soft);position:relative;z-index:2;
 }
 .footer b{color:var(--seal);font-family:'Shippori Mincho',serif}
@@ -598,8 +598,6 @@ const sceneIO=new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(e.isIntersecting){
       e.target.classList.add('armed');
-      bg.style.backgroundColor=e.target.dataset.bg;
-      document.body.dataset.theme=e.target.dataset.theme||'light';
       const nk=e.target.dataset.kanji;
       if(nk&&nk!==currentKanji){
         currentKanji=nk;
@@ -612,6 +610,33 @@ const sceneIO=new IntersectionObserver(es=>{
   });
 },{threshold:.45});
 scenes.forEach(s=>sceneIO.observe(s));
+
+/* ===== 白→黒のグラデーション（スクロールに合わせて連続的に変化）＋右の漢字の色 ===== */
+const mistEls=[...document.querySelectorAll('.ink-mountains .mistband')];
+const BG=['#f4eddc','#ddd3bb','#bfb49a','#8f8571','#4a443b','#2a2722','#161412','#060605'];
+const KC=[[30,28,23,.08],[30,28,23,.10],[120,40,25,.13],[165,48,31,.20],[196,70,45,.22],[205,150,50,.20],[220,175,70,.24],[235,195,95,.30]];
+const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+const BGR=BG.map(hex);
+const mix=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t);
+const lum=c=>{const f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(c[0])+.7152*f(c[1])+.0722*f(c[2])};
+function tone(){
+  const yc=scrollY+innerHeight/2;
+  const cs=scenes.map(s=>s.offsetTop+s.offsetHeight/2);
+  let i=0,t=0;
+  if(yc<=cs[0]){i=0;t=0}
+  else if(yc>=cs[cs.length-1]){i=cs.length-2;t=1}
+  else{while(yc>cs[i+1])i++;t=(yc-cs[i])/(cs[i+1]-cs[i])}
+  const c=mix(BGR[i],BGR[i+1],t);
+  bg.style.backgroundColor=`rgb(${c.map(Math.round).join(',')})`;
+  const m=mix(c,[247,242,228],.25);
+  mistEls.forEach(el=>el.style.fill=`rgb(${m.map(Math.round).join(',')})`);
+  const k=mix(KC[i],KC[i+1],t);
+  kanjiEl.style.color=`rgba(${k.slice(0,3).map(Math.round).join(',')},${k[3].toFixed(3)})`;
+  const L=lum(c);
+  const th=L<.17?'night':(L<.4?'dusk':'light');
+  if(document.body.dataset.theme!==th)document.body.dataset.theme=th;
+}
+tone();addEventListener('resize',tone);addEventListener('load',tone);
 
 /* re-arm scenes when far out of view so animations replay */
 const resetIO=new IntersectionObserver(es=>{
@@ -628,6 +653,7 @@ addEventListener('scroll',()=>{
     const y=scrollY*0.03;
     kanjiEl.style.transform=`translateY(calc(-50% + ${y}px))`;
     mountains.style.transform=`translateY(${scrollY*0.06}px)`;
+    tone();
     ticking=false;
   });
 },{passive:true});
