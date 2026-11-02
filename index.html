@@ -3,16 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>小田木正邦 | マンツーマン家庭教師・KATEぷら講師</title>
-<meta name="description" content="山梨県山梨市で家庭教師をしている小田木正邦の個人サイト。指導歴10年以上、AIを活用したマンツーマン（1対1）の個別指導。少人数個別指導塾「KATEぷら」講師。元・山小屋「新越山荘」支配人。">
-<meta property="og:title" content="小田木正邦 | マンツーマン家庭教師・KATEぷら講師">
-<meta property="og:description" content="基礎を固め、高校で花開く。山梨県山梨市の、AIを活用するマンツーマン家庭教師・KATEぷら講師。">
+<title>小田木正邦 | マンツーマン家庭教師・オンライン塾「Q-UP塾」運営</title>
+<meta name="description" content="山梨県山梨市で家庭教師をしている小田木正邦の個人サイト。指導歴10年以上、AIを活用したマンツーマン（1対1）の個別指導。個別指導塾の運営も経験し、現在はオンライン塾「Q-UP塾」を運営（共通テスト「公共，政治・経済」の無料講義動画とアプリ）。元・山小屋「新越山荘」支配人。">
+<meta property="og:title" content="小田木正邦 | マンツーマン家庭教師・オンライン塾「Q-UP塾」運営">
+<meta property="og:description" content="基礎を固め、高校で花開く。山梨県山梨市の、AIを活用するマンツーマン家庭教師。オンライン塾「Q-UP塾」運営。">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://odayanblog.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&text=%E9%81%93%E4%BB%8A%E5%B1%B1%E6%99%BA%E5%80%8B%E5%A1%BE%E5%BF%97%E7%B8%81&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Yuji+Boku&text=%E9%81%93%E4%BB%8A%E5%B1%B1%E6%99%BA%E5%80%8B%E5%A1%BE%E5%BF%97%E7%B8%81%E5%A0%B1%E4%BE%BF&display=swap" rel="stylesheet">
 <style>
 @property --ink{syntax:'<color>';inherits:true;initial-value:#1e1c17}
 @property --ink-soft{syntax:'<color>';inherits:true;initial-value:#5b564a}
@@ -41,7 +41,7 @@
   --navbg:rgba(239,232,214,.72);
   --rail:rgba(30,28,23,.22);
 }
-/* 白→黒への反転：下の場面ほど夜（墨）になる */
+/* 夜→夜明け→昼：上は夜（墨）、下へスクロールするほど朝になる */
 body{transition:--ink 1.1s ease,--ink-soft 1.1s ease,--ink-faint 1.1s ease,--seal 1.1s ease,--gold-deep 1.1s ease,--wash 1.1s ease,--wash2 1.1s ease,--mist 1.1s ease,--kanji 1.1s ease,--navbg 1.1s ease,--rail 1.1s ease}
 body[data-theme="dusk"]{--mist:#a59b85;--ink-soft:#2f2b24;--ink-faint:rgba(30,28,23,.22);--wash:rgba(255,250,235,.10);--wash2:rgba(255,250,235,.16);--navbg:rgba(200,191,170,.78)}
 body[data-theme="night"]{
@@ -105,11 +105,16 @@ a{color:inherit;text-decoration:none}
 
 /* ===== moon (independent fixed element — never cropped) ===== */
 .moon-decor{
-  position:fixed;z-index:-2;pointer-events:none;
+  position:fixed;z-index:-3;pointer-events:none;will-change:top,left,transform;
   top:11vh;left:4vw;
   width:clamp(170px,24vw,290px);height:auto;
   opacity:.95;overflow:visible;
 }
+
+/* stars (night only, fade out toward dawn) */
+#stars{position:fixed;inset:0 0 40vh 0;z-index:-3;pointer-events:none;transition:opacity .2s linear}
+#stars i{position:absolute;width:2px;height:2px;border-radius:50%;background:#f3eedf;animation:twinkle 3.6s ease-in-out infinite}
+@keyframes twinkle{0%,100%{opacity:.25}50%{opacity:.9}}
 
 /* giant kanji watermark that crossfades per scene */
 #bgKanji{
@@ -248,7 +253,7 @@ a{color:inherit;text-decoration:none}
 }
 
 /* timeline horizontal */
-.tl{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:40px;position:relative}
+.tl{display:grid;grid-template-columns:repeat(5,1fr);gap:0;margin-top:40px;position:relative}
 .tl::before{content:"";position:absolute;top:5px;left:0;right:0;height:1px;background:linear-gradient(90deg,var(--seal),rgba(165,48,31,.1))}
 .tl li{list-style:none;padding:26px 18px 0 0;position:relative}
 .tl li::before{content:"";position:absolute;top:0;left:0;width:10px;height:10px;background:var(--seal);transform:rotate(45deg)}
@@ -298,8 +303,13 @@ a{color:inherit;text-decoration:none}
 }
 .btn:hover{background:var(--seal-deep);transform:translateY(-3px);box-shadow:0 16px 34px rgba(165,48,31,.28)}
 
+.mail{font-family:"Shippori Mincho",serif;font-size:clamp(1.1rem,2.4vw,1.5rem);letter-spacing:.04em;margin-top:22px;word-break:break-all}
+.btns{display:flex;flex-wrap:wrap;gap:14px;margin-top:30px}
+.btn--ghost{background:transparent;border:1px solid currentColor;color:inherit}
+.btn--ghost:hover{background:rgba(255,255,255,.08)}
+.panel a.plink{display:inline-block;margin-top:12px;font-weight:700;color:var(--seal);text-decoration:none;border-bottom:1px solid currentColor}
 .footer{
-  text-align:center;padding:46px 20px;font-size:.78rem;background:#060605;
+  text-align:center;padding:46px 20px;font-size:.78rem;background:#efe6cf;
   color:var(--ink-soft);position:relative;z-index:2;
 }
 .footer b{color:var(--seal);font-family:'Shippori Mincho',serif}
@@ -317,7 +327,7 @@ a{color:inherit;text-decoration:none}
 }
 </style>
 </head>
-<body>
+<body data-theme="night">
 
 <div id="cursor"></div>
 
@@ -397,22 +407,22 @@ a{color:inherit;text-decoration:none}
 <svg class="moon-decor" aria-hidden="true" viewBox="100 -30 260 250" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <radialGradient id="mGold" cx="44%" cy="38%" r="72%">
-      <stop offset="0%" stop-color="#e3b64a"/>
-      <stop offset="62%" stop-color="#d4a02c"/>
-      <stop offset="100%" stop-color="#b98a14"/>
+      <stop id="mg0" offset="0%" stop-color="#f6f3e8"/>
+      <stop id="mg1" offset="62%" stop-color="#e4dfcf"/>
+      <stop id="mg2" offset="100%" stop-color="#c9c3b0"/>
     </radialGradient>
     <radialGradient id="mHalo" cx="50%" cy="50%" r="50%">
-      <stop offset="50%" stop-color="#d4a02c" stop-opacity="0"/>
-      <stop offset="74%" stop-color="#d4a02c" stop-opacity=".16"/>
-      <stop offset="100%" stop-color="#d4a02c" stop-opacity="0"/>
+      <stop offset="50%" stop-color="#dfe6ff" stop-opacity="0"/>
+      <stop id="mh1" offset="74%" stop-color="#dfe6ff" stop-opacity=".22"/>
+      <stop offset="100%" stop-color="#dfe6ff" stop-opacity="0"/>
     </radialGradient>
     <filter id="mBlur"><feGaussianBlur stdDeviation="1.6"/></filter>
     <filter id="mCloud"><feGaussianBlur stdDeviation="3.5"/></filter>
   </defs>
   <circle cx="225" cy="95" r="120" fill="url(#mHalo)"/>
   <circle cx="225" cy="95" r="62" fill="url(#mGold)" opacity=".9"/>
-  <circle cx="225" cy="95" r="62" fill="none" stroke="#8f6a00" stroke-width="1.4" opacity=".3"/>
-  <g filter="url(#mBlur)" fill="#9a6d00">
+  <circle id="mRim" cx="225" cy="95" r="62" fill="none" stroke="#8a8676" stroke-width="1.4" opacity=".3"/>
+  <g id="mCraters" filter="url(#mBlur)" fill="#6f6a5a">
     <circle cx="204" cy="76" r="13" opacity=".10"/>
     <circle cx="244" cy="112" r="16" opacity=".08"/>
     <circle cx="218" cy="122" r="9" opacity=".07"/>
@@ -420,6 +430,7 @@ a{color:inherit;text-decoration:none}
   <ellipse cx="212" cy="118" rx="105" ry="13" fill="#f2ebd9" opacity=".85" filter="url(#mCloud)"/>
   <ellipse cx="285" cy="132" rx="80" ry="9" fill="#f2ebd9" opacity=".7" filter="url(#mCloud)"/>
 </svg>
+<div id="stars" aria-hidden="true"></div>
 <div id="bgKanji" aria-hidden="true">道</div>
 
 <nav class="nav">
@@ -431,9 +442,11 @@ a{color:inherit;text-decoration:none}
     <a href="#s-profile">プロフィール</a>
     <a href="#s-yama">山小屋</a>
     <a href="#s-ai">AI×指導</a>
-    <a href="#s-kate">マンツーマン指導</a>
-    <a href="#s-kate2">KATEぷら</a>
+    <a href="#s-kate">マンツーマンの指導</a>
+    <a href="#s-qup">Q-UP塾</a>
+    <a href="#s-news">最新情報</a>
     <a href="#s-mind">指導方針</a>
+    <a href="#s-contact">お問い合わせ</a>
   </div>
 </nav>
 
@@ -443,8 +456,10 @@ a{color:inherit;text-decoration:none}
   <a href="#s-yama" data-r="s-yama"></a>
   <a href="#s-ai" data-r="s-ai"></a>
   <a href="#s-kate" data-r="s-kate"></a>
-  <a href="#s-kate2" data-r="s-kate2"></a>
+  <a href="#s-qup" data-r="s-qup"></a>
+  <a href="#s-news" data-r="s-news"></a>
   <a href="#s-mind" data-r="s-mind"></a>
+  <a href="#s-contact" data-r="s-contact"></a>
   <a href="#s-close" data-r="s-close"></a>
 </div>
 
@@ -453,7 +468,7 @@ a{color:inherit;text-decoration:none}
   <div class="scene__inner">
     <div class="hero__card"><svg aria-hidden="true"><use href="#karutaCard"/></svg></div>
     <h1 class="big" data-split>基礎を固め、|<em>高校で花開く。</em></h1>
-    <p class="lead">山梨県山梨市で家庭教師をしています、小田木正邦です。マンツーマン（1対1）の指導を軸に、少人数個別指導塾「KATEぷら」でも講師を務めています。指導歴10年以上、3人の子の父。時代のトレンドであるAIを取り入れた指導をしています。ここは私の仕事と関心をまとめた、名刺代わりの場所です。</p>
+    <p class="lead">山梨県山梨市で家庭教師をしています、小田木正邦です。マンツーマン（1対1）の指導を軸に、個別指導塾の運営も経験。現在はオンライン塾「Q-UP塾」を運営し、共通テスト「公共，政治・経済」の無料講義動画と練習アプリを公開しています。指導歴10年以上、3人の子の父。時代のトレンドであるAIを取り入れた指導をしています。ここは私の仕事と関心をまとめた、名刺代わりの場所です。</p>
   </div>
   <div class="hero__scrollhint">SCROLL</div>
 </section>
@@ -464,12 +479,13 @@ a{color:inherit;text-decoration:none}
   <div class="scene__inner">
     <span class="kicker">Profile</span>
     <h2 class="big" data-split>今、|<em>山梨市で</em>指導しています。</h2>
-    <p class="lead">家庭教師として10年以上、1対1の指導を重ねてきました。山梨県山梨市在住、3人の子の父です。時代のトレンドであるAI技術を取り入れた指導を行っています。</p>
+    <p class="lead">家庭教師として10年以上、1対1の指導を重ねてきました。個別指導塾の運営も経験し、現在はオンライン塾「Q-UP塾」を運営しています。山梨県山梨市在住、3人の子の父です。時代のトレンドであるAI技術を取り入れた指導を行っています。</p>
     <div class="stats fx">
       <div class="stat"><b>10年以上</b><span>家庭教師としての活動歴</span></div>
       <div class="stat"><b>山梨県山梨市</b><span>在住</span></div>
       <div class="stat"><b>3人の子の父</b><span>家族構成</span></div>
       <div class="stat"><b>元・山小屋支配人</b><span>新越山荘</span></div>
+      <div class="stat"><b>Q-UP塾</b><span>オンライン塾を運営</span></div>
     </div>
   </div>
 </section>
@@ -484,8 +500,9 @@ a{color:inherit;text-decoration:none}
     <ol class="tl fx">
         <li><b>山小屋「新越山荘」支配人</b><span>登ってくる人を迎え、送り出す仕事</span></li>
         <li><b>家庭教師（10年以上）</b><span>1対1の指導を積み重ねる</span></li>
-        <li><b>KATEぷら講師</b><span>少人数個別指導塾でも指導</span></li>
-        <li class="here"><b>AIを取り入れた指導</b><span>その子専用の教材を、その日のうちに</span></li>
+        <li><b>個別指導塾の運営</b><span>塾という場でも、一人ひとりに向き合う</span></li>
+        <li><b>AIを取り入れた指導</b><span>その子専用の教材を、その日のうちに</span></li>
+        <li class="here"><b>オンライン塾「Q-UP塾」運営</b><span>無料講義動画とアプリを全国へ</span></li>
     </ol>
   </div>
 </section>
@@ -507,10 +524,10 @@ a{color:inherit;text-decoration:none}
 
 <!-- SCENE 4: ONE-ON-ONE -->
 <section class="scene" id="s-kate" data-bg="#35312b" data-theme="night" data-kanji="個">
-  <span class="scene__label">四 ・ マンツーマン指導</span>
+  <span class="scene__label">四 ・ マンツーマンの指導</span>
   <div class="scene__inner">
     <span class="kicker">One on One</span>
-    <h2 class="big" data-split>日々のマンツーマン指導を、|<em>AIが支える</em>。</h2>
+    <h2 class="big" data-split>マンツーマンの指導を|<em>AIが支える</em>。</h2>
     <p class="lead">1対1の個別指導の現場でも、AIを多角的に取り入れています。生徒一人ひとりに向き合う時間を、AIがより濃く、確かなものにしてくれます。</p>
     <div class="deck">
       <div class="panel fx"><span class="tag">生徒指導</span><h3>指導そのものをサポート。</h3><p>一人ひとりの理解度に合わせた、指導そのもののサポートにAIを利用しています。</p></div>
@@ -520,31 +537,63 @@ a{color:inherit;text-decoration:none}
   </div>
 </section>
 
-<!-- SCENE 5: KATEPURA -->
-<section class="scene" id="s-kate2" data-bg="#24211d" data-theme="night" data-kanji="塾">
-  <span class="scene__label">五 ・ KATEぷら</span>
+<!-- SCENE 5: Q-UP -->
+<section class="scene" id="s-qup" data-bg="#24211d" data-theme="night" data-kanji="塾">
+  <span class="scene__label">五 ・ Q-UP塾</span>
   <div class="scene__inner">
-    <span class="kicker">KATEぷら</span>
-    <h2 class="big" data-split>少人数の塾、|<em>「KATEぷら」</em>でも。</h2>
-    <p class="lead">家庭教師としての1対1指導に加え、少人数個別指導塾「KATEぷら」でも講師を務めています。塾という場でも、一人ひとりに向き合う指導のスタイルは変わりません。</p>
+    <span class="kicker">Online School</span>
+    <h2 class="big" data-split>オンライン塾|<em>「Q-UP塾」</em>を運営。</h2>
+    <p class="lead">山梨の教室で積み重ねてきた1対1の指導を、動画とアプリにして全国の受験生へ。第一弾は、共通テスト「公共，政治・経済」。AI講師の<b>まつり先生</b>が、全単元を試験の順に、無料で講義しています。</p>
     <div class="deck">
-      <div class="panel fx"><span class="ico">👥</span><h3>少人数の個別指導</h3><p>一人ひとりの理解度に合わせて進める、少人数制の個別指導塾です。</p></div>
-      <div class="panel fx"><span class="ico">🧱</span><h3>基礎の土台づくり</h3><p>つまずきの原因までさかのぼり、基礎から着実に積み上げることを大切にしています。</p></div>
-      <div class="panel fx"><span class="ico">🤖</span><h3>ここでもAIを活用</h3><p>教材づくり・学習記録・添削など、KATEぷらでの指導にもAIを取り入れています。</p></div>
+      <div class="panel fx"><span class="ico">🎬</span><h3>無料の講義動画</h3><p>公共・政治・経済・国際の全単元を「流れ」で解説。1本12〜16分、試験に出るところから順番に。</p></div>
+      <div class="panel fx"><span class="ico">✏️</span><h3>動画とセットの練習アプリ</h3><p>動画と同じ順番で問題を解きながら復習。共通テストのひっかけ○×も。登録なし・無料・スマホOK。</p></div>
+      <div class="panel fx"><span class="ico">💬</span><h3>質問に答えます</h3><p>YouTubeのコメント欄に「【質問】」と付けて書いてもらえれば、まつり先生が必ず返信します。</p></div>
     </div>
-    <div class="fx" style="margin-top:30px"><a class="btn" href="https://kate-pl.com" target="_blank" rel="noopener">KATEぷらのサイトを見る →</a></div>
+    <div class="btns fx">
+      <a class="btn" href="/seikei/">政経 全単元まとめを見る →</a>
+      <a class="btn btn--ghost" href="https://www.youtube.com/@qup-seikei" target="_blank" rel="noopener">YouTubeチャンネル</a>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 5b: NEWS / SNS -->
+<section class="scene" id="s-news" data-bg="#1e1c19" data-theme="night" data-kanji="報">
+  <span class="scene__label">六 ・ 最新情報</span>
+  <div class="scene__inner">
+    <span class="kicker">News &amp; SNS</span>
+    <h2 class="big" data-split>最新情報は、|<em>Xでお知らせ</em>します。</h2>
+    <p class="lead">新しい動画やアプリを公開したら、Xでお知らせします。フォローしておけば、見逃しません。</p>
+    <div class="deck">
+      <div class="panel fx"><span class="tag">公共・政経</span><h3>まつり先生（@qup_seikei）</h3><p>政経の新しい講義動画・練習アプリの公開をお知らせします。</p><a class="plink" href="https://x.com/qup_seikei" target="_blank" rel="noopener">Xをフォロー →</a></div>
+      <div class="panel fx"><span class="tag">英検×AI</span><h3>小田木正邦（@odamasa_AI）</h3><p>英検2級のAI学習アプリづくりや、AIを使った指導の裏側を発信しています。</p><a class="plink" href="https://x.com/odamasa_AI" target="_blank" rel="noopener">Xをフォロー →</a></div>
+      <div class="panel fx"><span class="tag">YouTube</span><h3>Q-UP塾 公共・政経</h3><p>チャンネル登録で、新しい講義動画が公開されたらすぐ届きます。</p><a class="plink" href="https://www.youtube.com/@qup-seikei?sub_confirmation=1" target="_blank" rel="noopener">チャンネル登録 →</a></div>
+    </div>
   </div>
 </section>
 
 <!-- SCENE 6: TEACHING MIND -->
 <section class="scene" id="s-mind" data-bg="#191714" data-theme="night" data-kanji="志">
-  <span class="scene__label">六 ・ 指導方針</span>
+  <span class="scene__label">七 ・ 指導方針</span>
   <div class="scene__inner">
     <span class="kicker">Teaching Mind</span>
     <h2 class="big" data-split>種は中学で蒔き、|花は<em>高校で咲く</em>。</h2>
     <div class="deck deck--2">
       <div class="panel fx"><span class="ico">🌱</span><h3>諦めない姿勢</h3><p>どんな生徒であっても、最初は成果が出にくくても、着実に一歩ずつ前に進めていくことを大切にしています。</p></div>
       <div class="panel fx"><span class="ico">🎓</span><h3>得意なパターン（中3からの指導）</h3><p>中学校3年生から生徒を受け持ち、基礎を徹底的に固める指導を得意としています。その後、どの高校へ進学したとしても、進学先でしっかりと成果を出して「花を咲かせる」ことができる基盤作りを行います。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SCENE 7: CONTACT -->
+<section class="scene" id="s-contact" data-bg="#efe6cf" data-kanji="便">
+  <span class="scene__label">八 ・ お問い合わせ</span>
+  <div class="scene__inner">
+    <span class="kicker">Contact</span>
+    <h2 class="big" data-split>お仕事のご依頼は、|<em>こちらから</em>。</h2>
+    <p class="lead">指導のご相談、AIを使った教材・学習アプリづくり、取材・講演など、お仕事のご依頼はメールでお気軽にどうぞ。内容を確認のうえ、ご返信いたします。</p>
+    <p class="mail fx">home-tutor@odayanblog.com</p>
+    <div class="btns fx">
+      <a class="btn" href="mailto:home-tutor@odayanblog.com?subject=%E3%80%90%E3%81%8A%E4%BB%95%E4%BA%8B%E3%81%AE%E3%81%94%E4%BE%9D%E9%A0%BC%E3%80%91">メールで問い合わせる →</a>
     </div>
   </div>
 </section>
@@ -611,14 +660,48 @@ const sceneIO=new IntersectionObserver(es=>{
 },{threshold:.45});
 scenes.forEach(s=>sceneIO.observe(s));
 
-/* ===== 白→黒のグラデーション（スクロールに合わせて連続的に変化）＋右の漢字の色 ===== */
+/* ===== 夜→夜明け→昼のグラデーション（スクロール連動）＋月が朝日→太陽に＋右の漢字の色 ===== */
 const mistEls=[...document.querySelectorAll('.ink-mountains .mistband')];
-const BG=['#f4eddc','#ddd3bb','#bfb49a','#8f8571','#4a443b','#2a2722','#161412','#060605'];
-const KC=[[30,28,23,.08],[30,28,23,.10],[120,40,25,.13],[165,48,31,.20],[196,70,45,.22],[205,150,50,.20],[220,175,70,.24],[235,195,95,.30]];
+// 上＝夜 → 夜明け → 下＝昼
+const BG=['#0c0e15','#151826','#25243a','#463650','#7d4a52','#c47a55','#e6bf8f','#f0e2c4','#f6efdf'];
+const KC=[[235,220,170,.10],[230,205,140,.14],[220,175,70,.20],[210,140,60,.22],[200,90,50,.22],[180,60,35,.20],[150,45,30,.14],[60,40,28,.10],[30,28,23,.08]];
 const hex=h=>[1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
 const BGR=BG.map(hex);
 const mix=(a,b,t)=>a.map((v,i)=>v+(b[i]-v)*t);
+const lerp=(a,b,t)=>a+(b-a)*t;
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v));
+const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
 const lum=c=>{const f=v=>{v/=255;return v<=.03928?v/12.92:Math.pow((v+.055)/1.055,2.4)};return .2126*f(c[0])+.7152*f(c[1])+.0722*f(c[2])};
+const stops=(arr,p)=>{const q=clamp(p)*(arr.length-1);const j=Math.min(arr.length-2,Math.floor(q));return mix(arr[j],arr[j+1],q-j)};
+// 月→朝日→太陽の色（夜・夜明け・昼）
+const SUN=[
+  {p:0,  c:['#f6f3e8','#e4dfcf','#c9c3b0'],h:'#dfe6ff',ho:.22,rim:'#8a8676'},
+  {p:.48,c:['#ffb36b','#f2742f','#c94a1c'],h:'#ff8a3d',ho:.38,rim:'#a5301f'},
+  {p:1,  c:['#fffbe6','#ffe08a','#f5b82e'],h:'#ffd76a',ho:.42,rim:'#c28a00'}];
+const moon=document.querySelector('.moon-decor');
+const mg=[0,1,2].map(i=>document.getElementById('mg'+i));
+const mh=document.getElementById('mh1'),mRim=document.getElementById('mRim'),craters=document.getElementById('mCraters');
+const starsEl=document.getElementById('stars');
+for(let n=0;n<70;n++){const d=document.createElement('i');d.style.left=(Math.random()*100)+'%';d.style.top=(Math.random()*100)+'%';
+  const z=Math.random()<.15?3:2;d.style.width=d.style.height=z+'px';d.style.animationDelay=(Math.random()*3.6).toFixed(2)+'s';starsEl.appendChild(d)}
+const toRGB=c=>`rgb(${c.map(Math.round).join(',')})`;
+function sky(p){
+  const k=p<SUN[1].p?0:1,a=SUN[k],b=SUN[k+1],t=clamp((p-a.p)/(b.p-a.p));
+  mg.forEach((el,i)=>el.setAttribute('stop-color',toRGB(mix(hex(a.c[i]),hex(b.c[i]),t))));
+  mh.setAttribute('stop-color',toRGB(mix(hex(a.h),hex(b.h),t)));mh.setAttribute('stop-opacity',lerp(a.ho,b.ho,t).toFixed(3));
+  mRim.setAttribute('stroke',toRGB(mix(hex(a.rim),hex(b.rim),t)));
+  craters.style.opacity=clamp(1-p/.4);
+  starsEl.style.opacity=clamp(1-p/.42);
+  // 月は沈みながら朱色に → 地平線で朝日 → 金色の太陽として昇る
+  // 左で沈む（朱に染まる）→ 地平線の下で入れかわり → 右から太陽として昇る
+  const mob=innerWidth<=860, H=.48;
+  let x,y,o;
+  if(p<H){const u=ease(p/H);x=lerp(mob?3:4,mob?-6:0,u);y=lerp(mob?8:11,96,u);o=lerp(.95,.75,u)}
+  else{const u=ease((p-H)/(1-H));x=mob?50:68;y=lerp(96,mob?6:8,u);o=lerp(.6,.95,u)}
+  if(Math.abs(p-H)<.035)o*=Math.abs(p-H)/.035;   // 地平線の下ではいったん見えなくなる
+  moon.style.top=y+'vh';moon.style.left=x+'vw';moon.style.opacity=o.toFixed(3);
+  moon.style.transform=`scale(${(p<H?lerp(1,1.1,p/H):lerp(1.1,1.25,(p-H)/(1-H))).toFixed(3)})`;
+}
 function tone(){
   const yc=scrollY+innerHeight/2;
   const cs=scenes.map(s=>s.offsetTop+s.offsetHeight/2);
@@ -626,12 +709,14 @@ function tone(){
   if(yc<=cs[0]){i=0;t=0}
   else if(yc>=cs[cs.length-1]){i=cs.length-2;t=1}
   else{while(yc>cs[i+1])i++;t=(yc-cs[i])/(cs[i+1]-cs[i])}
-  const c=mix(BGR[i],BGR[i+1],t);
-  bg.style.backgroundColor=`rgb(${c.map(Math.round).join(',')})`;
+  const p=(i+t)/(cs.length-1);
+  const c=stops(BGR,p);
+  bg.style.backgroundColor=toRGB(c);
   const m=mix(c,[247,242,228],.25);
-  mistEls.forEach(el=>el.style.fill=`rgb(${m.map(Math.round).join(',')})`);
-  const k=mix(KC[i],KC[i+1],t);
+  mistEls.forEach(el=>el.style.fill=toRGB(m));
+  const k=stops(KC,p);
   kanjiEl.style.color=`rgba(${k.slice(0,3).map(Math.round).join(',')},${k[3].toFixed(3)})`;
+  sky(p);
   const L=lum(c);
   const th=L<.17?'night':(L<.4?'dusk':'light');
   if(document.body.dataset.theme!==th)document.body.dataset.theme=th;
