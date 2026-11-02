@@ -239,7 +239,7 @@ function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal()
      ① 下の UNIT.video（今は空＝「▶ 動画で確認」とホームの動画カードは出ない。"https://youtu.be/<動画ID>" を入れると全部出る）と UNIT.videoLen
      ② T15（各場面の開始秒）＝説明欄（make_desc_seiji_t.py）の目次の秒に。2026-10-31 音声の長さ（studio.json の startAt+1）から決めた値に更新済み（場面0〜11）
    ※ STEP2 の5問目までの G「立場を選ぶ → 根拠を選ぶ」は、エンジンの新しい問題の種類 k:"st"（2026-10-31 追加）で出す */
-const T15 = [0, 35, 77, 125, 188, 252, 305, 371, 430, 492, 534, 578];
+const T15 = [0, 35, 77, 125, 188, 252, 305, 371, 430, 486, 528, 576];  /* 2026-11-03 差し替え版 N7_xx93iOJ0（場面8・10を録り直し）の時刻 */
 
 /* 段の札・ひっかけタグ（動画の場面2・場面8と同じ名前） */
 const U15_TIER = ["★★★ 何度も出た", "★★ 1回出た", "★ 旧課程で出た", "基本 どちらもまだ・でも土台"];
@@ -654,7 +654,7 @@ const U15_KY = {
 const UNIT = {
   no: 15, label: "政治", key: "qups15_", title: "傾向と対策", titleHtml: "政治<span> 傾向と対策</span>",
   sub: "共通テスト「公共，政治・経済」｜政治1〜4のどこから勉強する？ 出た回数で4つの段に分けた地図＋ひっかけ6つのタグ＋共通テスト形式5問",
-  video: "https://youtu.be/4wxljCvDA40", videoLen: "10分25秒",   /* ★動画を公開したら video に "https://youtu.be/<動画ID>"、videoLen に実際の長さ（例 "9分42秒"） */
+  video: "https://youtu.be/N7_xx93iOJ0", videoLen: "10分23秒",   /* ★動画を公開したら video に "https://youtu.be/<動画ID>"、videoLen に実際の長さ（例 "9分42秒"） */
   chapters: U15_CH, traps: U15_TRAPS, kyotsu: U15_KY,
   lab: { icon: "🧪", title: "仕分けゲーム", sub: "この論点は4段の地図のどの段？＋このひっかけは6つのタグのどれ？",
     modes: [{ label: "4段の地図ゲーム", game: U15_GAME1 }, { label: "ひっかけタグゲーム", game: U15_GAME2 }] },
