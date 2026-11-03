@@ -1,0 +1,23 @@
+{
+ "name": "国際2 国際経済｜Q-UP塾 公共・政経",
+ "short_name": "Q-UP 国際2",
+ "id": "/seikei/10/",
+ "start_url": "/seikei/10/",
+ "scope": "/seikei/10/",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#0e6f78",
+ "lang": "ja",
+ "icons": [
+  {
+   "src": "/seikei/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/seikei/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

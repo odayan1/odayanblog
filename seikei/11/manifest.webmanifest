@@ -1,0 +1,23 @@
+{
+ "name": "公共1 青年期・思想｜Q-UP塾 公共・政経",
+ "short_name": "Q-UP 公共1",
+ "id": "/seikei/11/",
+ "start_url": "/seikei/11/",
+ "scope": "/seikei/11/",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#0e6f78",
+ "lang": "ja",
+ "icons": [
+  {
+   "src": "/seikei/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/seikei/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

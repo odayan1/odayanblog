@@ -1,0 +1,23 @@
+{
+ "name": "経済2 市場のしくみ｜Q-UP塾 公共・政経",
+ "short_name": "Q-UP 経済2",
+ "id": "/seikei/02/",
+ "start_url": "/seikei/02/",
+ "scope": "/seikei/02/",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#0e6f78",
+ "lang": "ja",
+ "icons": [
+  {
+   "src": "/seikei/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/seikei/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
