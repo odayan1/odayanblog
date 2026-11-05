@@ -155,6 +155,42 @@ footer{font-size:11px;color:#8a949e;line-height:1.7;margin-top:24px;text-align:c
 #modal .mbox{background:#fff;border-radius:16px;padding:18px;max-width:360px;width:100%}
 .pop{animation:pop .35s}@keyframes pop{0%{transform:scale(.97);opacity:0}100%{transform:scale(1);opacity:1}}
 b.r{color:var(--acc)}
+.formula.vert{flex-direction:column;flex-wrap:nowrap;gap:2px}.formula.vert .v{min-width:220px}.formula.vert .op{font-size:22px;line-height:1.15}
+.formula.vert .v.hl{border-color:var(--acc);background:#fff4f1;color:var(--acc)}
+.btn.dic{background:#fff4d6;color:#7a5a00;font-size:15px;padding:12px}
+/* 2026-11-01 v2（経済1で試作）：用語タップ説明・辞書（読み物）・補足欄・アプリ内で動画を再生 */
+.gl{border:0;background:none;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;border-bottom:2px dotted var(--main2);line-height:inherit;text-align:inherit;display:inline}
+.gl:active{background:var(--soft)}
+#gsheet,#vp{position:fixed;inset:0;background:rgba(20,30,40,.45);z-index:40;display:none;align-items:flex-end;justify-content:center}
+#gsheet .gbox{background:#fff;border-radius:18px 18px 0 0;padding:16px 18px calc(18px + env(safe-area-inset-bottom));max-width:560px;width:100%;max-height:75vh;overflow:auto;animation:up .2s ease-out}
+@keyframes up{0%{transform:translateY(30px);opacity:.4}100%{transform:none;opacity:1}}
+#gsheet .gw{font-size:19px;font-weight:900;color:var(--main)}#gsheet .gr{font-size:12px;color:#6b7885;margin-left:6px;font-weight:400}
+#gsheet .gd{font-size:15px;line-height:1.75;margin-top:8px}
+#gsheet .gx{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#gsheet .gx button,#gsheet .gx a{border:0;border-radius:99px;padding:8px 14px;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;text-decoration:none}
+.gpage{background:#fff4d6;color:#7a5a00}.gvid{background:#ffe5e3;color:#c4302b}.gcl{background:var(--soft);color:var(--main);margin-left:auto}
+#dict{position:fixed;inset:0;background:var(--bg);z-index:35;display:none;overflow:auto;-webkit-overflow-scrolling:touch}
+#dict .dbar{position:sticky;top:0;background:#7a5a00;color:#fff;display:flex;align-items:center;gap:8px;padding:10px 12px;z-index:2}
+#dict .dbar button{border:0;background:rgba(255,255,255,.18);color:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-family:inherit;font-size:14px;cursor:pointer}
+#dict .dbar span{font-weight:800;font-size:14px}
+.rd h1{font-size:21px;color:#7a5a00;margin:4px 0}.rd .lead{font-size:14px;color:#556;line-height:1.75}
+.rd h3{font-size:16px;color:var(--main);margin:18px 0 4px;border-left:4px solid var(--main2);padding-left:8px}
+.rd p{font-size:15px;line-height:1.85;margin:6px 0}
+.rd .ans{background:var(--kysoft);border-left:4px solid var(--ky);border-radius:8px;padding:9px 11px;font-size:14px;line-height:1.7;margin-top:10px}
+.rd .hedge{background:#f1f5f5;border-radius:8px;padding:9px 11px;font-size:13.5px;line-height:1.7;margin-top:10px;color:#445}
+.rd .q4u{background:#fff4d6;border-radius:12px;padding:12px;margin-top:14px;font-size:15px;line-height:1.8}
+.rd .src{font-size:12px;color:#7b8790;line-height:1.7;margin-top:14px}
+.more{background:#fffaf0;border:1.5px solid #f0dfb3;border-radius:10px;padding:9px 11px;margin-top:10px;font-size:14px;line-height:1.75}
+.more b.mh{color:#8a6d12;font-size:12.5px}
+.item.dic{border-color:#eadfb8;background:#fffdf5}
+.glist{display:grid;gap:6px;margin-top:8px}.glist button{display:flex;justify-content:space-between;align-items:center;border:1.5px solid #e1ecec;background:#fff;border-radius:10px;padding:9px 12px;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
+.glist button small{font-weight:400;color:#8a97a0;font-size:12px}
+#vp{align-items:center;padding:12px;z-index:50}
+#vp .vbox{background:#111;border-radius:14px;max-width:720px;width:100%;overflow:hidden}
+#vp .vfr{position:relative;width:100%;aspect-ratio:16/9;background:#000}#vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#vp .vbar{display:flex;gap:8px;align-items:center;padding:10px;flex-wrap:wrap}
+#vp .vbar button{flex:1;border:0;border-radius:12px;padding:12px;font-size:16px;font-weight:800;font-family:inherit;background:var(--acc);color:#fff;cursor:pointer}
+#vp .vbar a{color:#ddd;font-size:12px;text-decoration:underline}
 /* 振り子 */
 .pend{display:block;margin:0 auto;max-width:340px;width:100%}
 .pend .arm{transition:transform .9s cubic-bezier(.3,1.5,.5,1);transform-origin:170px 24px}
@@ -170,6 +206,9 @@ b.r{color:var(--acc)}
 <div class="wrap" id="app"></div>
 <canvas id="cf"></canvas>
 <div id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="gsheet"><div class="gbox" id="gbox"></div></div>
+<div id="dict"></div>
+<div id="vp"><div class="vbox"><div class="vfr" id="vfr"></div><div class="vbar"><button id="vclose">✕ 閉じてアプリにもどる</button><a id="vext" href="#" target="_blank" rel="noopener">YouTubeで開く</a></div></div></div>
 <script>
 /* ============ 共通エンジン（Q-UP塾 公共・政経 アプリの型 2026-10-23） ============
    画面＝はじめに → ホーム（STEP1 動画の復習／STEP2 共通テストではこう出る）
@@ -199,10 +238,40 @@ const app = $("#app");
    数えるもの＝①ページを開いた回数（どこから来たか。広告のURLには ?utm_source=yt-ad などをつける）
              ②結果画面まで解いた回数（qup-seikei-NN/done-<章や種類>）③ラボを開いた回数（qup-seikei-NN/lab） --- */
 const GC = "qup-seikei";
-const LIVE = !!GC && /(\.github\.io|odayanblog\.com)$/.test(location.hostname);  // 2026-11-02 odayanblog.com/seikei/NN/ へ移設
+/* 2026-11-02 odayanblog.com/seikei/NN/ へ移設。2026-11-01 確認用の置き場（/preview/ 以下）は数えない */
+const LIVE = !!GC && /(\.github\.io|odayanblog\.com)$/.test(location.hostname) && !/\/preview/.test(location.pathname);
 if (LIVE) { const s = document.createElement("script"); s.async = true; s.dataset.goatcounter = `https://${GC}.goatcounter.com/count`; s.src = "https://gc.zgo.at/count.js"; document.head.appendChild(s); }
 const REPO = (location.pathname.match(/\/seikei\/(\d+)\//) ? "qup-seikei-" + location.pathname.match(/\/seikei\/(\d+)\//)[1] : location.pathname.split("/")[1]) || "local";  // 計測名は移設前と同じ qup-seikei-NN
 function track(name) { try { if (LIVE && window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: `${REPO}/${name}`, title: name, event: true }); } catch (e) { /* 計測の失敗で学習を止めない */ } }
+/* --- 学習記録（2026-11-05 まっさん：作り直した回から、自前の記録へ切り替え）
+   送り先＝Apps Script → スプレッドシート「学習記録（アプリ）」。build.py の LOG_UNITS に入っている回だけ URL が入る（ほかの回は空＝何もしない）。
+   送るのは LIVE と同じ条件（公開ページだけ。プレビュー・E2Eは送らない）。一般の人向けなので名前・IDは送らない（?id= があればそれだけ）。端末ごとの乱数で同じ人をまとめる。
+   1問答えるごとに「途中」を用意 → ホームにもどる／画面を閉じたら1件、結果画面で「完了」を1件。開いただけでは送らない（ボット除け）。
+   まちがえた問題は「章id-番号」（例 c2-3）・ひっかけ「T番号」・共通テスト形式「K番号」で送る＝問題ごとの正答率がわかる。 */
+const LOG_URL = "https://script.google.com/macros/s/AKfycbzl9ygX2TGUSIvZ-klW7BGiDgIkKHv6dnKAumzikZ0H2uE4anDp7DCqE3PLOJLp9g/exec";
+const QLOG = (() => {
+  const ON = LIVE && /^https:\/\//.test(LOG_URL);
+  const sid = (new URLSearchParams(location.search).get("id") || "").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 20);
+  const dev = (() => { try { let d = localStorage.getItem("__dev"); if (!d) { d = Math.random().toString(36).slice(2, 12); localStorage.setItem("__dev", d); } return d; } catch (e) { return "nostore"; } })();
+  let pending = null;
+  const queue = rec => { try { const q = JSON.parse(localStorage.getItem("__q") || "[]"); q.push(rec); localStorage.setItem("__q", JSON.stringify(q.slice(-50))); } catch (e) {} };
+  const post = rec => { try { fetch(LOG_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(rec) }).catch(() => queue(rec)); } catch (e) { queue(rec); } };
+  const L = { t0: 0, on: ON,
+    done(r) { if (!ON) return; pending = null; post(Object.assign({ v: 1, sid, dev, st: "done" }, r)); },
+    step(r) { if (!ON) return; if (r && r.n > 0) pending = Object.assign({ v: 1, sid, dev, st: "part" }, r); },
+    leave() { if (!ON || !pending) return; const body = JSON.stringify(pending); pending = null; try { if (!(navigator.sendBeacon && navigator.sendBeacon(LOG_URL, body))) queue(JSON.parse(body)); } catch (e) {} } };
+  addEventListener("pagehide", () => L.leave());
+  addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") L.leave(); });
+  if (ON) { try { const q = JSON.parse(localStorage.getItem("__q") || "[]"); if (q.length) { localStorage.setItem("__q", "[]"); q.forEach(post); } } catch (e) {} }
+  return L;
+})();
+function qid(q) {
+  const k = KY.qs.indexOf(q); if (k >= 0) return "K" + (k + 1);
+  const t = TRAPS.indexOf(q); if (t >= 0) return "T" + (t + 1);
+  for (const c of CH) { const j = c.qs.indexOf(q); if (j >= 0) return c.id + "-" + (j + 1); }
+  return "?";
+}
+function logRec(sec, res, n) { return { app: REPO, sec: String(sec || "other"), ok: res.filter(r => r.ok).length, n: res.length, of: n, wrong: res.filter(r => !r.ok).map(r => qid(r.q)), ms: Date.now() - (QLOG.t0 || Date.now()) }; }
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const mmss = t => Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
 const NO = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧"];
@@ -215,7 +284,7 @@ const prog = (i, n) => `<div class="prog">${Array.from({ length: n }, (_, k) => 
 let KEY = "qups_";
 let cleanup = null;
 const top0 = () => window.scrollTo(0, 0);
-function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal(); app.innerHTML = html; top0(); }
+function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal(); if (typeof closeSheet === "function") closeSheet(); app.innerHTML = html; if (typeof glossify === "function") glossify(app); top0(); }
 </script>
 <script>
 /* ===== 経済1（旧政経1） 資本主義の歩み（動画 https://youtu.be/hmHjpLDqvTo と同じ順番・同じ言葉） ===== */
@@ -297,7 +366,18 @@ const U1_CH = [
       <div class="st">囲い込み（エンクロージャー）<small>土地を追われた農民</small></div><div class="ar">↓ 都市へ</div>
       <div class="st">工場の労働者に</div></div>
       <div class="two" style="margin-top:8px"><div class="box"><div class="em">💰</div><b>資本家</b><small>お金を出す</small></div><div class="box"><div class="em">👷</div><b>労働者</b><small>雇われて働く</small></div></div>
-      <div style="text-align:center;font-weight:800;margin-top:6px">これが<b class="r">資本主義の始まり</b></div></div>` }],
+      <div style="text-align:center;font-weight:800;margin-top:6px">これが<b class="r">資本主義の始まり</b></div></div>` },
+  { h: "📘 補足：なぜ農民は土地を追われたの？", t: T1[3], html: () => bubble("idea", "動画では「囲い込みで土地を追われた農民が、工場の労働者になった」と言ったね。ここでは<b>なぜ</b>追われたのかを、教科書の説明で足しておくよ。") + `
+    <div class="fig"><div class="ttl">📘 補足（教科書）囲い込みは2回あった</div><div class="two">
+      <div class="box"><b>第1次</b><small>15世紀末〜17世紀<br>毛織物がもうかる<br>→ 畑や共同地を<b>羊の牧場</b>に</small></div>
+      <div class="box g"><b>第2次</b><small>18世紀〜19世紀前半<br><b>議会の法律</b>で進めた<br>→ <b>穀物を増産</b>する大農場に</small></div></div></div>
+    <div class="fig"><div class="ttl">第2次囲い込みの因果（ここが資本主義につながる）</div><div class="flow">
+      <div class="st">人口が増えて、食料（穀物）がもっと必要に</div><div class="ar">↓</div>
+      <div class="st">地主が土地をまとめて囲い、大きな農場で新しい農法<small>＝<b>農業革命</b>（農業の効率化）</small></div><div class="ar">↓</div>
+      <div class="st">みんなで使っていた共同地も囲われ、<b>小さな農民が土地を失う</b></div><div class="ar">↓ 都市へ</div>
+      <div class="st hl">工場の<b>労働者</b>に<small>土地を持たず、働く力を売って賃金をもらう人</small></div></div></div>` +
+    bubble("thumbs-up", "共通テストの答えは「土地を失った農民が、都市の労働者になった」でOK。<b>農業の効率化 → 農民が土地を失う → 工場の労働者</b>の順に言えると、もう忘れないよ。") +
+    `<button class="btn dic" data-page="enclosure">📖 辞書で深掘り：囲い込みと「労働者」の誕生</button>` }],
   qs: [
   { k: "ord", t: T1[2], q: "振り子の3人を、登場した順に並べよう。", items: ["アダム・スミス", "ケインズ", "フリードマン"], e: "スミス（小さな政府）→ケインズ（大きな政府）→フリードマン（また小さな政府）。" },
   { k: "mc", t: T1[2], q: "「国はなるべく経済に口を出すな」という考え方はどれ？", c: ["小さな政府", "大きな政府", "福祉国家", "計画経済"], a: 0, e: "国はなるべく口を出すな＝<b>小さな政府</b>。国がどんどん助けよう＝大きな政府。" },
@@ -313,7 +393,8 @@ const U1_CH = [
       <div class="chips3" style="margin-top:8px"><span class="tg">🛡 国防</span><span class="tg">⚖️ 司法</span><span class="tg">🏗 公共事業</span></div></div>
     <div class="fig"><div class="ttl">スミスが批判したもの</div><div class="two">
       <div class="box g"><b>重商主義</b><small>金や銀をため込むために輸入をおさえる<br>＝保護貿易</small></div>
-      <div class="box s"><b>スミス</b><small>自由貿易の側</small></div></div></div>` },
+      <div class="box s"><b>スミス</b><small>自由貿易の側</small></div></div></div>
+    <button class="btn dic" data-page="smith-sen">📖 辞書で深掘り：『国富論』からアマルティア・センへ</button>` },
   { h: "独占資本主義と「夜警国家」", t: T1[5], html: () => `
     <div class="fig"><div class="ttl">19世紀後半</div><div class="flow">
       <div class="st">独占資本主義<small>競争に勝った大企業が市場を独占</small></div><div class="ar">↓</div>
@@ -366,8 +447,7 @@ const U1_CH = [
   cards: [
   { h: "大きな政府の行き詰まり", t: T1[8], html: () => bubble("explain", "戦後は、完全雇用と社会保障をめざす<b>福祉国家</b>、つまり大きな政府でうまくいっていた。ところが1970年代、2度の<b>石油危機</b>が起きる……") + `
     <div class="fig"><div class="ttl">スタグフレーション＝最悪の状態</div>
-      <div class="formula" style="font-size:16px"><span class="v">スタグネーション<small>不況</small></span>＋<span class="v">インフレーション<small>物価が上がる</small></span></div>
-      <div style="text-align:center;font-weight:800">不景気なのに物価は上がる</div></div>` +
+      <div class="formula vert" style="font-size:16px"><span class="v">スタグネーション<small>不況</small></span><span class="op">＋</span><span class="v">インフレーション<small>物価が上がる</small></span><span class="op">＝</span><span class="v hl">スタグフレーション<small>不景気なのに物価は上がる</small></span></div></div>` +
     bubble("thinking", "国がお金を使っても物価が上がるだけ。<b>大きな政府は行き詰まって</b>しまった。") },
   { h: "フリードマンと新自由主義", t: T1[9], html: () => bubble("explain", "ここで<b>フリードマン</b>が登場。国が余計なことをするから悪くなるんだ、と考え、お金の量を一定のルールで管理する<b>マネタリズム</b>を唱えた。") + `
     <div class="fig"><div class="ttl">振り子は再び <span class="tg s">小さな政府</span> へ＝新自由主義</div>
@@ -542,11 +622,141 @@ const U1_KY = {
   ]
 };
 
+/* ===== 2026-11-01 v2：問題の「📘 補足（教科書）」（動画で言っていないことを足す。動画の内容・順番は変えない） ===== */
+const U1_X = {
+  "「経済」の説明として正しいものはどれ？": "「分配」は、生産で得た所得が、<b>賃金</b>（働いた家計へ）・<b>利潤</b>（企業へ）・<b>税</b>（政府へ）などの形で分けられること。生産→分配→消費が、ぐるぐる回るのが経済。",
+  "次のうち「サービス」にあたるものはどれ？": "共通テストでは、定義をそのまま聞くより「動画配信」「散髪」など<b>身近な例</b>で見分けさせる（STEP2の⑤）。形がない＝<b>その場で消えて、ためておけない</b>のがサービス。",
+  "3つの経済主体のうち、モノをつくって利潤を求めるのはどれ？": "家計は企業に<b>労働力</b>を提供して<b>賃金</b>を受け取り、そのお金で消費する。企業は生産して売り、<b>利潤</b>を得る。政府は両方から<b>税</b>を集める。",
+  "税金を集めて、道路や社会保障を用意する経済主体はどれ？": "政府の経済での仕事は、①市場だけでは足りないもの（道路・警察など）を用意する、②税や社会保障で所得を分け直す（再分配）、③景気を安定させる、の3つに整理される（くわしくは経済3）。",
+  "振り子の3人を、登場した順に並べよう。": "スミス『国富論』は<b>1776年</b>（18世紀）、ケインズ『雇用・利子および貨幣の一般理論』は<b>1936年</b>（世界恐慌のあと）、フリードマンは<b>1970〜80年代</b>に影響が大きくなった（1976年ノーベル経済学賞）。",
+  "「国はなるべく経済に口を出すな」という考え方はどれ？": "小さな政府＝税も支出も少なくして、市場に任せる。大きな政府＝税や保険料を多く集め、社会保障や公共事業で積極的に関わる。<b>どちらが正しい、ではなく、時代の問題に合わせて振れてきた</b>、というのがこの単元の軸。",
+  "モノのつくり方の変化を、古い順に並べよう。": "見分け方は2つ。<b>どこで作るか</b>（家 → 作業場に集める）と、<b>手か機械か</b>。問屋制家内工業＝商人が原料を前貸しして、各家で作らせる。工場制手工業＝作業場に集めて<b>分業</b>（まだ手作業）。工場制機械工業＝<b>機械と動力</b>（蒸気機関など）で大量生産。",
+  "囲い込み（エンクロージャー）で土地を追われた農民は、どうなった？": "なぜ追われたのか：特に<b>第2次囲い込み</b>（18世紀〜）は、人口が増えて穀物がもっと必要になったため、地主が議会の法律で土地をまとめ、大きな農場で効率よく作るため（<b>農業革命</b>）。みんなで使っていた共同地も囲われ、小さな農民は土地を失った → 都市へ → 工場の労働者に。",
+  "資本主義の始まりで分かれた2つの立場は？": "資本家＝工場・機械・土地などの<b>生産手段</b>を持ち、人を雇う。労働者＝生産手段を持たず、<b>働く力（労働力）を売って賃金を得る</b>。この関係が社会全体に広がったのが資本主義。",
+  "1776年の『国富論』で「見えざる手」を説いたのは誰？": "スミスはイギリス（スコットランド）の人で、もとは大学の<b>道徳哲学</b>の先生。『国富論』の前に『道徳感情論』（1759年）を書き、人には他人に<b>共感</b>する心があると論じた。「見えざる手」という言葉は、実は『国富論』に<b>1回しか</b>出てこない（辞書の読みもので深掘り）。",
+  "国は経済に口を出さず、自由にまかせる考え方を何という？": "レッセ・フェールはフランス語で「なすに任せよ」。もとはフランスの経済学者たちの言葉で、スミスの考えをまとめるときに使われる（スミス本人がこの言葉を使ったわけではない）。",
+  "スミスが「国の仕事はこれだけでいい」とした3つはどれ？": "『国富論』では、国の義務を①<b>国防</b>②<b>司法</b>（裁判）③<b>公共事業・公共施設</b>（道路・橋・教育など）とした。「最小限」だけど<b>ゼロではない</b>点に注意。社会保障は入っていない。",
+  "スミスが批判した考え方はどれ？": "スミスは、国の富は<b>金や銀の量ではなく、国民が働いて生み出すモノ</b>だと考えた。そして<b>分業</b>が生産力を大きく高めると説いた（ピン工場の例が有名）。だから、輸入をおさえるより自由に取引したほうが豊かになる。",
+  "18世紀後半〜19世紀後半の流れを、順に並べよう。": "なぜこの順になるのか：自由な競争の中で、強い企業が弱い企業を吸収・合併する → 少数の大企業が市場を支配（<b>独占資本主義</b>）→ 国内だけでは原料・売り先・投資先が足りなくなり、植民地を求めて国どうしが争う（<b>帝国主義</b>）→ 第一次世界大戦の背景に。",
+  "「夜警国家」という言葉で、自由放任の国を批判したのは誰？": "ラッサール（1825〜1864）はドイツの社会主義者で、労働運動の指導者。国はもっと労働者のために役割を果たすべきだ、という主張の中で、自由放任の国を「夜警」にたとえて皮肉った。",
+  "1929年に起きて、モノが売れず失業者があふれた出来事は？": "1929年10月、ニューヨークの株価の大暴落（<b>暗黒の木曜日</b>）から始まり、世界中に広がった。アメリカでは、働きたいのに仕事がない人が4人に1人ほどになった。",
+  "ケインズは、不景気の原因を何だと考えた？": "有効需要＝「欲しい」だけでなく、<b>実際にお金を払って買える</b>需要。それまでの経済学は「作れば売れる」と考えがちだったが、ケインズは<b>需要が足りないと、生産も雇用も減ったままになる</b>（失業が続く）と考えた。",
+  "ケインズの考えに近い、アメリカのローズベルト大統領の政策は？": "ニューディール政策は1933年から。TVA（テネシー川流域の総合開発）などの公共事業、労働者の団結権を守るワグナー法、社会保障法など。ケインズの『一般理論』は1936年なので、ケインズの理論を実行したというより、<b>考え方が近い</b>と言われる（動画の「近い」はこのため）。",
+  "修正資本主義の別名はどれ？": "民間（家計・企業）と政府の<b>両方</b>が経済を動かすから「混合」。戦後の先進国の多くがこの形。",
+  "世界恐慌のあと、各国が金本位制をやめて切り替えた仕組みは？": "金本位制では、持っている<b>金の量までしか</b>お金を発行できないので、不況のときにお金を増やせない。管理通貨制度なら、中央銀行などが景気に合わせて通貨の量を調整できる。日本は1931年に金本位制から離れた。",
+  "有効需要の式として正しいものはどれ？（C消費・I投資・G政府支出・X輸出・M輸入）": "X−M は「純輸出」。輸入（M）は、国内のお金が<b>外国の商品</b>に向かう分なので、国内の需要から引く。",
+  "国が支出（G）を増やすと、使ったお金の何倍も全体が増えること。これを何という？": "なぜ何倍にもなるのか：国が払ったお金を受け取った人が、その一部を使う → それを受け取った人がまた使う…とお金が回るから。受け取ったお金のうち<b>使う割合が大きいほど</b>、何倍にもなる（例：8割使うなら、理論上は5倍）。",
+  "戦後、完全雇用と社会保障をめざした国のあり方を何という？": "イギリスの<b>ベバリッジ報告</b>（1942年）の「ゆりかごから墓場まで」が有名。年金・医療・失業手当などで、一生の生活を国が支える。",
+  "1970年代に2度起きて、大きな政府が行き詰まるきっかけになった出来事は？": "<b>第1次石油危機</b>＝1973年（第4次中東戦争）、<b>第2次</b>＝1979年（イラン革命）。産油国が原油の値段を大きく引き上げた（くわしくは経済4）。",
+  "スタグフレーションとはどんな状態？": "なぜ起きたのか：原油が高くなる → モノを作るコストが上がる → 物価は上がるのに、企業は生産を減らして不況に。ここで国がお金を使って需要を増やすと、<b>物価がさらに上がる</b>だけ。だからケインズ型の政策がききにくくなった。",
+  "お金の量を一定のルールで管理する「マネタリズム」を唱えたのは誰？": "フリードマン（アメリカ、シカゴ大学）は、物価を左右するのは<b>世の中に出回るお金の量</b>だと考え、政府がその場その場で景気対策をするより、お金の量を<b>決まったペースで</b>増やすルールを守るべきだとした。1976年ノーベル経済学賞。",
+  "新自由主義を進めた政治家の組み合わせとして正しいものは？": "<b>サッチャー</b>（イギリス首相 1979〜90年）、<b>レーガン</b>（アメリカ大統領 1981〜89年、「レーガノミクス」）、<b>中曽根康弘</b>（首相 1982〜87年）。共通点＝民営化・規制緩和・減税。",
+  "中曽根内閣が民営化した3つはどれ？": "<b>国鉄 → JR</b>（1987年）、<b>電電公社 → NTT</b>（1985年）、<b>専売公社 → JT</b>（1985年）。今の会社名とセットで覚えると忘れない。",
+  "郵政民営化を行ったのはどの内閣？": "郵政民営化法の成立は2005年（小泉内閣）、日本郵政グループの発足は2007年。",
+  "新自由主義の副作用として、動画で押さえておこうと言っていたことは？": "民営化・規制緩和・減税で経済の効率は上がるとされる一方、<b>所得の格差が広がった</b>という批判がある。日本でも2000年代に「格差社会」が話題になった（非正規雇用の増加は経済5で）。",
+  "振り子のきっかけを、起きた順に並べよう。": "産業革命＝<b>18世紀後半</b>、世界恐慌＝<b>1929年</b>、石油危機＝<b>1973年・1979年</b>。どれも「それまでのやり方では困ることが起きた」ときに振り子が動いている。",
+  "資本家が労働者を「搾取」していると批判したのは誰？": "マルクス（1818〜1883、ドイツ）。主著『資本論』、エンゲルスと『共産党宣言』（1848年）。搾取＝労働者は賃金<b>以上の価値</b>を生み出しているのに、その差を資本家が利潤として受け取っている、という考え。",
+  "1917年のロシア革命で、世界初の社会主義国をつくったのは誰？": "1917年のロシア革命で権力をにぎり、1922年に<b>ソビエト社会主義共和国連邦（ソ連）</b>が成立した。",
+  "工場や土地をみんなのものにして、国が計画を立てる経済のしくみは？": "何をどれだけ作るかを、市場の価格ではなく<b>国の計画</b>で決める。ソ連では1928年から「5か年計画」が行われた。",
+  "ゴルバチョフが進めた「ペレストロイカ」の意味は？": "ゴルバチョフは1985年にソ連の最高指導者（書記長）になり、行き詰まった経済と政治を立て直そうとした。",
+  "社会主義のできごとを、古い順に並べよう。": "1917年 ロシア革命 → 1985年〜 ペレストロイカ → 1989年 ベルリンの壁が崩れる（同じ年に米ソ首脳がマルタ会談で冷戦の終わりを確認）→ 1991年 ソ連解体。",
+  "中国で、1970年代の終わりから鄧小平のもとで始まった政策は？": "1978年から。<b>経済特区</b>＝外国の企業やお金を呼び込むため、税金を安くするなど特別なルールにした地域（1980年に深圳などに置かれた）。",
+  "中国が90年代に掲げたものはどれ？": "1993年に憲法に書き込まれた。政治は共産党の指導のまま、経済には市場のしくみを取り入れる。",
+  "「夜警国家」は、アダム・スミスが理想の国を表した言葉である。": "スミスの考えは「小さな政府」なので、内容が近くて取り違えやすい。<b>言葉を作って批判したのはラッサール</b>、と人物とセットで覚えよう。",
+  "スタグフレーションとは、不況とデフレが同時に起きることである。": "不況とデフレ（物価が下がり続ける）が重なって、さらに景気が悪くなることは<b>デフレスパイラル</b>と呼ばれる（経済4のバブル崩壊のあと）。"
+};
+U1_CH.forEach(c => c.qs.forEach(q => { if (U1_X[q.q]) q.x = U1_X[q.q]; }));
+U1_TRAPS.forEach(q => { if (U1_X[q.q]) q.x = U1_X[q.q]; });
+
+/* ===== 2026-11-01 v2：ことば辞書（点線の言葉をタップで短い説明）。並びは動画に出てくる順 ===== */
+const U1_GLOS = [
+  { w: "サービス", d: "形のないもの（授業・接客・散髪・動画配信など）。その場で提供されて消えるので、ためておけない。", t: T1[1] },
+  { w: "家計", r: "かけい", d: "消費する人＝私たちの家庭。企業に働く力を提供して賃金を受け取り、そのお金でモノやサービスを買う。", t: T1[1] },
+  { w: "利潤", r: "りじゅん", d: "売上から、材料費・賃金などのコストを引いた、もうけ。企業はこれを求めて生産する。", t: T1[1] },
+  { w: "小さな政府", d: "国の仕事をなるべく少なくし、税も少なく、市場に任せる考え方。スミス・フリードマンの側。", t: T1[2] },
+  { w: "大きな政府", d: "国が税や保険料を多く集め、公共事業や社会保障で経済や生活に積極的に関わる考え方。ケインズ・福祉国家の側。", t: T1[2] },
+  { w: "問屋制家内工業", r: "といやせいかないこうぎょう", d: "商人（問屋）が原料や道具を農家などに<b>前貸し</b>し、それぞれの<b>家</b>で製品を作らせて買い取るしくみ。作る場所はまだバラバラ。", t: T1[3] },
+  { w: ["工場制手工業", "マニュファクチュア"], r: "こうじょうせいしゅこうぎょう", d: "資本家が作業場（工場）に人を<b>集めて</b>、<b>分業</b>で作らせるしくみ。道具はまだ<b>手作業</b>。「集めて分業」がポイント。", t: T1[3] },
+  { w: "工場制機械工業", r: "こうじょうせいきかいこうぎょう", d: "<b>機械</b>と動力（水車や蒸気機関）を使って、工場で大量に作るしくみ。18世紀後半のイギリスの産業革命で、綿工業から広がった。", t: T1[3] },
+  { w: "産業革命", d: "18世紀後半にイギリスで始まった、機械と動力による生産の大変化。資本家が労働者を雇う関係が社会に広がり、資本主義が本格的に始まった。", t: T1[3] },
+  { w: ["囲い込み", "エンクロージャー"], r: "かこいこみ", d: "みんなで使っていた土地や細かく分かれた畑を、地主が垣根などで囲って自分の土地にまとめること。第1次（15世紀末〜）は羊の牧場のため、第2次（18世紀〜）は<b>議会の法律</b>で、穀物を効率よく増産するため（農業革命）。土地を失った農民が、都市の工場の労働者になった。", page: "enclosure", t: T1[3] },
+  { w: "資本家", d: "工場・機械・土地などの<b>生産手段</b>を持ち、労働者を雇って生産し、利潤を得る人。", t: T1[3] },
+  { w: "国富論", r: "こくふろん", d: "アダム・スミスが1776年に出した本。正式には『諸国民の富の性質と原因に関する研究』。<b>分業</b>が生産力を高めること、自由な取引が国を豊かにすることを説き、重商主義を批判した。", page: "smith-sen", t: T1[4] },
+  { w: "見えざる手", r: "みえざるて", d: "一人ひとりが自分の利益を求めて行動しても、市場の<b>価格</b>のはたらきを通じて、結果として社会全体の利益につながる、というたとえ。実は『国富論』に1回しか出てこない言葉。", page: "smith-sen", t: T1[4] },
+  { w: ["自由放任", "レッセ・フェール"], r: "じゆうほうにん", d: "国が経済に口を出さず、個人や企業の自由な活動に任せる考え方。レッセ・フェールはフランス語で「なすに任せよ」。", t: T1[4] },
+  { w: "重商主義", r: "じゅうしょうしゅぎ", d: "16〜18世紀のヨーロッパで広まった考え方。金・銀をためることが国の富だとして、輸出を増やし、輸入をおさえる（保護貿易）。スミスが批判した。", t: T1[4] },
+  { w: "独占資本主義", r: "どくせんしほんしゅぎ", d: "競争に勝った少数の大企業が市場を支配するようになった、19世紀後半からの資本主義。企業どうしが手を組んだり（カルテル）、合併したり（トラスト）した。", t: T1[5] },
+  { w: "帝国主義", r: "ていこくしゅぎ", d: "19世紀後半から、強い国々が原料・売り先・投資先を求めて植民地を広げ、奪い合った動き。第一次世界大戦の背景になった。", t: T1[5] },
+  { w: "夜警国家", r: "やけいこっか", d: "国の仕事を国防や治安など最小限にした国家。ドイツの<b>ラッサール</b>が、自由放任の国を「泥棒から財産を守る夜回りにすぎない」と皮肉って批判した言葉。スミスの言葉ではない。", t: T1[5] },
+  { w: "世界恐慌", r: "せかいきょうこう", d: "1929年、ニューヨークの株価の大暴落から世界中に広がった大不況。モノが売れず、会社がつぶれ、失業者があふれた。", t: T1[6] },
+  { w: "有効需要", r: "ゆうこうじゅよう", d: "「欲しい」だけでなく、<b>実際にお金を払って買える</b>需要。ケインズは、これが足りないと生産も雇用も減ったままになる（失業が続く）と考えた。式は C＋I＋G＋(X−M)。", t: T1[6] },
+  { w: "ニューディール政策", d: "1933年からアメリカのローズベルト大統領が行った政策。TVA（テネシー川流域の開発）などの公共事業や、労働者・社会保障の法律。ケインズの考えに近い。", t: T1[6] },
+  { w: "修正資本主義", r: "しゅうせいしほんしゅぎ", d: "資本主義（市場経済）を基本にしながら、政府が景気対策や社会保障で経済に手を入れるしくみ。混合経済とも言う。", t: T1[6] },
+  { w: "混合経済", r: "こんごうけいざい", d: "民間（家計・企業）と政府の両方が経済を動かすしくみ。修正資本主義の別名。", t: T1[6] },
+  { w: "金本位制", r: "きんほんいせい", d: "お金の価値を金と結びつけ、紙幣と金の交換を約束する制度。持っている金の量までしかお金を発行できない。", t: T1[6] },
+  { w: "管理通貨制度", r: "かんりつうかせいど", d: "金の量にしばられず、中央銀行などが景気に合わせて<b>通貨の量を調整</b>する制度。世界恐慌のあと、各国が切り替えた。", t: T1[6] },
+  { w: "乗数効果", r: "じょうすうこうか", d: "国が使ったお金を受け取った人がまた使い…とお金が回るので、国民所得が<b>最初の支出の何倍にも</b>増えること。受け取ったお金のうち使う割合が大きいほど、倍率が大きい。", t: T1[7] },
+  { w: "福祉国家", r: "ふくしこっか", d: "完全雇用と社会保障（年金・医療・失業手当など）で、国民の生活を「ゆりかごから墓場まで」支えようとする国家。大きな政府。", t: T1[8] },
+  { w: "石油危機", r: "せきゆきき", d: "1973年（第4次中東戦争）と1979年（イラン革命）に、原油の値段が大きく上がった出来事。オイル・ショックとも言う。", t: T1[8] },
+  { w: "スタグフレーション", d: "スタグネーション（景気の停滞）＋インフレーション（物価上昇）を合わせた言葉。<b>不景気なのに物価が上がる</b>状態。国がお金を使っても物価が上がるだけで、ケインズ型の政策がききにくい。", t: T1[8] },
+  { w: "マネタリズム", d: "フリードマンらの考え。物価を左右するのは世の中に出回る<b>お金の量</b>なので、政府はその場その場の景気対策に頼らず、お金の量を決まったペースで増やすルールを守るべきだ、とする。", t: T1[9] },
+  { w: "新自由主義", r: "しんじゆうしゅぎ", d: "政府の役割を小さくし、市場の競争に任せる考え方。民営化・規制緩和・減税を進める。1980年代のサッチャー・レーガン・中曽根内閣。", t: T1[9] },
+  { w: "民営化", r: "みんえいか", d: "国が営んでいた事業を民間の会社に移すこと。国鉄→JR、電電公社→NTT、専売公社→JT、郵政→日本郵政グループ。", t: T1[9] },
+  { w: "社会主義", r: "しゃかいしゅぎ", d: "工場や土地などの生産手段を社会全体（実際には国）のものにし、計画にもとづいて生産・分配する考え方・しくみ。", t: T1[11] },
+  { w: "搾取", r: "さくしゅ", d: "マルクスの言葉。労働者は働いて<b>賃金以上の価値</b>を生み出しているのに、その差（剰余価値）を資本家が利潤として受け取っている、という考え。", page: "enclosure", t: T1[11] },
+  { w: "計画経済", r: "けいかくけいざい", d: "何をどれだけ作るかを、市場の価格ではなく<b>国の計画</b>で決める経済。ソ連の5か年計画など。", t: T1[11] },
+  { w: "ペレストロイカ", d: "ロシア語で「建て直し」。1980年代後半にゴルバチョフが進めた改革。", t: T1[11] },
+  { w: "グラスノスチ", d: "ロシア語で「情報公開」。ゴルバチョフが進めた、政治や社会の情報を明らかにする政策。", t: T1[11] },
+  { w: "経済特区", r: "けいざいとっく", d: "外国の企業やお金を呼び込むため、税金を安くするなど特別なルールにした地域。中国が1980年から深圳などに置いた。", t: T1[11] },
+  { w: "社会主義市場経済", r: "しゃかいしゅぎしじょうけいざい", d: "政治は共産党の指導のまま、経済には市場のしくみを取り入れる中国の方針。1993年に憲法に書き込まれた。", t: T1[11] }
+];
+
+/* ===== 2026-11-01 v2：辞書の読みもの（教科書の先にある「学問の入口」。言い切れないことは「〜という見方がある」） ===== */
+const U1_DICT = [
+{ id: "smith-sen", icon: "📕", title: "『国富論』からアマルティア・センへ", sub: "スミスは本当に「自分さえよければいい」の人？",
+  html: `<h1>『国富論』からアマルティア・センへ</h1>
+  <div class="lead">「見えざる手」のスミスは、ほんとうに「みんなが自分のもうけだけ考えればいい」と言った人なのか。公共で出てくるアマルティア・センは、そこに疑問を投げかけた一人です。</div>
+  <div class="ans"><b>まず、共通テストの答え（教科書どおり）</b><br>アダム・スミス＝『国富論』（1776年）・見えざる手・自由放任（レッセ・フェール）・小さな政府・重商主義を批判。<b>試験ではこれで答える。</b>ここから下は、その先の話です。</div>
+  <h3>1. スミスは、もともと「道徳」の先生だった</h3>
+  <p>スミスは、スコットランドのグラスゴー大学で<b>道徳哲学</b>を教えていました。最初の本は『国富論』ではなく、『<b>道徳感情論</b>』（1759年）です。</p>
+  <p>そこでスミスは、人には他人の立場に身を置いて感じる<b>共感（シンパシー）</b>の力があること、そして自分の行いを、利害のない「<b>公平な観察者</b>」の目で見て判断しようとすることを論じました。</p>
+  <h3>2. 『国富論』で言ったこと</h3>
+  <p>『国富論』の始まりは「見えざる手」ではなく<b>分業</b>の話です。ピンを作る工場では、1人で全部やると1日に20本も作れないが、10人で作業を分けると1日4万8千本以上作れる——こうして生産力が上がることが、国を豊かにすると考えました。</p>
+  <p>有名な一節に「わたしたちが夕食を期待できるのは、肉屋や酒屋やパン屋の<b>思いやり</b>からではなく、彼らが<b>自分の利益</b>を大事にするからだ」というものがあります。そして「見えざる手」という言葉は、実は『国富論』の中に<b>たった1回</b>しか出てきません。</p>
+  <h3>3. 2冊の本は矛盾している？</h3>
+  <p>「共感」を説いた『道徳感情論』と、「自分の利益」を説いた（ように見える）『国富論』。19世紀のドイツでは、この2冊は矛盾するのでは、という議論が起き、「<b>アダム・スミス問題</b>」と呼ばれました。今では、2冊をあわせて読み、市場は<b>共感やルールに支えられた社会</b>の上で働く、と考えるのがスミスの全体像だ、という見方が多くなっています。</p>
+  <h3>4. アマルティア・センの読み方</h3>
+  <p><b>アマルティア・セン</b>（1933年〜、インド出身、1998年ノーベル経済学賞）は、公共で出てくる「<b>潜在能力（ケイパビリティ）</b>」の人です。センは、スミスが「自分の利益だけを考える人間」を説いた人として読まれすぎてきた、とたびたび指摘し、『道徳感情論』の新しい版（2009年）に序文を書いています。センの本『正義のアイデア』（2009年）も、スミスの「公平な観察者」を手がかりの一つにしています。</p>
+  <p>センがよく取り上げるのが、『国富論』の<b>麻のシャツ</b>の話です。スミスは「麻のシャツは、厳密には生きるのに必要なものではない。でも今のイギリスでは、まじめな日雇い労働者でも、シャツなしで人前に出るのは恥ずかしい」と書きました。</p>
+  <p>センはここから、貧しさを「お金やモノの量」だけでなく、<b>恥ずかしい思いをせずに人前に出られるか</b>——つまり<b>その人が何をできるか</b>で考える、という発想を読み取りました。これが潜在能力アプローチにつながっています。</p>
+  <h3>5. 公共の教科書とのつながり</h3>
+  <p>センの考えは、国連開発計画（UNDP）の<b>人間開発指数（HDI）</b>（1990年〜）の土台の一つになり、<b>緒方貞子</b>とともに共同議長をつとめた委員会で「<b>人間の安全保障</b>」の考えを広めました。経済1の「資本主義の歩み」と、公共の「人間の安全保障」は、スミスを通じてつながっているのです。</p>
+  <div class="hedge">※ スミスをどう読むかは、研究者の間でもいろいろな見方があります。「センはスミスの一部分だけを自分の考えに引きつけて読んでいる」という批判もあります。ここで紹介したのは、その入口の一つです。</div>
+  <div class="q4u">🤔 <b>考えてみよう</b><br>今の日本で、高校生が「恥ずかしい思いをせずに人前に出る」ために必要なものは何だろう？　スマホは「ぜいたく品」？　それとも「必要なもの」？</div>
+  <div class="src">参考：アダム・スミス『道徳感情論』（1759年）・『国富論』（1776年）／アマルティア・セン『正義のアイデア』（2009年）、Penguin Classics版『道徳感情論』序文（2009年）</div>` },
+{ id: "enclosure", icon: "🐑", title: "囲い込みと「労働者」の誕生", sub: "土地を失った人はどこへ行った？ ― マルクスの「搾取」につながる話",
+  html: `<h1>囲い込みと「労働者」の誕生</h1>
+  <div class="lead">「土地を追われた農民が、工場の労働者になった」。この1行の中に、資本主義とは何か、という大きな問いがつまっています。</div>
+  <div class="ans"><b>まず、共通テストの答え（教科書どおり）</b><br>イギリスの<b>囲い込み（エンクロージャー）</b>で土地を失った農民が都市に流れ、<b>工場の労働者</b>になった → 資本家と労働者に分かれた＝資本主義の始まり。<b>試験ではこれで答える。</b></div>
+  <h3>1. 囲い込みは2回あった</h3>
+  <p><b>第1次</b>（15世紀末〜17世紀）：毛織物がよく売れて、原料の羊毛がもうかるようになり、地主が畑やみんなで使っていた土地を囲って<b>羊の牧場</b>にしました。思想家トマス・モアは『ユートピア』（1516年）で、これを「<b>羊が人間を食う</b>」と書いています。</p>
+  <p><b>第2次</b>（18世紀〜19世紀前半）：人口が増えて食料がもっと必要になり、<b>議会が法律をつくって</b>囲い込みを進めました。土地をまとめた大きな農場で、カブやクローバーを順番に植える新しい農法（ノーフォーク農法）などが広がり、穀物がたくさんとれるようになります（<b>農業革命</b>）。そのかわり、みんなで使っていた共同地（家畜を放したり、燃料を集めたりしていた場所）も囲われ、小さな農民は暮らしの土台を失いました。</p>
+  <h3>2. 「労働者」とはどんな人か</h3>
+  <p>土地を失った人は、食べていくために、<b>自分の働く力を売って賃金をもらう</b>しかありません。工場や機械を持つ資本家と、働く力しか持たない労働者——この関係が社会全体に広がったのが資本主義です。</p>
+  <p>この流れを強く描いたのが、6章に出てくる<b>マルクス</b>です。マルクスは『資本論』で、囲い込みを、人々を土地から引きはがして「<b>働く力を売るしかない人</b>」をつくり出した過程として描きました。労働者は、身分にしばられない点では「自由」だけれど、土地や道具からも「自由」＝<b>持っていない</b>。マルクスはこれを「二重の意味で自由」と皮肉っています。そして、労働者が賃金以上の価値を生み出しているのに、その差を資本家が受け取っている、というのが「<b>搾取</b>」の考えです。</p>
+  <h3>3. 歴史学では、もっと複雑だという見方も</h3>
+  <p>経済史の研究では、「囲い込みのあとも農村で働く人はすぐには減らなかった」「工場の働き手が増えたのは、むしろ<b>人口が急に増えた</b>ことが大きい」という見方もあります。教科書の1行は、たくさんの研究を短くまとめた「入口」なのです。</p>
+  <div class="hedge">※ 囲い込みがどれだけ労働者を生んだかは、研究者の間で今も議論があります。試験では教科書どおり「土地を失った農民が労働者になった」で答えましょう。</div>
+  <div class="q4u">🤔 <b>考えてみよう</b><br>今の私たちも、多くの人は「働く力を売って賃金をもらう」働き方をしている。では、AIやロボットが仕事をするようになったら、この関係はどう変わるだろう？</div>
+  <div class="src">参考：トマス・モア『ユートピア』（1516年）／カール・マルクス『資本論』第1巻（1867年）</div>` }
+];
+
 const UNIT = {
   no: 1, label: "経済1", key: "qups01_", title: "資本主義の歩み", titleHtml: "資本主義の<span>歩み</span>",
   sub: "共通テスト「公共，政治・経済」｜スミス→ケインズ→フリードマンを「振り子」で覚える",
   video: "https://youtu.be/hmHjpLDqvTo", videoLen: "8分32秒",
   chapters: U1_CH, traps: U1_TRAPS, kyotsu: U1_KY,
+  glossary: U1_GLOS, dict: U1_DICT,
   lab: { icon: "🧪", title: "振り子を動かそう", sub: "時代を動かす＋小さな政府／大きな政府 仕分けゲーム",
     modes: [{ label: "時代を動かす", run: labTime }, { label: "仕分けゲーム", game: U1_GAME }] },
   next: { title: "経済2　市場のしくみ", text: "需要と供給のグラフを「どっちに動くか」で読めるようにしよう。<br><a href=\"https://youtu.be/q1VDVGjLiLQ\" target=\"_blank\" rel=\"noopener\">▶ 動画を見る</a>" }
@@ -564,6 +774,71 @@ TRAPS.forEach(q => q.sec = "trap");
 KY.qs.forEach(q => { q.sec = "kyotsu"; q.ky = true; });
 const ALLQ = CH.flatMap(c => c.qs).concat(TRAPS);
 const ALLQK = ALLQ.concat(KY.qs);
+
+/* ===== 2026-11-01 v2：用語タップ説明・辞書（読みもの）・アプリ内で動画を再生 =====
+   UNIT.glossary = [{ w:"語" か ["語","別名"], r:"読み", d:"短い説明(HTML可)", page?:"辞書の読みものid", t?:動画の秒 }]
+   UNIT.dict     = [{ id, icon, title, sub, html }]（深掘りの読みもの。重ねて開くので、閉じると元の画面にそのまま戻る）
+   問題の q.x    = 「📘 補足（教科書）」として解説の下に出す（動画で言っていない、教科書の説明を足すとき）
+   YouTube の動画リンク（youtu.be／watch?v=）は、どこにあってもアプリの中のプレーヤーで開く＝閉じれば同じ画面に戻れる。 */
+const GLOS = UNIT.glossary || [], DICT = UNIT.dict || [];
+const GMAP = new Map(); GLOS.forEach((g, i) => [].concat(g.w).forEach(w => GMAP.set(w, i)));
+const GSRC = [...GMAP.keys()].sort((a, b) => b.length - a.length).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+const GSKIP = "svg,button,a,input,textarea,.choices,.pool,.answer,.sortcard,.hidec,.q,.q2,.stage,h1,h2,h3,.gl,.qq,.ya,.aa,.ans,.exits,footer,.vcard,.menu,.prog,.tf,.doc,.fmt,.score,.badge,.cmp,.hist";
+/* 1回の呼び出しで、各用語の「最初の1回」だけを点線ボタンにする（問題文・選択肢・答えには付けない＝答えが漏れない） */
+function glossify(root) {
+  if (!GSRC || !root) return;
+  const re = new RegExp(GSRC, "g"), re1 = new RegExp(GSRC), seen = new Set(), nodes = [];
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement && re1.test(n.nodeValue) && !n.parentElement.closest(GSKIP) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  while (tw.nextNode()) nodes.push(tw.currentNode);
+  nodes.forEach(n => {
+    const s = n.nodeValue; let last = 0, out = null, m; re.lastIndex = 0;
+    while ((m = re.exec(s))) {
+      const gi = GMAP.get(m[0]); if (seen.has(gi)) continue; seen.add(gi);
+      out = out || document.createDocumentFragment(); out.append(s.slice(last, m.index));
+      const b = document.createElement("button"); b.type = "button"; b.className = "gl"; b.dataset.g = gi; b.textContent = m[0]; out.append(b);
+      last = m.index + m[0].length;
+    }
+    if (out) { out.append(s.slice(last)); n.replaceWith(out); }
+  });
+}
+function openSheet(gi) {
+  const g = GLOS[gi]; if (!g) return;
+  $("#gbox").innerHTML = `<div><span class="gw">${[].concat(g.w).join("／")}</span>${g.r ? `<span class="gr">${g.r}</span>` : ""}</div><div class="gd">${g.d}</div>
+    <div class="gx">${g.page ? `<button class="gpage" data-page="${g.page}">📖 くわしく読む</button>` : ""}${VIDEO && (g.t || g.t === 0) ? `<a class="gvid" href="${VIDEO}?t=${g.t}">▶ 動画のこの場面</a>` : ""}<button class="gcl" id="gcl">とじる</button></div>`;
+  $("#gsheet").style.display = "flex"; track("gl");
+}
+function closeSheet() { const s = document.getElementById("gsheet"); if (s) s.style.display = "none"; }
+function openDict(id) {
+  const d = DICT.find(x => x.id === id); if (!d) return; closeSheet();
+  const el = $("#dict");
+  el.innerHTML = `<div class="dbar"><button id="dback">← もどる</button><span>📖 ${LABEL}の辞書　読みもの</span></div>
+    <div class="wrap"><div class="card rd pop">${d.html}</div><button class="btn sub" id="dback2">← もとの画面にもどる</button></div>`;
+  el.style.display = "block"; el.scrollTop = 0; document.body.style.overflow = "hidden";
+  glossify(el.querySelector(".rd"));
+  $("#dback").onclick = closeDict; $("#dback2").onclick = closeDict; track("dict-" + id);
+}
+function closeDict() { $("#dict").style.display = "none"; $("#dict").innerHTML = ""; document.body.style.overflow = ""; }
+function dictIndex() {
+  screen(`<div class="card pop"><div class="stage" style="color:#8a6d12">📖 辞書</div><h2 style="margin-top:8px">${LABEL}の ことば辞書</h2>
+    <div class="muted">説明や解説の中の<span style="border-bottom:2px dotted var(--main2)">点線の言葉</span>は、タップすると短い説明が出るよ。ここでは全部まとめて引けます。</div>
+    ${DICT.length ? `<div class="sec" style="color:#8a6d12">深掘りの読みもの（入試の先の「学問の入口」）</div><div class="menu">${DICT.map(d => `<button class="item dic" data-page="${d.id}"><span class="ic">${d.icon || "📖"}</span><span><b>${d.title}</b><small>${d.sub}</small></span></button>`).join("")}</div>` : ""}
+    <div class="sec">ことば（動画に出てくる順）</div><div class="glist">${GLOS.map((g, i) => `<button data-g="${i}"><span>${[].concat(g.w).join("／")}</span><small>${g.r || ""}</small></button>`).join("")}</div>
+    <button class="btn sub" onclick="home()">ホームにもどる</button></div>`);
+}
+const ytId = h => { const m = String(h).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; };
+const ytT = h => { const m = String(h).match(/[?&](?:t|start)=(\d+)/); return m ? Number(m[1]) : 0; };
+function openPlayer(href) {
+  const id = ytId(href), t = ytT(href); if (!id) return;
+  $("#vfr").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?start=${t}&autoplay=1&playsinline=1&rel=0" title="動画" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  $("#vext").href = `https://youtu.be/${id}${t ? "?t=" + t : ""}`; $("#vp").style.display = "flex"; track("play");
+}
+function closePlayer() { $("#vfr").innerHTML = ""; $("#vp").style.display = "none"; }
+document.addEventListener("click", e => {
+  const pg = e.target.closest("[data-page]"); if (pg) { e.preventDefault(); openDict(pg.dataset.page); return; }
+  const gl = e.target.closest("[data-g]"); if (gl) { e.preventDefault(); openSheet(Number(gl.dataset.g)); return; }
+  const a = e.target.closest("a[href]"); if (a && a.id !== "vext" && ytId(a.href)) { e.preventDefault(); closeSheet(); openPlayer(a.href); }
+});
+const more = q => q.x ? `<div class="more"><b class="mh">📘 補足（教科書）</b><br>${q.x}</div>` : "";
 
 /* ===== ポイント・済マーク ===== */
 let pts = Number(store.getItem(KEY + "pts") || 0);
@@ -589,6 +864,7 @@ function savePartial(sec, res, n) {
   if (!sec || !res.length) return;
   const d = new Date();
   store.setItem(KEY + "p_" + sec, JSON.stringify({ ok: res.filter(r => r.ok).length, a: res.length, n, d: `${d.getMonth() + 1}/${d.getDate()}` }));
+  QLOG.step(logRec(sec, res, n));
 }
 function histTag(sec) {
   const h = hist(sec), p = partial(sec);
@@ -628,6 +904,7 @@ function intro() {
     <ul class="howto">
       <li><span class="n">1</span><span><b>STEP1　動画の復習</b><br>動画と<b>同じ順番・同じ言葉</b>で、説明→確認問題。まちがえたら「▶ 動画で確認」でその場面に戻れるよ。</span></li>
       <li class="k"><span class="n">2</span><span><b>STEP2　共通テストではこう出る</b><br>同じ中身を<b>共通テストと同じ形</b>の問題（5問）で。この分野がどう出るか、解説でつかもう。</span></li>
+      ${GLOS.length ? `<li><span class="n" style="background:#8a6d12">📖</span><span><b>点線の言葉はタップ</b>すると短い説明が出るよ。ホームの「辞書」には、深掘りの読みものもあるよ。</span></li>` : ""}
       <li><span class="n">✓</span><span>どの問題も、<b>前回のスコアとベスト</b>が残るよ。やり直して記録を伸ばそう！</span></li>
     </ul>
     <button class="btn main" id="go">はじめる！</button></div>
@@ -644,6 +921,7 @@ const FOOT = `Q-UP塾 公共・政経<br>まつり先生はAIで作ったキャ�
 
 /* ===== ホーム ===== */
 function home() {
+  QLOG.leave();
   const d = done();
   const nq = CH.reduce((s, c) => s + c.qs.length, 0);
   screen(`<div class="card pop">
@@ -660,6 +938,9 @@ function home() {
   <div class="sec ky">STEP 2　共通テストではこう出る</div>
   <div class="secnote">STEP1が終わったら挑戦。共通テストと同じ形の問題で、この分野の出方をつかもう。</div>
   <div class="menu"><button class="item kyi" onclick="kyotsu()"><span class="ic">🎯</span><span><b>共通テスト形式 ${KY.qs.length}問</b><small>${KY.formats}</small>${histTag("kyotsu")}</span>${d.kyotsu ? '<span class="done">✔ 済</span>' : ""}</button></div>
+  ${GLOS.length || DICT.length ? `<div class="sec" style="color:#8a6d12">📖 辞書（ことば・深掘りの読みもの）</div>
+  <div class="secnote">わからない言葉を引いたり、試験の先にある「学問の入口」をのぞいたり。</div>
+  <div class="menu"><button class="item dic" onclick="dictIndex()"><span class="ic">📖</span><span><b>ことば辞書 ${GLOS.length}語${DICT.length ? `＋読みもの${DICT.length}本` : ""}</b><small>${DICT.map(d => d.title).join("／") || "動画に出てくる言葉をまとめて引ける"}</small></span></button></div>` : ""}
   ${UNIT.next ? `<div class="next">📺 次回　<b>${UNIT.next.title}</b><br>${UNIT.next.text}</div>` : ""}
   <button class="btn sub" onclick="intro()">📖 はじめに（使い方）</button>
   ${EXITS()}
@@ -691,7 +972,7 @@ function chapter(i) {
 
 /* --- 問題ランナー（4択・○×・並べ替え・共通テスト形式・立場選択の2段 k:"st"） --- */
 function quiz(list, opt) {
-  let i = 0; const res = [];
+  let i = 0; const res = []; QLOG.t0 = Date.now();
   const one = () => {
     if (i >= list.length) return opt.done(res);
     const q = list[i];
@@ -724,9 +1005,10 @@ function quiz(list, opt) {
       savePartial(opt.sec, res, list.length);
       const why = q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : "";
       $("#fbx").innerHTML = `<div class="fb ${ok ? "ok" : "ng"} pop"><h3>${ok ? `⭕ 正解！ +${q.ky ? 20 : 10}pt` : "❌ ざんねん…"}</h3>
-        ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${why}
+        ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${more(q)}${why}
         ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>
         <button class="btn main" id="nx">${i + 1 < list.length ? "次の問題へ" : "結果を見る"}</button>`;
+      glossify($("#fbx"));
       $("#nx").onclick = () => { i++; one(); };
       $("#nx").scrollIntoView({ behavior: "smooth", block: "end" });
     };
@@ -815,6 +1097,7 @@ function resultScreen(res, opt) {
   const ok = res.filter(r => r.ok).length, n = res.length, pc = Math.round(ok / n * 100);
   const wrong = res.filter(r => !r.ok);
   track("done-" + (opt.retry ? "retry" : opt.sec || "other"));
+  QLOG.done(logRec(opt.retry ? "retry" : opt.sec, res, n));
   const r = opt.sec ? record(opt.sec, ok, n) : null;
   if (opt.sec === "test" && pc >= 70) markDone("test");
   const ansOf = q => q.k === "mc" ? (q.ky ? NO[q.a] + " " : "") + q.c[q.a] : q.k === "tf" ? (q.a ? "○" : "×") : q.k === "st" ? ansSt(q) : q.items.join(" → ");
@@ -841,7 +1124,7 @@ function resultScreen(res, opt) {
     <button class="btn sub" onclick="home()">ホームにもどる</button>
     ${EXITS()}
     ${wrong.length ? `<h2 style="margin-top:18px">📒 まちがえた問題の復習</h2>${wrong.map(x => { const q = x.q; return `<div class="rv">${q.fmt ? `<span class="fmt">${q.fmt}</span>` : ""}<div class="qq">${q.q}</div>
-      <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>
+      <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>${more(q)}
       ${q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : ""}
       ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>`; }).join("")}` : ""}
   </div>`);
@@ -888,6 +1171,7 @@ function sortGame(el, g) {
       bs.forEach(x => { x.disabled = true; if (x.dataset.k === String(c.a)) x.classList.add("ok"); }); if (!good) b.classList.add("ng");
       if (g.onPick) g.onPick(c);
       $("#sfb").innerHTML = `<div class="fb ${good ? "ok" : "ng"} pop"><h3>${good ? "⭕ 正解！ +5pt" : "❌ ざんねん…"}</h3>${c.why}${g.extra ? g.extra(c) : ""}</div><button class="btn main" id="sn">次へ</button>`;
+      glossify($("#sfb"));
       $("#sn").onclick = () => { i++; one(); };
       $("#sn").scrollIntoView({ behavior: "smooth", block: "end" });
     });
@@ -906,6 +1190,8 @@ function confetti() {
   tick();
 }
 
+$("#gsheet").onclick = e => { if (e.target.id === "gsheet" || e.target.id === "gcl") closeSheet(); };
+$("#vclose").onclick = closePlayer; $("#vp").onclick = e => { if (e.target.id === "vp") closePlayer(); };
 $("#hlogo").src = IMG["logo-dark"]; $("#hlogo").onclick = home;
 $("#ht1").textContent = LABEL; $("#ht2").innerHTML = UNIT.titleHtml || UNIT.title;
 $("#pt").textContent = pts + " pt";
