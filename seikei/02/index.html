@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/seikei/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Q-UP 政経">
-<script>(function(){var t=document.title.split("｜")[0],s=t.split(" ")[0];if(t.indexOf("傾向と対策")>=0)s+="対策";var m=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(m&&s)m.content="Q-UP "+s;})();</script>
+<script>(function(){var t=document.title.split("｜")[0],s=t.split(" ")[0];if(t.indexOf("傾向と対策")>=0)s+="対策";if(/\/preview\//.test(location.pathname))s="確認 "+s;/* 2026-11-05 確認用（preview/）は名前を分ける */var m=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(m&&s)m.content="Q-UP "+s;})();</script>
 <meta name="description" content="共通テスト「公共，政治・経済」経済2。需要・供給のグラフと市場の失敗を、動画と同じ順番で復習＋共通テスト形式の問題。">
 <style>
 :root{--main:#0e6f78;--main2:#17939e;--soft:#e6f5f5;--acc:#ff6b57;--acc2:#ffe0db;--ink:#22303c;--bg:#f5f9f9;--ok:#1f9d55;--ng:#d64545;--gold:#d4a017;--small:#2f7fd1;--big:#e0782f;--ky:#4b3fa3;--kysoft:#efedfb}
@@ -155,9 +155,56 @@ footer{font-size:11px;color:#8a949e;line-height:1.7;margin-top:24px;text-align:c
 #modal .mbox{background:#fff;border-radius:16px;padding:18px;max-width:360px;width:100%}
 .pop{animation:pop .35s}@keyframes pop{0%{transform:scale(.97);opacity:0}100%{transform:scale(1);opacity:1}}
 b.r{color:var(--acc)}
+.formula.vert{flex-direction:column;flex-wrap:nowrap;gap:2px}.formula.vert .v{min-width:220px}.formula.vert .op{font-size:22px;line-height:1.15}
+.formula.vert .v.hl{border-color:var(--acc);background:#fff4f1;color:var(--acc)}
+.btn.dic{background:#fff4d6;color:#7a5a00;font-size:15px;padding:12px}
+/* 2026-11-01 v2（経済1で試作）：用語タップ説明・辞書（読み物）・補足欄・アプリ内で動画を再生 */
+.gl{border:0;background:none;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;border-bottom:2px dotted var(--main2);line-height:inherit;text-align:inherit;display:inline}
+.gl:active{background:var(--soft)}
+#gsheet,#vp{position:fixed;inset:0;background:rgba(20,30,40,.45);z-index:40;display:none;align-items:flex-end;justify-content:center}
+#gsheet .gbox{background:#fff;border-radius:18px 18px 0 0;padding:16px 18px calc(18px + env(safe-area-inset-bottom));max-width:560px;width:100%;max-height:75vh;overflow:auto;animation:up .2s ease-out}
+@keyframes up{0%{transform:translateY(30px);opacity:.4}100%{transform:none;opacity:1}}
+#gsheet .gw{font-size:19px;font-weight:900;color:var(--main)}#gsheet .gr{font-size:12px;color:#6b7885;margin-left:6px;font-weight:400}
+#gsheet .gd{font-size:15px;line-height:1.75;margin-top:8px}
+#gsheet .gx{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#gsheet .gx button,#gsheet .gx a{border:0;border-radius:99px;padding:8px 14px;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;text-decoration:none}
+.gpage{background:#fff4d6;color:#7a5a00}.gvid{background:#ffe5e3;color:#c4302b}.gcl{background:var(--soft);color:var(--main);margin-left:auto}
+#dict{position:fixed;inset:0;background:var(--bg);z-index:35;display:none;overflow:auto;-webkit-overflow-scrolling:touch}
+#dict .dbar{position:sticky;top:0;background:#7a5a00;color:#fff;display:flex;align-items:center;gap:8px;padding:10px 12px;z-index:2}
+#dict .dbar button{border:0;background:rgba(255,255,255,.18);color:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-family:inherit;font-size:14px;cursor:pointer}
+#dict .dbar span{font-weight:800;font-size:14px}
+.rd h1{font-size:21px;color:#7a5a00;margin:4px 0}.rd .lead{font-size:14px;color:#556;line-height:1.75}
+.rd h3{font-size:16px;color:var(--main);margin:18px 0 4px;border-left:4px solid var(--main2);padding-left:8px}
+.rd p{font-size:15px;line-height:1.85;margin:6px 0}
+.rd .ans{background:var(--kysoft);border-left:4px solid var(--ky);border-radius:8px;padding:9px 11px;font-size:14px;line-height:1.7;margin-top:10px}
+.rd .hedge{background:#f1f5f5;border-radius:8px;padding:9px 11px;font-size:13.5px;line-height:1.7;margin-top:10px;color:#445}
+.rd .q4u{background:#fff4d6;border-radius:12px;padding:12px;margin-top:14px;font-size:15px;line-height:1.8}
+.rd .src{font-size:12px;color:#7b8790;line-height:1.7;margin-top:14px}
+.more{background:#fffaf0;border:1.5px solid #f0dfb3;border-radius:10px;padding:9px 11px;margin-top:10px;font-size:14px;line-height:1.75}
+.more b.mh{color:#8a6d12;font-size:12.5px}
+.item.dic{border-color:#eadfb8;background:#fffdf5}
+.glist{display:grid;gap:6px;margin-top:8px}.glist button{display:flex;justify-content:space-between;align-items:center;border:1.5px solid #e1ecec;background:#fff;border-radius:10px;padding:9px 12px;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
+.glist button small{font-weight:400;color:#8a97a0;font-size:12px}
+#vp{align-items:center;padding:12px;z-index:50}
+#vp .vbox{background:#111;border-radius:14px;max-width:720px;width:100%;overflow:hidden}
+#vp .vfr{position:relative;width:100%;aspect-ratio:16/9;background:#000}#vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#vp .vbar{display:flex;gap:8px;align-items:center;padding:10px;flex-wrap:wrap}
+#vp .vbar button{flex:1;border:0;border-radius:12px;padding:12px;font-size:16px;font-weight:800;font-family:inherit;background:var(--acc);color:#fff;cursor:pointer}
+#vp .vbar a{color:#ddd;font-size:12px;text-decoration:underline}
 /* 需要・供給グラフ */
 .sd{display:block;margin:0 auto;max-width:340px;width:100%}
 .sd g[id$="-D"],.sd g[id$="-S"],.sd g[id$="-E"],.sd g[id$="-P"]{transition:transform .9s cubic-bezier(.3,1.2,.5,1)}
+/* 2026-11-05 公共財の4分類＝2×2のマトリックス（行＝締め出せる／締め出せない、列＝左 減らない・右 減る） */
+table.mx4{width:100%;border-collapse:separate;border-spacing:5px;margin:8px 0 4px;table-layout:fixed}
+table.mx4 th,table.mx4 td{border-radius:10px;padding:8px 4px;text-align:center;vertical-align:middle;line-height:1.35}
+table.mx4 th{font-size:11.5px;color:#445;background:#eef4f4;font-weight:400}
+table.mx4 th b{font-size:12.5px;color:var(--main);white-space:nowrap}
+table.mx4 th small,table.mx4 td small{display:block;font-size:11px;color:#667;margin-top:2px}
+table.mx4 th.cn{background:none;width:30%}
+table.mx4 td{background:#fff;border:2px solid var(--main2);font-size:14px}
+table.mx4 td b{display:block;color:var(--main)}
+table.mx4 td.pub{border-color:var(--small)}table.mx4 td.pub b{color:var(--small)}
+table.mx4 td.com{border-color:var(--big);background:#fff7f0}table.mx4 td.com b{color:var(--big)}
 
 </style>
 </head>
@@ -166,6 +213,9 @@ b.r{color:var(--acc)}
 <div class="wrap" id="app"></div>
 <canvas id="cf"></canvas>
 <div id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="gsheet"><div class="gbox" id="gbox"></div></div>
+<div id="dict"></div>
+<div id="vp"><div class="vbox"><div class="vfr" id="vfr"></div><div class="vbar"><button id="vclose">✕ 閉じてアプリにもどる</button><a id="vext" href="#" target="_blank" rel="noopener">YouTubeで開く</a></div></div></div>
 <script>
 /* ============ 共通エンジン（Q-UP塾 公共・政経 アプリの型 2026-10-23） ============
    画面＝はじめに → ホーム（STEP1 動画の復習／STEP2 共通テストではこう出る）
@@ -195,10 +245,40 @@ const app = $("#app");
    数えるもの＝①ページを開いた回数（どこから来たか。広告のURLには ?utm_source=yt-ad などをつける）
              ②結果画面まで解いた回数（qup-seikei-NN/done-<章や種類>）③ラボを開いた回数（qup-seikei-NN/lab） --- */
 const GC = "qup-seikei";
-const LIVE = !!GC && /(\.github\.io|odayanblog\.com)$/.test(location.hostname);  // 2026-11-02 odayanblog.com/seikei/NN/ へ移設
+/* 2026-11-02 odayanblog.com/seikei/NN/ へ移設。2026-11-01 確認用の置き場（/preview/ 以下）は数えない */
+const LIVE = !!GC && /(\.github\.io|odayanblog\.com)$/.test(location.hostname) && !/\/preview/.test(location.pathname);
 if (LIVE) { const s = document.createElement("script"); s.async = true; s.dataset.goatcounter = `https://${GC}.goatcounter.com/count`; s.src = "https://gc.zgo.at/count.js"; document.head.appendChild(s); }
 const REPO = (location.pathname.match(/\/seikei\/(\d+)\//) ? "qup-seikei-" + location.pathname.match(/\/seikei\/(\d+)\//)[1] : location.pathname.split("/")[1]) || "local";  // 計測名は移設前と同じ qup-seikei-NN
 function track(name) { try { if (LIVE && window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: `${REPO}/${name}`, title: name, event: true }); } catch (e) { /* 計測の失敗で学習を止めない */ } }
+/* --- 学習記録（2026-11-05 まっさん：作り直した回から、自前の記録へ切り替え）
+   送り先＝Apps Script → スプレッドシート「学習記録（アプリ）」。build.py の LOG_UNITS に入っている回だけ URL が入る（ほかの回は空＝何もしない）。
+   送るのは LIVE と同じ条件（公開ページだけ。プレビュー・E2Eは送らない）。一般の人向けなので名前・IDは送らない（?id= があればそれだけ）。端末ごとの乱数で同じ人をまとめる。
+   1問答えるごとに「途中」を用意 → ホームにもどる／画面を閉じたら1件、結果画面で「完了」を1件。開いただけでは送らない（ボット除け）。
+   まちがえた問題は「章id-番号」（例 c2-3）・ひっかけ「T番号」・共通テスト形式「K番号」で送る＝問題ごとの正答率がわかる。 */
+const LOG_URL = "https://script.google.com/macros/s/AKfycbzl9ygX2TGUSIvZ-klW7BGiDgIkKHv6dnKAumzikZ0H2uE4anDp7DCqE3PLOJLp9g/exec";
+const QLOG = (() => {
+  const ON = LIVE && /^https:\/\//.test(LOG_URL);
+  const sid = (new URLSearchParams(location.search).get("id") || "").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 20);
+  const dev = (() => { try { let d = localStorage.getItem("__dev"); if (!d) { d = Math.random().toString(36).slice(2, 12); localStorage.setItem("__dev", d); } return d; } catch (e) { return "nostore"; } })();
+  let pending = null;
+  const queue = rec => { try { const q = JSON.parse(localStorage.getItem("__q") || "[]"); q.push(rec); localStorage.setItem("__q", JSON.stringify(q.slice(-50))); } catch (e) {} };
+  const post = rec => { try { fetch(LOG_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(rec) }).catch(() => queue(rec)); } catch (e) { queue(rec); } };
+  const L = { t0: 0, on: ON,
+    done(r) { if (!ON) return; pending = null; post(Object.assign({ v: 1, sid, dev, st: "done" }, r)); },
+    step(r) { if (!ON) return; if (r && r.n > 0) pending = Object.assign({ v: 1, sid, dev, st: "part" }, r); },
+    leave() { if (!ON || !pending) return; const body = JSON.stringify(pending); pending = null; try { if (!(navigator.sendBeacon && navigator.sendBeacon(LOG_URL, body))) queue(JSON.parse(body)); } catch (e) {} } };
+  addEventListener("pagehide", () => L.leave());
+  addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") L.leave(); });
+  if (ON) { try { const q = JSON.parse(localStorage.getItem("__q") || "[]"); if (q.length) { localStorage.setItem("__q", "[]"); q.forEach(post); } } catch (e) {} }
+  return L;
+})();
+function qid(q) {
+  const k = KY.qs.indexOf(q); if (k >= 0) return "K" + (k + 1);
+  const t = TRAPS.indexOf(q); if (t >= 0) return "T" + (t + 1);
+  for (const c of CH) { const j = c.qs.indexOf(q); if (j >= 0) return c.id + "-" + (j + 1); }
+  return "?";
+}
+function logRec(sec, res, n) { return { app: REPO, sec: String(sec || "other"), ok: res.filter(r => r.ok).length, n: res.length, of: n, wrong: res.filter(r => !r.ok).map(r => qid(r.q)), ms: Date.now() - (QLOG.t0 || Date.now()) }; }
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const mmss = t => Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
 const NO = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧"];
@@ -211,12 +291,12 @@ const prog = (i, n) => `<div class="prog">${Array.from({ length: n }, (_, k) => 
 let KEY = "qups_";
 let cleanup = null;
 const top0 = () => window.scrollTo(0, 0);
-function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal(); app.innerHTML = html; top0(); }
+function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal(); if (typeof closeSheet === "function") closeSheet(); app.innerHTML = html; if (typeof glossify === "function") glossify(app); top0(); }
 </script>
 <script>
-/* ===== 経済2（旧政経2） 市場のしくみ（動画 https://youtu.be/q1VDVGjLiLQ と同じ順番・同じ言葉） ===== */
+/* ===== 経済2（旧政経2） 市場のしくみ（動画 https://youtu.be/V7W-2Z2aKJA と同じ順番・同じ言葉） ===== */
 /* 各場面の開始秒（動画の目次と同じ） */
-const T2 = [0, 26, 52, 84, 119, 149, 171, 202, 242, 279, 318, 351, 394, 433, 472, 500];
+const T2 = [0, 26, 52, 84, 119, 149, 171, 202, 242, 279, 327, 359, 403, 441, 481, 509];  // 2026-11-06 場面9（中古車）の言い直しで場面10以降が+8〜9秒
 
 /* --- 需要・供給グラフ（SVG）：数量Q 0〜10、価格P 0〜10 ---
    需要 D: P = 8.6 − 0.8Q + d　／　供給 S: P = 1.4 + 0.8Q − s（d・s が＋で右へ）
@@ -245,7 +325,11 @@ function sdSVG(id, o = {}) {
       ${o.extra || ""}
       <g id="${id}-P" style="transform:translate(0px,0px)"><circle cx="${ex}" cy="${ey}" r="7" fill="#ff6b57" stroke="#fff" stroke-width="3"/></g>
     </g>
-    ${o.eqLabel ? `<text x="${ex + 10}" y="${ey - 10}" font-size="12" font-weight="800" fill="#c94a38">均衡価格</text>` : ""}
+    ${o.outer || ""}
+    ${o.eqLabel ? `<g font-weight="800" fill="#c94a38" stroke="#fafcfc" stroke-width="3" paint-order="stroke">
+      <text x="46" y="${ey - 6}" font-size="12">均衡価格</text>
+      <text x="${ex + 6}" y="${ey - 10}" font-size="11">均衡点</text>
+      <text x="${ex + 5}" y="227" font-size="11">取引量</text></g>` : ""}
   </svg>`;
 }
 function sdSet(id, d, s) {
@@ -263,28 +347,60 @@ function sdRead(d, s) {
   return `価格 ${a(e.p, e0.p)}　／　取引量 ${b(e.q, e0.q)}`;
 }
 /* 価格の自動調節機能の補助線（高すぎ＝超過供給、安すぎ＝超過需要） */
+/* 2026-11-04 v2：ラベルが線に重ならないよう短くし、「価格が均衡へ向かう」向きを矢印で図に描く（文字の↓↑だけだと何が下がるのか分かりにくい） */
 const SD_GAP = `<line x1="${SDX(2)}" y1="${SDY(7)}" x2="${SDX(7)}" y2="${SDY(7)}" stroke="#d64545" stroke-width="5" opacity=".75"/>
-  <text x="${SDX(4.5)}" y="${SDY(7) - 8}" text-anchor="middle" font-size="11.5" font-weight="800" fill="#d64545">高すぎ：売れ残り（超過供給）↓</text>
+  <g font-size="11.5" font-weight="800" text-anchor="middle" stroke="#fafcfc" stroke-width="3" paint-order="stroke">
+  <text x="${SDX(4.5)}" y="${SDY(7) - 8}" fill="#d64545">売れ残り（超過供給）</text>
+  <text x="${SDX(4.5)}" y="${SDY(3) + 18}" fill="#1f9d55">品不足（超過需要）</text></g>
   <line x1="${SDX(2)}" y1="${SDY(3)}" x2="${SDX(7)}" y2="${SDY(3)}" stroke="#1f9d55" stroke-width="5" opacity=".75"/>
-  <text x="${SDX(4.5)}" y="${SDY(3) + 18}" text-anchor="middle" font-size="11.5" font-weight="800" fill="#1f9d55">安すぎ：品不足（超過需要）↑</text>`;
+  <line x1="${SDX(4.5)}" y1="${SDY(7) + 4}" x2="${SDX(4.5)}" y2="${SDY(5) - 14}" stroke="#d64545" stroke-width="3"/><path d="M${SDX(4.5) - 6} ${SDY(5) - 16}L${SDX(4.5) + 6} ${SDY(5) - 16}L${SDX(4.5)} ${SDY(5) - 8}z" fill="#d64545"/>
+  <line x1="${SDX(4.5)}" y1="${SDY(3) - 4}" x2="${SDX(4.5)}" y2="${SDY(5) + 14}" stroke="#1f9d55" stroke-width="3"/><path d="M${SDX(4.5) - 6} ${SDY(5) + 16}L${SDX(4.5) + 6} ${SDY(5) + 16}L${SDX(4.5)} ${SDY(5) + 8}z" fill="#1f9d55"/>`;
+/* 縦軸の外側（線に重ならない所）に「高い／安い」 */
+const SD_GAP_OUT = `<g font-size="11" font-weight="800" text-anchor="end"><text x="37" y="${SDY(7) + 4}" fill="#d64545">高い</text><text x="37" y="${SDY(3) + 4}" fill="#1f9d55">安い</text></g>`;
 /* 需要の価格弾力性：急な線とゆるやかな線 */
+/* 2026-11-04 v2：2つのグラフに「同じだけ値上がり（縦軸の赤い矢印）」を描き、そのとき買う量がどれだけ減るか（横軸の赤い区間）を見比べられるようにした。
+   線の傾きだけを見せると「急＝たくさん変わる」と逆に覚えやすいので、変わる量そのものを図にする。 */
 function elaSVG(steep) {
-  const c = steep ? "#2f7fd1" : "#e0782f";
-  const line = steep ? `<line x1="70" y1="20" x2="100" y2="150" stroke="${c}" stroke-width="4" stroke-linecap="round"/>` : `<line x1="20" y1="70" x2="150" y2="105" stroke="${c}" stroke-width="4" stroke-linecap="round"/>`;
-  return `<svg viewBox="0 0 160 170" style="width:100%;display:block"><line x1="14" y1="156" x2="156" y2="156" stroke="#22303c" stroke-width="2"/><line x1="14" y1="156" x2="14" y2="8" stroke="#22303c" stroke-width="2"/>
-    ${line}<text x="152" y="168" text-anchor="end" font-size="10" fill="#556">数量</text><text x="18" y="16" font-size="10" fill="#556">価格</text></svg>`;
+  const c = steep ? "#2f7fd1" : "#e0782f", yH = 75, yL = 95;   // 値上がりの前（yL）→ 後（yH）。どちらのグラフも同じ幅
+  const [x1, y1, x2, y2] = steep ? [60, 15, 100, 150] : [15, 60, 150, 110];
+  const xa = y => x1 + (x2 - x1) * (y - y1) / (y2 - y1), qL = xa(yL), qH = xa(yH);
+  const dash = `stroke="#9aa7b0" stroke-width="1.3" stroke-dasharray="3 3"`;
+  return `<svg viewBox="0 0 160 178" style="width:100%;display:block" role="img" aria-label="${steep ? "急な" : "ゆるやかな"}需要曲線と、値上がりしたときに減る量">
+    <line x1="14" y1="156" x2="156" y2="156" stroke="#22303c" stroke-width="2"/><line x1="14" y1="156" x2="14" y2="8" stroke="#22303c" stroke-width="2"/>
+    <line x1="14" y1="${yL}" x2="${qL}" y2="${yL}" ${dash}/><line x1="14" y1="${yH}" x2="${qH}" y2="${yH}" ${dash}/>
+    <line x1="${qL}" y1="${yL}" x2="${qL}" y2="156" ${dash}/><line x1="${qH}" y1="${yH}" x2="${qH}" y2="156" ${dash}/>
+    <line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${c}" stroke-width="4" stroke-linecap="round"/>
+    <text x="${steep ? 68 : 136}" y="${steep ? 28 : 126}" font-size="12" font-weight="900" fill="${c}">D</text>
+    <line x1="14" y1="${yL}" x2="14" y2="${yH + 5}" stroke="#d64545" stroke-width="4"/><path d="M8 ${yH + 7}L20 ${yH + 7}L14 ${yH - 3}z" fill="#d64545"/>
+    <line x1="${qH}" y1="156" x2="${qL}" y2="156" stroke="#d64545" stroke-width="6" stroke-linecap="round"/>
+    <text x="${(qH + qL) / 2}" y="170" text-anchor="middle" font-size="10.5" font-weight="800" fill="#d64545">減る量：${steep ? "少し" : "大きい"}</text>
+    <text x="156" y="150" text-anchor="end" font-size="10" fill="#556">数量</text><text x="18" y="16" font-size="10" fill="#556">価格</text></svg>`;
 }
 
+/* 補足カード（外部不経済と課税）の線の名前：動いた S の文字は枠の外へ出るので、固定の位置に書く
+   2026-11-05 まっさん指摘：最初は「税の前」の S を標準の位置（実線）で見せ、ボタンで「税の後」へ左に動かす（g5-l0 の文字は税の後に灰色の「税の前」へ変わる） */
+const G5_LBL = `<g font-size="11.5" font-weight="800" stroke="#fafcfc" stroke-width="3" paint-order="stroke">
+  <text id="g5-l1" x="${SDX(8) - 4}" y="${SDY(9)}" text-anchor="end" fill="#e0782f" style="opacity:0;transition:opacity .6s">S（税の後）</text>
+  <text id="g5-l0" x="312" y="${SDY(7)}" text-anchor="end" fill="#e0782f">S（税の前）</text></g>`;
+/* ひっかけ「曲線の上を移動するだけ」：需要曲線 D の上を、均衡（Q4.5・P5）から 価格3.4（Q6.5）へすべる点 */
+const G6_MOVE = (() => { const x0 = SDX(4.5), y0 = SDY(5), x1 = SDX(6.5), y1 = SDY(3.4);
+  return `<g stroke="#1f9d55" stroke-width="1.5" stroke-dasharray="4 4"><line x1="${x1}" y1="${y1}" x2="40" y2="${y1}"/><line x1="${x1}" y1="${y1}" x2="${x1}" y2="232"/></g>
+  <path d="M${x0 + 9} ${y0 - 6}L${x1 + 1} ${y1 - 12}" stroke="#1f9d55" stroke-width="3" fill="none"/><path d="M${x1 + 6} ${y1 - 9}L${x1 - 6} ${y1 - 17}L${x1 - 3} ${y1 - 6}z" fill="#1f9d55"/>
+  <g id="g6-M" style="transition:transform 1s ease-in-out"><circle cx="${x0}" cy="${y0}" r="7" fill="#1f9d55" stroke="#fff" stroke-width="3"/></g>`; })();
 const U2_CH = [
 { id: "c1", icon: "📈", title: "需要曲線・供給曲線と「見えざる手」", t: T2[1],
   cards: [
   { h: "需要曲線と供給曲線", t: T2[1], html: () => bubble("explain", "市場とは、売り手と買い手が出会う場所のこと。グラフは、<b>縦が価格、横が数量</b>。") + `
+    <div class="warn" style="margin:0 0 8px">📏 名前は「曲線」だけど、本当は曲がった線になることが多いんだ。ここでは<b>単純にして、直線で考えよう</b>。教科書や共通テストの図も、<b>まっすぐな線</b>で描くことが多いよ。</div>
     <div class="fig">${sdSVG("g1", { eqLabel: true })}
       <div class="two" style="margin-top:6px"><div class="box s"><b>需要曲線 D</b><small>買いたい量＝<b>右下がり</b><br>安いほど、たくさん買いたい</small></div>
       <div class="box g"><b>供給曲線 S</b><small>売りたい量＝<b>右上がり</b><br>高く売れるなら、たくさんつくりたい</small></div></div>
       <div style="text-align:center;margin-top:8px">2本が交わる点の価格＝<b class="r">均衡価格</b></div></div>` },
   { h: "価格の自動調節機能＝見えざる手の正体", t: T2[2], html: () => `
-    <div class="fig">${sdSVG("g2", { extra: SD_GAP })}</div>` +
+    <div class="fig">${sdSVG("g2", { extra: SD_GAP, outer: SD_GAP_OUT })}
+      <div class="two" style="margin-top:6px"><div class="box"><b style="color:#d64545">高すぎ</b><small>売りたい量 ＞ 買いたい量<br>→ 売れ残り → <b>値下がり ↓</b></small></div>
+      <div class="box"><b style="color:#1f9d55">安すぎ</b><small>買いたい量 ＞ 売りたい量<br>→ 品不足 → <b>値上がり ↑</b></small></div></div>
+      <div style="text-align:center;margin-top:6px;font-size:13.5px">どちらも、矢印のように<b>均衡価格へ向かって</b>動く</div></div>` +
     bubble("explain", "価格が均衡価格より<b>高い</b>と、売りたい量のほうが多くて<b>売れ残り</b>が出る（<b>超過供給</b>）→ お店は値下げする。逆に<b>安すぎる</b>と<b>品不足</b>（<b>超過需要</b>）→ 価格は上がっていく。") +
     bubble("idea", "こうして価格が勝手に動いて、需要と供給をぴったり合わせる。これが<b class='r'>価格の自動調節機能</b>。前回のスミスの<b>見えざる手</b>の正体なんだ。") }],
   qs: [
@@ -298,7 +414,13 @@ const U2_CH = [
 { id: "c2", icon: "↔️", title: "曲線が動くとき（右？左？）", t: T2[3],
   cards: [
   { h: "需要曲線が右へ動く", t: T2[3], html: () => bubble("math-trouble", "うっ、グラフか……。先生、グラフも数字の仲間だから、ちょっと苦手なんだよね。でも大丈夫。見るのは<b>どっちの曲線が、右と左のどっちに動くか</b>。それだけ。") + `
+    <div class="fig"><div class="ttl">まず、決まりはこれだけ</div>
+      <table class="sum"><tr><th></th><th>増えたら</th><th>減ったら</th></tr>
+      <tr><td><b style="color:#2f7fd1">需要</b><br><small>買いたい量</small></td><td><b>右へ ▶</b></td><td><b>◀ 左へ</b></td></tr>
+      <tr><td><b style="color:#e0782f">供給</b><br><small>売りたい量</small></td><td><b>右へ ▶</b></td><td><b>◀ 左へ</b></td></tr></table>
+      <div style="text-align:center;margin-top:6px">需要も供給も同じ。<b class="r">増えたら右、減ったら左</b>。</div></div>
     <div class="fig">${sdSVG("g3", { ghost: true })}
+      <div style="text-align:center;font-size:12px;color:#6b7885">灰色の点線＝動く前の位置</div>
       <div class="chips3"><span class="tg">💰 所得が増えた</span><span class="tg">🔥 ブームで人気が出た</span><span class="tg">👥 買う人が増えた</span></div>
       <div style="text-align:center;margin-top:6px">買いたい人が増える → <b style="color:var(--small)">需要曲線が右へ</b></div>
       <div style="text-align:center;margin-top:4px" id="g3r"></div>
@@ -307,17 +429,33 @@ const U2_CH = [
       const t = setTimeout(go, 300); const b = document.getElementById("g3b"); if (b) b.onclick = go; return () => clearTimeout(t); } },
   { h: "供給曲線が動く（右へ・左へ）", t: T2[4], html: () => `
     <div class="fig">${sdSVG("g4", { ghost: true })}
+      <div style="text-align:center;font-size:12px;color:#6b7885">灰色の点線＝動く前の位置</div>
       <div style="text-align:center;margin-top:4px;min-height:22px" id="g4r">下のボタンを押してみよう</div>
-      <div class="row2"><button class="btn sub" id="g4R" style="padding:10px;font-size:14px">供給曲線を 右へ ▶</button><button class="btn sub" id="g4L" style="padding:10px;font-size:14px">◀ 供給曲線を 左へ</button></div></div>
-    <div class="two" style="margin-top:10px"><div class="box s"><b>右へ ▶</b><small>技術革新<br>原材料の値下がり<br>補助金<br>＝つくりやすくなる<br><b>価格↓ 取引量↑</b></small></div>
-      <div class="box g"><b>◀ 左へ</b><small>原材料の値上がり<br>天候不順で不作<br>税金がかかった<br>＝つくりにくくなる<br><b>価格↑ 取引量↓</b></small></div></div>`,
+      <div class="row2"><button class="btn sub" id="g4L" style="padding:10px;font-size:14px">◀ 供給曲線を 左へ</button><button class="btn sub" id="g4R" style="padding:10px;font-size:14px">供給曲線を 右へ ▶</button></div></div>
+    <div class="two" style="margin-top:10px"><div class="box g"><b>◀ 左へ</b><small>原材料の値上がり<br>天候不順で不作<br>税金がかかった<br>＝つくりにくくなる<br>（供給が<b>減る</b>）<br><b>価格↑ 取引量↓</b></small></div>
+      <div class="box s"><b>右へ ▶</b><small>技術革新<br>原材料の値下がり<br>補助金<br>＝つくりやすくなる<br>（供給が<b>増える</b>）<br><b>価格↓ 取引量↑</b></small></div></div>
+    <div class="warn">📌 右上がりの供給曲線は、右へ動くと<b>下にずれた</b>ようにも見える。でも読むのは<b>横の向き</b>だけ。右＝同じ価格で<b>たくさん</b>売りたい、左＝<b>少し</b>しか売れない。</div>`,
     after: () => { const set = s => { sdSet("g4", 0, s); const r = document.getElementById("g4r"); if (r) r.innerHTML = sdRead(0, s); };
       document.getElementById("g4R").onclick = () => set(1.2); document.getElementById("g4L").onclick = () => set(-1.2); return null; } },
+  /* 2026-11-05 まっさん指摘：「価格が変わった“原因”が書いていない＝需要と供給のどちらを動かすか決められない＝曲線は動かせない」という見せ方にする */
   { h: "ひっかけ：曲線の上を移動するだけ", t: T2[5], html: () => bubble("important", "ここ、テストで超狙われる！") + `
     <div class="fig"><div class="ttl">その商品の価格が下がって、買う量が増えた。</div>
       <div style="text-decoration:line-through;text-decoration-color:#d64545;text-decoration-thickness:3px;font-weight:700">→ 需要曲線が右に動いた？</div>
-      <div style="font-weight:900;color:var(--ng);margin-top:4px">× 曲線は動かずに、曲線の上を移動しただけ</div>
-      <div class="warn">曲線を動かすのは、所得・人気・原材料の値段のような、<b>その商品の価格以外の理由</b>。</div></div>` }],
+      <div style="font-weight:900;color:var(--ng);margin-top:4px">× 曲線は動かずに、曲線の上を移動しただけ</div></div>
+    <div class="fig"><div class="ttl">🔍 見分け方：価格が変わった「原因」は書いてある？</div><div class="flow">
+      <div class="st">この文には、価格が下がった<b>原因</b>が書いていない</div><div class="ar">↓</div>
+      <div class="st">買う側（需要）の理由か、つくる側（供給）の理由か、<b>決められない</b></div><div class="ar">↓</div>
+      <div class="st hl">どちらの曲線も<b>動かせない</b><small>＝今ある需要曲線の上を、点がすべるだけ</small></div></div>
+      ${sdSVG("g6", { extra: G6_MOVE })}
+      <div style="text-align:center;font-size:13px;margin-top:2px"><b style="color:#1f9d55">緑の点</b>＝需要曲線 D の上をすべるだけ（<b>D も S も動かない</b>）</div>
+      <button class="btn sub" id="g6b" style="padding:10px;font-size:14px">▶ もう一度動かす</button></div>
+    <div class="fig"><div class="ttl">原因が書いてあれば、動かす曲線が決まる</div><div class="two">
+      <div class="box s"><b>買う側の原因</b><small>「所得が増えた」<br>「ブームで人気が出た」<br>→ <b>需要曲線</b>が動く</small></div>
+      <div class="box g"><b>つくる側の原因</b><small>「原材料が値下がりした」<br>「技術革新が起きた」<br>→ <b>供給曲線</b>が動く</small></div></div>
+      <div class="warn">曲線を動かすのは、所得・人気・原材料の値段のような、<b>その商品の価格以外の理由</b>。問題文に<b>その原因が書いてあるか</b>を、まず探そう。</div></div>`,
+    after: () => { const go = () => { const m = document.getElementById("g6-M"); if (!m) return; m.style.transition = "none"; m.style.transform = "translate(0px,0px)";
+        setTimeout(() => { m.style.transition = "transform 1s ease-in-out"; m.style.transform = `translate(${SDX(6.5) - SDX(4.5)}px,${SDY(3.4) - SDY(5)}px)`; }, 60); };
+      const t = setTimeout(go, 400); const b = document.getElementById("g6b"); if (b) b.onclick = go; return () => clearTimeout(t); } }],
   qs: [
   { k: "mc", t: T2[3], q: "所得が増えたとき、グラフはどうなる？", c: ["需要曲線が右へ動く", "需要曲線が左へ動く", "供給曲線が右へ動く", "供給曲線が左へ動く"], a: 0, e: "買いたい人が増えるので<b>需要曲線が右へ</b>。" },
   { k: "mc", t: T2[3], q: "需要曲線が右へ動くと、価格と取引量はどうなる？", c: ["価格は上がり、取引量は増える", "価格は下がり、取引量は増える", "価格は上がり、取引量は減る", "価格は下がり、取引量は減る"], a: 0, e: "需要曲線が右へ → 価格は<b>上がって</b>、取引量は<b>増える</b>。" },
@@ -325,14 +463,15 @@ const U2_CH = [
   { k: "mc", t: T2[4], q: "供給曲線が右へ動くと、価格と取引量はどうなる？", c: ["価格は下がり、取引量は増える", "価格は上がり、取引量は増える", "価格は上がり、取引量は減る", "価格は下がり、取引量は減る"], a: 0, e: "供給曲線が右へ → 価格は<b>下がって</b>、取引量は<b>増える</b>。" },
   { k: "mc", t: T2[4], q: "供給曲線が<b>左へ</b>動く理由として正しいものはどれ？", c: ["天候不順で不作になった", "補助金が出た", "技術革新が起きた", "原材料が値下がりした"], a: 0, e: "不作・原材料の値上がり・税金＝つくりにくくなる → <b>左へ</b>。補助金・技術革新・原材料の値下がりは右へ。" },
   { k: "mc", t: T2[4], q: "原材料が値上がりしたとき、価格と取引量はどうなる？", c: ["価格は上がり、取引量は減る", "価格は下がり、取引量は増える", "価格は上がり、取引量は増える", "価格は下がり、取引量は減る"], a: 0, e: "原材料の値上がり → 供給曲線が<b>左へ</b> → 価格は<b>上がって</b>、取引量は<b>減る</b>。" },
-  { k: "mc", t: T2[5], q: "その商品の価格が下がって、買う量が増えた。グラフではどう表す？", c: ["需要曲線は動かず、曲線の上を移動する", "需要曲線が右へ動く", "供給曲線が右へ動く", "需要曲線が左へ動く"], a: 0, e: "その商品の価格が変わっただけでは曲線は動かない。<b>曲線の上を移動しただけ</b>。" }] },
+  { k: "mc", t: T2[5], q: "その商品の価格が下がって、買う量が増えた。グラフではどう表す？", c: ["需要曲線は動かず、曲線の上を移動する", "需要曲線が右へ動く", "供給曲線が右へ動く", "需要曲線が左へ動く"], a: 0, e: "価格が下がった<b>原因</b>が書いていないので、需要と供給のどちらを動かすか決められない＝曲線は動かせない。<b>曲線の上を移動しただけ</b>。" }] },
 
 { id: "c3", icon: "📉", title: "需要の価格弾力性", t: T2[6],
   cards: [
   { h: "急な線？ゆるやかな線？", t: T2[6], html: () => bubble("thinking", "価格が変わったとき、買う量がどれだけ変わるか。これを<b class='r'>需要の価格弾力性</b>というよ。") + `
-    <div class="fig"><div class="two">
+    <div class="fig"><div class="ttl">縦の赤い矢印＝どちらも<b>同じだけ値上がり</b>。そのとき、横の赤い区間（買う量の減り）を比べよう</div><div class="two">
       <div class="box s">${elaSVG(true)}<b>生活必需品</b><small>お米・電気<br>値上がりしても、買う量はあまり減らない<br>＝<b>たてに近い急な線</b></small></div>
-      <div class="box g">${elaSVG(false)}<b>ぜいたく品</b><small>宝石・海外旅行<br>少し値上がりするだけで、買う量がぐっと減る<br>＝<b>よこに近いゆるやかな線</b></small></div></div></div>` }],
+      <div class="box g">${elaSVG(false)}<b>ぜいたく品</b><small>宝石・海外旅行<br>少し値上がりするだけで、買う量がぐっと減る<br>＝<b>よこに近いゆるやかな線</b></small></div></div></div>
+    <button class="btn dic" data-page="supply">📖 コラム：供給にも「弾力性」がある？（高校の範囲外のおまけ）</button>` }],
   qs: [
   { k: "mc", t: T2[6], q: "価格が変わったとき、買う量がどれだけ変わるかを何という？", c: ["需要の価格弾力性", "価格の自動調節機能", "乗数効果", "外部性"], a: 0, e: "<b>需要の価格弾力性</b>。" },
   { k: "mc", t: T2[6], q: "お米や電気のような生活必需品の需要曲線は、どんな線になる？", c: ["たてに近い急な線", "よこに近いゆるやかな線", "右上がりの線", "水平な線"], a: 0, e: "値上がりしても買う量はあまり減らないので<b>たてに近い急な線</b>。" },
@@ -345,11 +484,33 @@ const U2_CH = [
       <div class="ttl" style="margin-top:10px">① 公共財　🛣 一般道路・💡 街灯・🛡 国防</div>
       <div class="two"><div class="box"><b>非排除性</b><small>お金を払わない人を、使えないようにはできない</small></div><div class="box"><b>非競合性</b><small>みんなで使っても減らない</small></div></div>
       <div class="flow" style="margin-top:8px"><div class="ar">↓</div><div class="st">払わなくても使えるなら、ただ乗りしたい＝<b>フリーライダー</b></div><div class="ar">↓</div>
-      <div class="st">企業はつくろうとしない</div><div class="ar">↓</div><div class="st hl">政府が税金を使って提供する</div></div></div>` },
+      <div class="st">企業はつくろうとしない</div><div class="ar">↓</div><div class="st hl">政府が税金を使って提供する</div></div></div>
+    <button class="btn dic" data-page="commons">📖 辞書で深掘り：みんなの牧草地はなぜ荒れる？（コモンズの悲劇）</button>` },
   { h: "市場の失敗② 外部性", t: T2[8], html: () => bubble("explain", "市場の取引を通さずに、まわりの人に影響が出ること。これが<b>外部性</b>だよ。") + `
     <div class="fig"><div class="two">
       <div class="box g"><div class="em">🏭💨</div><b>外部不経済</b><small>迷惑をかける<br>例：工場の煙で公害<br>被害の費用を払わない→<b>つくりすぎる</b><br>対策：<b>規制・課税</b></small></div>
-      <div class="box s"><div class="em">🐝🍎</div><b>外部経済</b><small>よい影響が出る<br>例：養蜂家のミツバチが果樹園の花粉を運ぶ<br>果樹園はお金を払わずに得をする</small></div></div></div>` }],
+      <div class="box s"><div class="em">🐝🍎</div><b>外部経済</b><small>よい影響が出る<br>例：養蜂家のミツバチが果樹園の花粉を運ぶ<br>果樹園はお金を払わずに得をする</small></div></div></div>` },
+  { h: "📘 補足：なぜ外部不経済だと「つくりすぎ」になるの？", t: T2[8], html: () => bubble("idea", "動画では「被害の分の費用を払わないから、つくりすぎてしまう。だから国が規制したり、税金をかけたりする」と言ったね。ここでは、それを<b>供給曲線</b>で見てみよう。") + `
+    <div class="fig"><div class="ttl">📘 補足（教科書）つくりすぎになる因果</div><div class="flow">
+      <div class="st">工場は、住民の健康被害の分を<b>払わない</b></div><div class="ar">↓</div>
+      <div class="st">本当は社会全体にかかっているコストより、<b>安くつくれる</b></div><div class="ar">↓</div>
+      <div class="st">供給曲線が、本来の位置より<b>右</b>にある<small>価格は安く、取引量は多い</small></div><div class="ar">↓</div>
+      <div class="st hl"><b>つくりすぎ</b><small>社会にとってちょうどよい量より多い</small></div></div></div>
+    <div class="fig"><div class="ttl">対策：被害の分を税にしてかけると？</div>${sdSVG("g5", { ghost: true, extra: G5_LBL })}
+      <div style="text-align:center;font-size:12px;color:#6b7885" id="g5c"></div>
+      <div style="text-align:center;margin-top:4px;min-height:22px" id="g5r"></div>
+      <button class="btn sub" id="g5b" style="padding:10px;font-size:14px">▶ 税をかけて動かす</button>
+      <div class="warn">「税金がかかった → 供給曲線は<b>左へ</b>」は、2章の供給曲線の動きと同じしくみ。被害の分をコストに入れると、つくりすぎが減る。この税を<b>ピグー税</b>という（環境税の考え方のもと）。</div></div>` +
+    bubble("thumbs-up", "共通テストの答えは「外部不経済 → 市場に任せるとつくりすぎ → 規制や課税」でOK。<b>被害を払わない → コストが安く見える → 供給が多すぎる</b>の順に言えると、グラフの問題にも強くなるよ。"),
+    after: () => { let on = false; const $i = k => document.getElementById(k);
+      const set = v => { on = v; sdSet("g5", 0, v ? -1.2 : 0);
+        const l0 = $i("g5-l0"), l1 = $i("g5-l1");
+        if (l0) { l0.textContent = v ? "税の前" : "S（税の前）"; l0.setAttribute("fill", v ? "#8a97a0" : "#e0782f"); }
+        if (l1) l1.style.opacity = v ? 1 : 0;
+        if ($i("g5c")) $i("g5c").innerHTML = v ? "灰色の点線＝税の前（工場が自分のコストだけで決めた供給曲線）" : "いまは<b>税の前</b>（工場が自分のコストだけで決めた供給曲線）";
+        if ($i("g5r")) $i("g5r").innerHTML = v ? sdRead(0, -1.2) : "下のボタンで、被害の分の税をかけてみよう";
+        if ($i("g5b")) $i("g5b").textContent = v ? "↺ 税の前にもどす" : "▶ 税をかけて動かす"; };
+      set(false); if ($i("g5b")) $i("g5b").onclick = () => set(!on); return null; } }],
   qs: [
   { k: "mc", t: T2[7], q: "市場に任せても、うまくいかないことを何という？", c: ["市場の失敗", "価格の自動調節機能", "非価格競争", "価格の下方硬直性"], a: 0, e: "<b>市場の失敗</b>。代表は公共財・外部性・情報の非対称性・独占と寡占の4つ。" },
   { k: "mc", t: T2[7], q: "お金を払わない人を、使えないようにはできない性質を何という？", c: ["非排除性", "非競合性", "下方硬直性", "有限責任"], a: 0, e: "<b>非排除性</b>。みんなで使っても減らない性質は非競合性。" },
@@ -364,13 +525,16 @@ const U2_CH = [
   cards: [
   { h: "市場の失敗③ 情報の非対称性", t: T2[9], html: () => bubble("thinking", "売り手と買い手で、持っている情報に差があること。これが<b>情報の非対称性</b>だよ。") + `
     <div class="fig"><div class="ttl">🚗 中古車の例</div><div class="flow">
-      <div class="st">売り手：欠陥を知っている／買い手：分からない</div><div class="ar">↓</div>
-      <div class="st">買い手は安い値段しか出さない</div><div class="ar">↓</div>
-      <div class="st">良い車の持ち主は売るのをやめる</div><div class="ar">↓</div>
-      <div class="st hl">質の悪い車ばかり残る＝<b>逆選択</b></div></div>
+      <div class="two"><div class="box"><b>売り手</b><small>この車に欠陥が<b>あるか、ないか</b>を知っている</small></div>
+        <div class="box"><b>買い手</b><small>この車に欠陥が<b>あるかどうか</b>が分からない（見た目や試乗だけでは見分けられない）</small></div></div>
+      <div class="ar">↓</div>
+      <div class="st">欠陥があるかどうか分からないので、買い手は<b>安く買おうとして、安い金額</b>を出す</div><div class="ar">↓</div>
+      <div class="st">欠陥のない車の売り手は、<b>その値段では売らない</b></div><div class="ar">↓</div>
+      <div class="st hl">市場には<b>欠陥のある車ばかり</b>が残る＝<b>逆選択</b></div></div>
       <div class="ttl" style="margin-top:10px">🛡 保険の例</div>
       <div class="st" style="background:#fff;border:2px solid #d4e4e4;border-radius:10px;padding:8px 10px;font-weight:700;text-align:center">保険に入ったとたん、注意をしなくなる＝<b>モラルハザード</b></div>
-      <div class="two" style="margin-top:8px"><div class="box"><b>契約の前</b><small>逆選択</small></div><div class="box"><b>契約の後</b><small>モラルハザード</small></div></div></div>` },
+      <div class="two" style="margin-top:8px"><div class="box"><b>契約の前</b><small>逆選択</small></div><div class="box"><b>契約の後</b><small>モラルハザード</small></div></div></div>
+    <button class="btn dic" data-page="lemons">📖 辞書で深掘り：中古車の「レモン」とノーベル賞</button>` },
   { h: "市場の失敗④ 独占・寡占", t: T2[10], html: () => `
     <div class="fig"><div class="flow">
       <div class="st">寡占＝少数の大企業が市場を占める<small>🚗 自動車・🍺 ビール</small></div><div class="ar">↓</div>
@@ -385,7 +549,7 @@ const U2_CH = [
       <div class="tl" style="margin-top:8px"><div><b class="y">戦後</b>持株会社は禁止</div><div><b class="y">1997年</b>持株会社が<b>解禁</b></div><div><b class="y">今</b>「〇〇ホールディングス」があちこちに</div></div></div>` }],
   qs: [
   { k: "mc", t: T2[9], q: "売り手と買い手で、持っている情報に差があることを何という？", c: ["情報の非対称性", "外部性", "寡占", "公共財"], a: 0, e: "<b>情報の非対称性</b>。" },
-  { k: "mc", t: T2[9], q: "中古車の市場で、良い車が売られなくなり、質の悪い車ばかりが残ることを何という？", c: ["逆選択", "モラルハザード", "フリーライダー", "カルテル"], a: 0, e: "<b>逆選択</b>（契約の前に起きる）。" },
+  { k: "mc", t: T2[9], q: "中古車の市場で、欠陥のない車が売られなくなり、欠陥のある車ばかりが残ることを何という？", c: ["逆選択", "モラルハザード", "フリーライダー", "カルテル"], a: 0, e: "<b>逆選択</b>（契約の前に起きる）。" },
   { k: "mc", t: T2[9], q: "保険に入ったとたん、安心して注意をしなくなることを何という？", c: ["モラルハザード", "逆選択", "非価格競争", "外部経済"], a: 0, e: "<b>モラルハザード</b>（契約の後に起きる）。" },
   { k: "mc", t: T2[10], q: "自動車やビールのように、少数の大企業が市場を占めている状態を何という？", c: ["寡占", "独占", "均衡", "公共財"], a: 0, e: "少数の大企業＝<b>寡占</b>。" },
   { k: "mc", t: T2[10], q: "プライスリーダーが価格を決めて、ほかの会社がそれに従う価格を何という？", c: ["管理価格", "均衡価格", "公共料金", "市場価格"], a: 0, e: "<b>管理価格</b>。" },
@@ -400,8 +564,8 @@ const U2_CH = [
   cards: [
   { h: "株式会社のしくみ", t: T2[12], html: () => `
     <div class="fig"><div class="flow">
-      <div class="st">株主<small>出資したお金の分までしか責任を負わない＝<b>有限責任</b></small></div><div class="ar">↓</div>
-      <div class="st">株主総会<small>いちばん大事なことを決める</small></div><div class="ar">↓</div>
+      <div class="st">株主<small>出資したお金の分までしか責任を負わない＝<b>有限責任</b></small></div><div class="ar">↓ 株主が集まって</div>
+      <div class="st">株主総会<small>いちばん大事なことを決める</small></div><div class="ar">↓ 経営者（取締役）を選ぶ</div>
       <div class="st hl">専門の経営者が実際に経営する<small>＝<b>所有と経営の分離</b></small></div></div></div>
     <div class="fig"><div class="ttl">会社の種類（2006年施行の会社法）</div>
       <table class="sum"><tr><th>会社</th><th>出資者の責任</th></tr>
@@ -411,12 +575,12 @@ const U2_CH = [
       <tr><td>有限会社</td><td><b>新しくつくれなくなった</b></td></tr></table></div>` },
   { h: "企業の社会的責任（CSR）", t: T2[13], html: () => bubble("thumbs-up", "今の企業には、もうけるだけじゃなく<b>企業の社会的責任（CSR）</b>が求められる。カタカナが多いけど、ここもよく出るよ！") + `
     <div class="fig"><table class="sum"><tr><th>ことば</th><th>意味（タップで表示）</th></tr>
-      <tr><td><b>コンプライアンス</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>法律やルールを守る（法令遵守）</span></td></tr>
-      <tr><td><b>コーポレート・ガバナンス</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>経営者を監視する（企業統治）</span></td></tr>
-      <tr><td><b>ディスクロージャー</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>経営の情報を公開する</span></td></tr>
-      <tr><td><b>メセナ</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>芸術・文化の支援</span></td></tr>
-      <tr><td><b>フィランソロピー</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>寄付やボランティアなどの社会貢献</span></td></tr>
-      <tr><td><b>SRI</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>社会的責任投資：環境や社会への配慮で投資先を選ぶ</span></td></tr></table></div>` }],
+      <tr><td><b class="qq">コンプライアンス</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>法律やルールを守る（法令遵守）</span></td></tr>
+      <tr><td><b class="qq">コーポレート・ガバナンス</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>経営者を監視する（企業統治）</span></td></tr>
+      <tr><td><b class="qq">ディスクロージャー</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>経営の情報を公開する</span></td></tr>
+      <tr><td><b class="qq">メセナ</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>芸術・文化の支援</span></td></tr>
+      <tr><td><b class="qq">フィランソロピー</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>寄付やボランティアなどの社会貢献</span></td></tr>
+      <tr><td><b class="qq">SRI</b></td><td class="hidec" onclick="this.classList.remove('hidec')"><span>社会的責任投資：環境や社会への配慮で投資先を選ぶ</span></td></tr></table></div>` }],
   qs: [
   { k: "mc", t: T2[12], q: "株主が、出資したお金の分までしか責任を負わないことを何という？", c: ["有限責任", "無限責任", "所有と経営の分離", "非排除性"], a: 0, e: "<b>有限責任</b>。" },
   { k: "mc", t: T2[12], q: "株式会社で、いちばん大事なことを決めるのはどこ？", c: ["株主総会", "公正取引委員会", "労働組合", "取引先の会社"], a: 0, e: "<b>株主総会</b>。" },
@@ -433,7 +597,7 @@ const U2_CH = [
 
 /* ===== ひっかけ ○×（動画「共通テストのひっかけ3つ」＋各章の逆にされやすいところ） ===== */
 const U2_TRAPS = [
-  { k: "tf", t: T2[14], q: "その商品の価格が下がると、需要曲線は右へ動く。", a: false, e: "×。価格が変わっただけでは曲線は動かない。<b>曲線の上を移動するだけ</b>。" },
+  { k: "tf", t: T2[14], q: "その商品の価格が下がると、需要曲線は右へ動く。", a: false, e: "×。価格が下がった<b>原因</b>が書いていないので、どちらの曲線も動かせない。<b>曲線の上を移動するだけ</b>。" },
   { k: "tf", t: T2[14], q: "原材料が値上がりすると、供給曲線は右へ動く。", a: false, e: "×。つくりにくくなるので<b>左へ</b>。" },
   { k: "tf", t: T2[14], q: "メセナとは、寄付やボランティアなどの社会貢献活動のことである。", a: false, e: "×。それは<b>フィランソロピー</b>。メセナは芸術・文化の支援。" },
   { k: "tf", t: T2[2], q: "価格が均衡価格より高いと、超過需要が生じる。", a: false, e: "×。高いと売れ残り＝<b>超過供給</b>。安すぎると超過需要。" },
@@ -456,7 +620,7 @@ const U2_SORT = [
   { w: "📈 原材料が値上がりした", a: "SL", why: "つくりにくくなる → 供給曲線が左へ（価格↑ 取引量↓）" },
   { w: "🌧 天候不順で不作になった", a: "SL", why: "つくりにくくなる → 供給曲線が左へ（価格↑ 取引量↓）" },
   { w: "🧾 その商品に税金がかかった", a: "SL", why: "つくりにくくなる → 供給曲線が左へ（価格↑ 取引量↓）" },
-  { w: "🏷 その商品の価格が下がって、買う量が増えた", a: "N", why: "ひっかけ！価格の変化は曲線の上を移動するだけ。曲線は動かない。" }
+  { w: "🏷 その商品の価格が下がって、買う量が増えた", a: "N", why: "ひっかけ！価格が下がった原因が書いていない＝需要と供給のどちらを動かすか決められない。曲線は動かさず、曲線の上を移動するだけ。" }
 ];
 const U2_BTN = { DR: "需要曲線を 右へ ▶", DL: "◀ 需要曲線を 左へ", SR: "供給曲線を 右へ ▶", SL: "◀ 供給曲線を 左へ", N: "どちらも動かない（曲線の上を移動）" };
 const U2_SHIFT = { DR: [1.2, 0], DL: [-1.2, 0], SR: [0, 1.2], SL: [0, -1.2], N: [0, 0] };
@@ -476,7 +640,7 @@ function u2Free(el) {
 }
 /* ラボのゲームは共通の sortGame（エンジン）で動かす */
 const U2_GAME = { deck: U2_SORT, btns: U2_BTN, sec: "lab", ask: "このとき、どっちの曲線が、どっちに動く？",
-  perfect: "どっちの曲線が、どっちに動くか。もう完璧だね！", retry: "買う側の理由＝需要、つくる側の理由＝供給。その商品の価格の変化は「動かない」だよ。",
+  perfect: "どっちの曲線が、どっちに動くか。もう完璧だね！", retry: "買う側の理由＝需要、つくる側の理由＝供給。原因が書いていない「その商品の価格の変化」は「動かない」だよ。",
   fig: () => sdSVG("lg", { ghost: true }),
   onPick: c => { const [d, s] = U2_SHIFT[c.a]; setTimeout(() => sdSet("lg", d, s), 50); },
   extra: c => c.a !== "N" ? `<div style="margin-top:4px">${sdRead(...U2_SHIFT[c.a])}</div>` : "" };
@@ -517,7 +681,7 @@ const U2_KY = {
     q: "市場の失敗についての記述として最も適当なものを、次の①〜④のうちから一つ選べ。",
     c: ["一般道路のような公共財は、料金を払わない人を利用から締め出しにくいため、市場に任せると十分に供給されにくい。",
         "工場の排煙が周辺住民の健康に被害を与えることは、外部経済の例である。",
-        "中古車の売り手だけが車の欠陥を知っている状態は、情報の非対称性にはあたらない。",
+        "中古車の売り手は車に欠陥があるかないかを知っているが、買い手にはそれが分からない状態は、情報の非対称性にはあたらない。",
         "少数の大企業が市場を占める寡占市場では、価格競争が激しくなるため、価格が下がりやすい。"], a: 0,
     w: ["正しい。非排除性があるのでフリーライダーが出て、企業はつくろうとしない。だから政府が税金で提供する。",
         "まわりに迷惑をかけるのは<b>外部不経済</b>。外部経済はよい影響（養蜂家と果樹園）。",
@@ -533,10 +697,10 @@ const U2_KY = {
       イ　その商品の価格が下がり、買う量が増えた。<br>
       ウ　その商品がSNSで話題になり、人気が出た。</div>`,
     c: ["ア", "イ", "ウ", "アとイ", "アとウ", "イとウ", "アとイとウ"], a: 4,
-    w: ["アは正しいが、ウも需要曲線を右へ動かす。足りない。", "イは<b>曲線の上の移動</b>。曲線は動かない。", "ウは正しいが、アも需要曲線を右へ動かす。足りない。",
+    w: ["アは正しいが、ウも需要曲線を右へ動かす。足りない。", "イは価格が下がった<b>原因</b>が書いていないので、どちらの曲線も動かせない＝<b>曲線の上の移動</b>。", "ウは正しいが、アも需要曲線を右へ動かす。足りない。",
         "イが入っているので×。", "正しい。所得の増加と人気の高まりは、買いたい人を増やす＝需要曲線が右へ。", "イが入っているので×。", "イが入っているので×。"],
-    e: "曲線を動かすのは<b>その商品の価格以外の理由</b>（所得・人気・買う人の数）。イの「その商品の価格が下がった」は<b>曲線の上を移動するだけ</b>。",
-    tip: "動画で言った<b>いちばんのひっかけ</b>が、そのまま選択肢に入る形。<b>「その商品の価格が変わった」が出たら、曲線は動かない</b>と即判断しよう。" },
+    e: "曲線を動かすのは<b>その商品の価格以外の理由</b>（所得・人気・買う人の数）。イの「その商品の価格が下がった」は、下がった<b>原因</b>が書いていないので<b>曲線の上を移動するだけ</b>。",
+    tip: "動画で言った<b>いちばんのひっかけ</b>が、そのまま選択肢に入る形。<b>「その商品の価格が変わった」だけで原因が書いていなければ、曲線は動かない</b>と即判断しよう。" },
 
   { k: "mc", t: T2[12], fmt: "正誤4択（適当でないもの）",
     q: "企業についての記述として<b>適当でないもの</b>を、次の①〜④のうちから一つ選べ。",
@@ -551,11 +715,187 @@ const U2_KY = {
   ]
 };
 
+/* ===== 2026-11-04 v2（経済1と同じ方針）：問題の「📘 補足（教科書）」＝「なぜそうなるか」の因果を足す（動画の内容・順番は変えない） ===== */
+const U2_X = {
+  "需要曲線（買いたい量）は、どんな形の線？": "なぜ右下がり？ 値段が下がると、①同じお金で<b>たくさん買える</b>ようになり、②ほかの商品より<b>割安</b>になって、そちらから乗りかえる人も出る。だから<b>価格↓ → 買いたい量↑</b>。需要曲線は「この価格なら、みんなで全部でどれだけ買いたいか」を価格ごとに結んだ線。",
+  "供給曲線が右上がりになるのは、なぜ？": "高く売れるなら、①今つくっている会社は<b>利潤（もうけ）が増える</b>のでもっとつくり、②コストが少し高い会社でも、つくれば利益が出るようになって<b>新しく参加</b>する。だから<b>価格↑ → 売りたい量↑</b>。",
+  "需要曲線と供給曲線が交わる点の価格を何という？": "交わる点では<b>買いたい量＝売りたい量</b>。売れ残りも品不足もないので、価格が動く理由がなくなって落ち着く（＝均衡）。このときの量が<b>取引量</b>で、グラフでは横軸の位置、均衡価格は縦軸の位置で読む。",
+  "価格が均衡価格より高いとき、どうなる？": "なぜ下がる？ 売れ残りをかかえると、お店は保管のお金がかかり、売れなければ損になる → 少しでも売ろうと<b>値下げ</b> → 値下げで買いたい量は増え、売りたい量は減る → 2つが等しくなる<b>均衡価格で止まる</b>。",
+  "価格が均衡価格より安くて、品不足になっている状態を何という？": "なぜ上がる？ 欲しい人が多いと、<b>高くても買う人</b>が出る（フリマアプリの高値など）→ 売り手は値上げしても売れる → 値上げで買いたい量は減り、売りたい量は増える → <b>均衡価格で止まる</b>。",
+  "価格が勝手に動いて、需要と供給をぴったり合わせるはたらきを何という？": "ポイントは、だれかが命令しなくても、<b>価格が「足りない・余っている」という情報を伝えて</b>、買い手と売り手の行動を変えること。経済1の<b>計画経済</b>（国が何をどれだけつくるか決める）がうまくいかなかったのは、国がこの情報を集めきれなかったから、という見方がある。",
+  "所得が増えたとき、グラフはどうなる？": "なぜ右へ？ 所得が増える → <b>どの価格でも</b>前より多く買いたくなる → 線が全体として右へずれる。「価格は同じなのに、買いたい量が増えた」＝曲線そのものが動いた、ということ。",
+  "需要曲線が右へ動くと、価格と取引量はどうなる？": "なぜ価格↑・量↑？ 需要曲線が右へ → もとの価格のままだと<b>買いたい量 ＞ 売りたい量</b>（品不足＝超過需要）→ 価格が上がる → 売り手はもっとつくり、新しい均衡で落ち着く。だから価格も取引量も上がる。",
+  "技術革新で安くつくれるようになると、供給曲線はどうなる？": "なぜ右へ？ 技術革新 → 1個つくる<b>コストが下がる</b> → <b>同じ価格でも</b>前より多くつくって利益が出る → 供給曲線が右へ。原材料の値下がり・補助金も「コストが下がる」ので同じく右へ。",
+  "供給曲線が右へ動くと、価格と取引量はどうなる？": "なぜ価格↓・量↑？ 供給曲線が右へ → もとの価格のままだと<b>売りたい量 ＞ 買いたい量</b>（売れ残り＝超過供給）→ 価格が下がる → 安くなって買う人が増え、新しい均衡で落ち着く。",
+  "供給曲線が<b>左へ</b>動く理由として正しいものはどれ？": "不作 → 売りに出せる量そのものが減る。原材料の値上がり・税金 → 1個つくる<b>コストが上がる</b> → 同じ価格では前ほどつくれない。どれも「つくりにくくなる」ので左へ。",
+  "原材料が値上がりしたとき、価格と取引量はどうなる？": "因果で言うと：原材料↑ → コスト↑ → 供給曲線が左へ → もとの価格だと品不足 → <b>価格↑</b> → 高くなって買う人が減り、<b>取引量↓</b>。たとえば小麦が値上がりすると、パンやめんの値段が上がる。",
+  "その商品の価格が下がって、買う量が増えた。グラフではどう表す？": "見分けるコツ：まず<b>価格が変わった原因</b>が書いてあるかを探す。書いていなければ、需要と供給のどちらを動かすか決められない＝線の上を動くだけ。グラフで言うと、<b>縦軸に書いてあるもの（その商品の価格）</b>が変わったときは、線の上を動くだけ。<b>軸に書いていないもの</b>（所得・人気・原材料の値段・天気など）が変わったときに、線そのものが動く。",
+  "価格が変わったとき、買う量がどれだけ変わるかを何という？": "「弾力」はゴムのイメージ。価格を少し動かしたとき、買う量がびよーんと大きく変わる＝<b>弾力性が大きい</b>（ぜいたく品）、ほとんど変わらない＝<b>弾力性が小さい</b>（生活必需品）。",
+  "お米や電気のような生活必需品の需要曲線は、どんな線になる？": "なぜ減らない？ お米や電気は<b>生活に欠かせず、ほかに代わりがききにくい</b> → 値上がりしても買う量を減らせない → 価格が大きく動いても量はあまり動かない → たてに近い急な線。",
+  "少し値上がりするだけで、買う量がぐっと減るのはどれ？": "なぜぐっと減る？ 宝石や海外旅行は<b>なくても暮らせる・先にのばせる</b> → 値上がりすると、買うのをやめたり先にしたりする人が多い → 量が大きく動く → よこに近いゆるやかな線。",
+  "市場に任せても、うまくいかないことを何という？": "「失敗」とは、市場に任せると<b>社会にとってちょうどよい量にならない</b>こと（つくらなさすぎ・つくりすぎ・質の悪いものが残る・価格が高いまま）。これが、政府が市場に手を入れる理由になる（くわしくは経済3の財政の役割）。",
+  "お金を払わない人を、使えないようにはできない性質を何という？": "たとえば打ち上げ花火。お金を払わない人にも見えてしまい、<b>見せないようにはできない</b> → 料金を取れない → もうけを求める企業はつくりにくい。",
+  "みんなで使っても減らない性質を何という？": "街灯の明かりは、1人が使っても、ほかの人の明かりは減らない。反対にお弁当は、1人が食べるとほかの人は食べられない（<b>競合性</b>がある）＝ふつうの商品。",
+  "お金を払わずに、公共財をただで使おうとする人を何という？": "なぜ企業はつくらない？ 非排除性 → 払わなくても使える → みんなが「だれかが払うだろう」と<b>ただ乗り</b> → 料金が集まらない → もうからないので、企業はつくらない。",
+  "公共財は、だれがどのように提供する？": "税金は<b>法律で強制的に</b>集めるので、ただ乗りを防げる。市場では足りないものを政府が用意するはたらきを、財政の<b>資源配分機能</b>という（経済3）。",
+  "工場の煙で、近くの住民が健康被害を受ける。これは何の例？": "日本では高度経済成長の時代に<b>四大公害</b>（水俣病・新潟水俣病・イタイイタイ病・四日市ぜんそく）が起き、1967年に<b>公害対策基本法</b>がつくられた。四日市ぜんそくは、工場の煙による大気汚染が原因。",
+  "外部不経済への対策として、動画で紹介したものはどれ？": "なぜ課税がきく？ 被害の分を税として払わせる → 企業にとってのコストが上がる → 供給曲線が<b>左へ</b> → 生産量が減って、つくりすぎがなおる。この税を、考えた経済学者の名前から<b>ピグー税</b>という（環境税・炭素税の考え方のもと）。",
+  "養蜂家のミツバチが、となりの果樹園の花粉を運んで果物がよく実る。これは何の例？": "外部経済は逆に、よい影響の分のお金を<b>受け取れない</b> → つくる側は損をした気分になり、<b>つくらなさすぎ</b>になりやすい。だから政府が<b>補助金</b>を出すことがある（例：予防接種は、受けた人だけでなく、まわりの人も病気にかかりにくくなる）。",
+  "売り手と買い手で、持っている情報に差があることを何という？": "「非対称」＝左右が同じでない。売り手と買い手で、持っている情報が<b>かたよっている</b>こと。中古車・保険のほか、医者と患者、お金を借りる人と貸す人などでも起きる。",
+  "中古車の市場で、欠陥のない車が売られなくなり、欠陥のある車ばかりが残ることを何という？": "なぜ欠陥のない車が消える？ 売り手はその車に欠陥があるかないかを知っているが、買い手には<b>欠陥があるかどうかが分からない</b> → 買い手は安く買おうとして、安い金額を出す → 欠陥のない車の売り手は、その値段では売らない → 市場には欠陥のある車ばかりが残る → 買い手はさらに安い金額しか出さない…とくり返す。欠陥のない車が選ばれるはずが、<b>逆に欠陥のある車が残る</b>から逆選択。",
+  "保険に入ったとたん、安心して注意をしなくなることを何という？": "なぜ起きる？ 保険会社は、入った人がどれだけ注意しているかを<b>見られない</b>（契約の後の情報の差）→ 事故が起きても保険で払われるので、注意がゆるむ。「道徳が悪い」というより<b>しくみがそうさせる</b>。対策の例：事故がない人は保険料を安くする・損害の一部を自分で払う。",
+  "自動車やビールのように、少数の大企業が市場を占めている状態を何という？": "<b>独占</b>＝売り手が1社だけ、<b>寡占</b>＝少数の会社（「寡」＝少ない）。工場や設備に大きなお金がかかる業界は、新しい会社が入りにくいので寡占になりやすい。",
+  "プライスリーダーが価格を決めて、ほかの会社がそれに従う価格を何という？": "なぜ従う？ 寡占の会社どうしは、1社が値下げするとほかも値下げして<b>みんなのもうけが減る</b> → それを避けて、いちばん力のある会社に合わせるほうが得になる。話し合って決めれば<b>カルテル</b>（独占禁止法違反）だが、管理価格は話し合いなしで合わせる点がちがう。",
+  "コストが下がっても、価格がなかなか下がらないことを何という？": "因果：プライスリーダーに合わせて価格が決まる → 1社だけ値下げしても、ほかがすぐ追いかけて客は増えない → だれも値下げしない → <b>コストが下がっても価格は下がりにくい</b>。価格の自動調節機能がはたらきにくくなる。",
+  "広告やデザイン、サービスで競争することを何という？": "なぜ価格以外で？ 値下げはすぐまねされて、みんなが損をするだけ → だから、まねされにくい<b>広告・デザイン・ブランド・サービス</b>で客を取り合う。テレビCMが多い業界を思い浮かべてみよう。",
+  "独占禁止法を運用している機関はどれ？": "公正取引委員会は、ほかから指図を受けずに仕事をする<b>行政委員会</b>（内閣府の外局）。違反した会社に、やめるよう命じたり（排除措置命令）、<b>課徴金</b>を払わせたりする。",
+  "企業どうしが、価格や生産量を申し合わせることを何という？": "なぜ禁止？ ライバルどうしが価格をそろえると<b>競争がなくなり</b>、価格の自動調節機能がはたらかない → 消費者は高い値段で買わされる。入札で落とす会社を前もって決める<b>談合</b>も、同じく禁止されている。",
+  "持株会社を頂点に、たくさんの会社を支配する形（戦前の財閥）を何という？": "戦前の財閥（三井・三菱・住友・安田など）は、一族の<b>持株会社</b>が、銀行や商社などたくさんの会社の株を持って支配した。戦後、GHQは財閥が戦争を経済の面で支えたと考え、<b>財閥解体</b>を進めた。",
+  "独占禁止法と持株会社の流れを、古い順に並べよう。": "なぜ禁止→解禁？ 戦後は財閥が復活しないよう持株会社を禁止 → 時がたち、会社のグループをまとめて経営しやすくするため<b>1997年に解禁</b> → 今は「〇〇ホールディングス」が多い。ただし、力が集まりすぎる形は今も規制されている。",
+  "株主が、出資したお金の分までしか責任を負わないことを何という？": "なぜ有限責任？ 会社がつぶれても、株主が失うのは<b>出したお金（株の価値）まで</b> → 自分の家や貯金まで取られない → 安心して多くの人が少しずつ出資できる → 会社は<b>大きなお金を集められる</b>。これが株式会社が広がった理由。",
+  "株式会社で、いちばん大事なことを決めるのはどこ？": "株主総会では、<b>取締役（経営者）を選ぶ</b>ことや、利益の分け方（配当）などを決める。議決は「1人1票」ではなく、原則<b>1株1票</b>（株を多く持つ人ほど票が多い）。",
+  "実際の経営を、株主ではなく専門の経営者が行うことを何という？": "なぜ分かれる？ 会社が大きくなると株主が何万人にもなる → 全員で経営はできないし、専門の知識もない → 株主は<b>持ち主</b>として取締役を選び、経営は専門の経営者にまかせる。そのぶん、経営者を見張るしくみ（<b>コーポレート・ガバナンス</b>）が大事になる。",
+  "2006年施行の会社法で、新しくつくられた会社はどれ？": "合同会社は、出資者全員が有限責任なのに、会社の中のルールを自由に決めやすい。少ない人数で始める会社や、外国企業の日本の会社（例：Google合同会社、アマゾンジャパン合同会社）にも使われている。",
+  "出資者全員が無限責任を負う会社はどれ？": "無限責任＝会社が借金を返しきれないとき、<b>出資者が自分の財産で全部返す</b>責任。合資会社は無限責任の人と有限責任の人がまざる。リスクが大きいので、今つくられる会社のほとんどは株式会社か合同会社。",
+  "法律やルールを守ることを何という？": "法律だけでなく、社内のルールや社会の常識（倫理）を守ることまで含めて使われる。不祥事が起きると、会社の<b>信用が一気に落ちて</b>売上も減る → だから会社自身にとっても大事。",
+  "経営者を監視するしくみを何という？": "なぜ必要？ 所有と経営の分離で、経営者は<b>株主のお金を預かって</b>動かす → 経営者が自分の都合で動くおそれ → 会社の外から来た<b>社外取締役</b>を置く・情報を公開する、などで見張る。",
+  "経営の情報を公開することを何という？": "株主や投資家は、公開された情報（決算など）を見て<b>投資するかどうか判断</b>する。情報が出ないと、4・5章の<b>情報の非対称性</b>が生まれる。株式を上場している会社は、決算などの公開が義務づけられている。",
+  "企業が芸術や文化を支援する活動を何という？": "メセナはフランス語。古代ローマで詩人や芸術家を守った人物（マエケナス）の名前から来ている。企業がコンサートホールや美術館をつくる、音楽祭を支える、など。",
+  "寄付やボランティアなど、社会貢献の活動を何という？": "フィランソロピーは英語で「人類愛」。寄付、社員のボランティア、災害の支援など。覚え方：<b>メセナ＝芸術・文化</b>、<b>フィランソロピー＝社会貢献</b>。",
+  "投資する側が、環境や社会への配慮で投資先を選ぶことを何という？": "最近は、環境（Environment）・社会（Social）・企業統治（Governance）を重視する<b>ESG投資</b>という言葉もよく使われる。投資家に選ばれたい会社はCSRに力を入れる → <b>お金の流れが会社を動かす</b>。",
+  "外部不経済があると、生産は適切な量より多くなりやすい。": "因果：被害の費用を払わない → 企業にとってのコストが本当より安い → 供給曲線が本来より右にある → 価格が安く、量が多い＝<b>つくりすぎ</b>（4章の補足カード）。",
+  "逆選択は契約の後に、モラルハザードは契約の前に起きる。": "覚え方：逆選択は「<b>選ぶ</b>」段階＝契約の前（どの車を買うか・だれが保険に入るか）。モラルハザードは、契約して<b>安心した後</b>の行動の変化。"
+};
+U2_CH.forEach(c => c.qs.forEach(q => { if (U2_X[q.q]) q.x = U2_X[q.q]; }));
+U2_TRAPS.forEach(q => { if (U2_X[q.q]) q.x = U2_X[q.q]; });
+
+/* ===== 2026-11-04 v2：ことば辞書（点線の言葉をタップで短い説明）。並びは動画に出てくる順 ===== */
+const U2_GLOS = [
+  { w: "需要曲線", r: "じゅようきょくせん", d: "その商品を、価格ごとに<b>買いたい量</b>を結んだ線。安いほどたくさん買いたいので<b>右下がり</b>。記号は D（Demand＝需要）。", t: T2[1] },
+  { w: "供給曲線", r: "きょうきゅうきょくせん", d: "その商品を、価格ごとに<b>売りたい量</b>を結んだ線。高く売れるならたくさんつくりたいので<b>右上がり</b>。記号は S（Supply＝供給）。", t: T2[1] },
+  { w: "均衡価格", r: "きんこうかかく", d: "需要曲線と供給曲線が交わる点の価格。<b>買いたい量＝売りたい量</b>になるので、価格がそこで落ち着く。グラフでは<b>縦軸</b>で読む。", t: T2[1] },
+  { w: "超過供給", r: "ちょうかきょうきゅう", d: "価格が均衡価格より<b>高い</b>とき、売りたい量が買いたい量より多くて<b>売れ残る</b>こと。→ 値下がりする。", t: T2[2] },
+  { w: "超過需要", r: "ちょうかじゅよう", d: "価格が均衡価格より<b>安い</b>とき、買いたい量が売りたい量より多くて<b>品不足</b>になること。→ 値上がりする。", t: T2[2] },
+  { w: "価格の自動調節機能", r: "かかくのじどうちょうせつきのう", d: "売れ残りなら値下がり、品不足なら値上がり…と価格がひとりでに動いて、需要と供給を一致させるはたらき。だれも命令しなくても、価格が「足りない・余っている」を伝える。", t: T2[2] },
+  { w: "見えざる手", r: "みえざるて", d: "経済1のアダム・スミスのことば。一人ひとりが自分の利益を求めても、市場の<b>価格のはたらき</b>を通じて社会全体がうまく回る、というたとえ。その正体が価格の自動調節機能。", t: T2[2] },
+  { w: "技術革新", r: "ぎじゅつかくしん", d: "新しい技術や生産のやり方が生まれること（イノベーション）。安くたくさんつくれるようになるので、供給曲線は<b>右へ</b>。", t: T2[4] },
+  { w: "補助金", r: "ほじょきん", d: "政府が、生産や活動を助けるために出すお金。つくる側のコストが下がるので、供給曲線は<b>右へ</b>。", t: T2[4] },
+  { w: "需要の価格弾力性", r: "じゅようのかかくだんりょくせい", d: "価格が変わったとき、買う量がどれだけ変わるか。必需品は<b>小さい</b>（急な線）、ぜいたく品は<b>大きい</b>（ゆるやかな線）。", t: T2[6] },
+  { w: "生活必需品", r: "せいかつひつじゅひん", d: "お米・電気など、暮らしに欠かせないもの。値上がりしても買う量はあまり減らない。", t: T2[6] },
+  { w: "ぜいたく品", d: "宝石・海外旅行など、なくても暮らせるもの。少し値上がりするだけで、買う量がぐっと減る。", t: T2[6] },
+  { w: "市場の失敗", r: "しじょうのしっぱい", d: "市場に任せても、社会にとってちょうどよい結果にならないこと。代表は<b>公共財・外部性・情報の非対称性・独占と寡占</b>の4つ。", page: "commons", t: T2[7] },
+  { w: "公共財", r: "こうきょうざい", d: "一般道路・街灯・国防など、<b>非排除性</b>と<b>非競合性</b>をもつもの。ただ乗りされるので企業はつくらず、政府が税金で提供する。", page: "commons", t: T2[7] },
+  { w: "非排除性", r: "ひはいじょせい", d: "お金を払わない人を、使えないようにはできない性質。", t: T2[7] },
+  { w: "非競合性", r: "ひきょうごうせい", d: "みんなで使っても減らない性質。反対に、1人が使うとほかの人の分が減るのは「競合性」。", t: T2[7] },
+  { w: "フリーライダー", d: "お金を払わずに、ただで使おうとする人（ただ乗り）。公共財では、料金が集まらない原因になる。", t: T2[7] },
+  { w: "外部性", r: "がいぶせい", d: "市場の取引を通さずに、まわりの人に影響が出ること。迷惑なら<b>外部不経済</b>、よい影響なら<b>外部経済</b>。", t: T2[8] },
+  { w: "外部不経済", r: "がいぶふけいざい", d: "まわりに迷惑をかける外部性（例：工場の煙による公害）。被害の費用を払わないので<b>つくりすぎ</b>になる → 規制・課税で対策。", page: "commons", t: T2[8] },
+  { w: "外部経済", r: "がいぶけいざい", d: "まわりによい影響が出る外部性（例：養蜂家のミツバチと果樹園）。よい影響の分のお金を受け取れないので、つくらなさすぎになりやすい。", t: T2[8] },
+  { w: "公害", r: "こうがい", d: "工場などの活動で、大気・水・土などが汚れて、人の健康や暮らしに被害が出ること。日本では高度経済成長期の四大公害が有名。", t: T2[8] },
+  { w: "ピグー税", r: "ぴぐーぜい", d: "外部不経済の被害の分を、税としてかけるという考え。イギリスの経済学者ピグーにちなむ。供給曲線が左へ動き、つくりすぎが減る。環境税・炭素税の考え方のもと。", page: "commons", t: T2[8] },
+  { w: "情報の非対称性", r: "じょうほうのひたいしょうせい", d: "売り手と買い手で、持っている情報に差があること。契約の前は<b>逆選択</b>、契約の後は<b>モラルハザード</b>につながる。", page: "lemons", t: T2[9] },
+  { w: "逆選択", r: "ぎゃくせんたく", d: "情報の差のせいで、質の良いものが市場から消え、<b>質の悪いものばかり残る</b>こと。契約の<b>前</b>に起きる。中古車なら、買い手に欠陥があるかどうか分からないので安い金額しか出されず、欠陥のない車が売られなくなって、<b>欠陥のある車ばかり</b>が残る。", page: "lemons", t: T2[9] },
+  { w: "モラルハザード", d: "契約した<b>後</b>、相手から見えないのをいいことに行動が変わること（保険に入って注意しなくなる、など）。", page: "lemons", t: T2[9] },
+  { w: "寡占", r: "かせん", d: "少数の大企業が市場の大部分を占めている状態（自動車・ビールなど）。1社だけなら独占。", t: T2[10] },
+  { w: "独占", r: "どくせん", d: "売り手が1社だけで、市場を支配している状態。競争がないので、価格を高くしやすい。", t: T2[10] },
+  { w: "プライスリーダー", d: "寡占の市場で、いちばん力のある会社。この会社が価格を決め、ほかの会社が従う。", t: T2[10] },
+  { w: "管理価格", r: "かんりかかく", d: "プライスリーダーが決めた価格に、ほかの会社が従ってできる価格。需要と供給で決まる均衡価格とはちがう。", t: T2[10] },
+  { w: "価格の下方硬直性", r: "かかくのかほうこうちょくせい", d: "コストが下がっても、価格がなかなか下がらないこと。寡占で管理価格になると起きやすい。", t: T2[10] },
+  { w: "非価格競争", r: "ひかかくきょうそう", d: "値下げではなく、広告・デザイン・品質・サービスで客を取り合う競争。", t: T2[10] },
+  { w: "独占禁止法", r: "どくせんきんしほう", d: "1947年にできた、公正で自由な競争を守る法律。カルテル・トラスト・コンツェルンなどを規制する。運用は公正取引委員会。", t: T2[11] },
+  { w: "公正取引委員会", r: "こうせいとりひきいいんかい", d: "独占禁止法を運用する行政委員会（内閣府の外局）。違反した会社にやめるよう命じたり、課徴金を払わせたりする。", t: T2[11] },
+  { w: "財閥", r: "ざいばつ", d: "戦前の日本で、一族の持株会社が銀行・商社などたくさんの会社を支配した企業グループ（三井・三菱・住友・安田など）。戦後に解体された。", t: T2[11] },
+  { w: "カルテル", d: "同じ業界の会社どうしが、価格や生産量を<b>申し合わせる</b>こと。競争がなくなるので禁止。", t: T2[11] },
+  { w: "トラスト", d: "同じ業界の会社どうしが<b>合併</b>して一体になること。市場を支配しすぎる合併は規制される。", t: T2[11] },
+  { w: "コンツェルン", d: "持株会社を頂点に、業種のちがうたくさんの会社を<b>株で支配</b>する形。戦前の財閥がこれ。", t: T2[11] },
+  { w: "持株会社", r: "もちかぶがいしゃ", d: "ほかの会社の株を持って、その会社を支配することを主な仕事にする会社。戦後は禁止、<b>1997年に解禁</b>。「〇〇ホールディングス」が多い。", t: T2[11] },
+  { w: "株式会社", r: "かぶしきがいしゃ", d: "株を売って多くの人からお金を集める会社。株主は<b>有限責任</b>。所有（株主）と経営（経営者）が分かれる。", t: T2[12] },
+  { w: "株主総会", r: "かぶぬしそうかい", d: "株主が集まって、取締役（経営者）を選ぶなど、会社のいちばん大事なことを決める場。原則1株1票。", t: T2[12] },
+  { w: "株主", r: "かぶぬし", d: "会社にお金を出して（出資して）株を持っている人。会社の持ち主で、利益の一部を配当として受け取る。", t: T2[12] },
+  { w: "有限責任", r: "ゆうげんせきにん", d: "会社が借金を返せなくなっても、<b>出資したお金の分まで</b>しか責任を負わないこと。", t: T2[12] },
+  { w: "無限責任", r: "むげんせきにん", d: "会社が借金を返せないとき、<b>自分の財産で全部返す</b>責任。合名会社の出資者はみな無限責任。", t: T2[12] },
+  { w: "所有と経営の分離", r: "しょゆうとけいえいのぶんり", d: "会社の持ち主（株主）と、実際に経営する人（専門の経営者）が別になっていること。", t: T2[12] },
+  { w: "会社法", r: "かいしゃほう", d: "会社のつくり方やしくみを決めた法律。2006年施行。合同会社ができ、有限会社は新しくつくれなくなった。", t: T2[12] },
+  { w: "合名会社", r: "ごうめいがいしゃ", d: "出資者全員が無限責任を負う会社。家族などで営む小さな会社に多い。", t: T2[12] },
+  { w: "合資会社", r: "ごうしがいしゃ", d: "無限責任の出資者と、有限責任の出資者がまざった会社。", t: T2[12] },
+  { w: "合同会社", r: "ごうどうがいしゃ", d: "2006年の会社法で新しくできた会社。出資者全員が有限責任で、会社の中のルールを自由に決めやすい。", t: T2[12] },
+  { w: "有限会社", r: "ゆうげんがいしゃ", d: "以前あった、小さな会社向けの形。2006年の会社法で新しくはつくれなくなった（今ある会社は続けられる）。", t: T2[12] },
+  { w: ["企業の社会的責任", "CSR"], r: "きぎょうのしゃかいてきせきにん", d: "企業が、もうけるだけでなく、法律を守る・情報を公開する・環境や社会に配慮するなど、社会の一員としての責任を果たすこと。", t: T2[13] },
+  { w: "コンプライアンス", d: "法令遵守。法律だけでなく、社内のルールや社会の常識（倫理）を守ること。", t: T2[13] },
+  { w: "コーポレート・ガバナンス", d: "企業統治。経営者が株主や社会のために正しく経営しているかを見張るしくみ（社外取締役など）。", t: T2[13] },
+  { w: "ディスクロージャー", d: "情報公開。決算などの経営の情報を、株主や投資家に公開すること。", page: "lemons", t: T2[13] },
+  { w: "メセナ", d: "企業による<b>芸術・文化</b>の支援（コンサート・美術館など）。フランス語。", t: T2[13] },
+  { w: "フィランソロピー", d: "企業による<b>社会貢献</b>（寄付・ボランティア・災害の支援など）。英語で「人類愛」。", t: T2[13] },
+  { w: ["SRI", "社会的責任投資"], d: "社会的責任投資。投資家が、もうけだけでなく環境や社会への配慮を見て投資先を選ぶこと。今は ESG投資 とも言う。", t: T2[13] }
+];
+
+/* ===== 2026-11-04 v2：辞書の読みもの（教科書の先にある「学問の入口」。言い切れないことは「〜という見方がある」） ===== */
+const U2_DICT = [
+{ id: "lemons", icon: "🍋", title: "中古車の「レモン」とノーベル賞", sub: "「当たり前すぎる」と3回断られた論文 ― 学歴は能力の「しるし」？",
+  html: `<h1>中古車の「レモン」とノーベル賞</h1>
+  <div class="lead">動画の「中古車の逆選択」は、ある経済学者が1970年に書いた、たった十数ページの論文から始まりました。その論文は、ノーベル賞につながる「情報の経済学」の入口になります。</div>
+  <div class="ans"><b>まず、共通テストの答え（教科書どおり）</b><br>情報の非対称性＝売り手と買い手の情報の差。契約の<b>前</b>に起きるのが<b>逆選択</b>（中古車）、契約の<b>後</b>に起きるのが<b>モラルハザード</b>（保険）。<b>試験ではこれで答える。</b>ここから下は、その先の話です。</div>
+  <h3>1. 「レモン」＝外からは分からない欠陥車</h3>
+  <p>アメリカでは、買ってみたら欠陥だらけだった車を「<b>レモン</b>」と呼びます。皮はきれいでも、中身はすっぱい——外から見ても分からない、という意味です。</p>
+  <p>アメリカの経済学者<b>ジョージ・アカロフ</b>は、1970年の論文「レモンの市場」で、こう考えました。売り手は、自分の車に欠陥があるかないかを知っている。でも買い手には、<b>欠陥があるかどうかが分からない</b>。だから買い手は、安く買おうとして「平均くらい」の安い金額しか出さない。すると、欠陥のない車（アメリカでは「ピーチ」と呼びます）の売り手は、その値段では売らない。市場には欠陥のある車（レモン）が増え、値段はさらに下がる……。最後には、<b>取引そのものがほとんどなくなってしまう</b>こともある。価格の自動調節機能がうまくはたらかない、という話です。</p>
+  <h3>2. 「当たり前すぎる」と3回断られた</h3>
+  <p>この論文は、最初に送った学術雑誌3つに続けて断られました。「当たり前すぎる」「もしこれが正しいなら、経済学は今とちがうものになってしまう」といった理由だったと、アカロフ本人がふり返っています。それまでの経済学は、<b>売り手も買い手も商品のことをよく知っている</b>、という前提で市場を考えていたからです。</p>
+  <p>2001年、アカロフは<b>マイケル・スペンス</b>、<b>ジョセフ・スティグリッツ</b>とともに、「情報の非対称性がある市場の分析」で<b>ノーベル経済学賞</b>を受けました。</p>
+  <h3>3. 情報の差は「しるし」で埋める ― 学歴はシグナル？</h3>
+  <p>情報の差があると、人や会社はそれを埋めるくふうを始めます。中古車なら<b>保証</b>や整備の記録、フリマアプリなら<b>評価</b>や口コミ。どれも「この商品は大丈夫」と伝える<b>しるし（シグナル）</b>です。</p>
+  <p>スペンスは、これを<b>就職</b>で考えました。会社は、応募してきた人の本当の能力が見えません（情報の非対称性）。そこで<b>学歴</b>が「しるし」になる。スペンスのモデルでは、たとえ勉強が仕事の力を直接上げなくても、<b>能力の高い人ほど少ない苦労で学歴を手に入れやすい</b>なら、学歴は能力を伝えるしるしとしてはたらく、と考えます。</p>
+  <h3>4. 保険会社のくふう ― 「選ばせて」見分ける</h3>
+  <p>スティグリッツたちは、情報を持っていない側のくふうを考えました。保険会社は、入る人が事故を起こしやすいかどうか分かりません。そこで「保険料は安いが、損害の一部は自分で払うプラン」と「保険料は高いが、全部出るプラン」を用意して<b>選んでもらう</b>。どちらを選ぶかで、相手のことが少し分かる——これを<b>スクリーニング</b>（ふるい分け）と言います。事故がない人ほど保険料が安くなる自動車保険のしくみは、<b>モラルハザード</b>を防ぐくふうでもあります。</p>
+  <h3>5. 政経・公共とのつながり</h3>
+  <p>会社と消費者の間にも、大きな情報の差があります。これが、クーリング・オフや製造物責任法（PL法）などの<b>消費者保護</b>のしくみが必要とされる理由の一つです。そして6章の<b>ディスクロージャー</b>（情報公開）も、会社と投資家の間の情報の差を小さくするためのしくみです。</p>
+  <div class="hedge">※ スペンスのシグナリングは、現実を考えるための「モデル（考え方の道具）」です。学歴がどれだけ「しるし」で、どれだけ本当に力を伸ばしているのかは、研究者の間でも議論が続いています。</div>
+  <div class="q4u">🤔 <b>考えてみよう</b><br>フリマアプリで中古品を買うとき、あなたは何を見て「当たり」かどうかを判断している？　それは売り手と買い手の情報の差を、どうやって埋めているだろう？</div>
+  <div class="src">参考：George A. Akerlof "The Market for 'Lemons'"（1970年）／A. Michael Spence "Job Market Signaling"（1973年）／ノーベル財団 2001年経済学賞の発表</div>` },
+{ id: "commons", icon: "🐄", title: "みんなの牧草地はなぜ荒れる？", sub: "「コモンズの悲劇」からオストロムへ ― 政府でも市場でもない第3の道",
+  html: `<h1>みんなの牧草地はなぜ荒れる？</h1>
+  <div class="lead">動画では、公共財＝「払わない人を締め出せない（非排除性）」＋「みんなで使っても減らない（非競合性）」を学びました。では、<b>締め出せないのに、使うと減ってしまう</b>ものは、どうなるのでしょう？</div>
+  <div class="ans"><b>まず、共通テストの答え（教科書どおり）</b><br>公共財＝非排除性・非競合性 → フリーライダー → 政府が税金で提供。外部不経済 → つくりすぎ → 規制や課税。<b>試験ではこれで答える。</b>ここから下は、その先の話です。</div>
+  <h3>1. 公共財の「となり」にあるもの</h3>
+  <p>「締め出せるか」と「使うと減るか」の2つで、ものは4つに分けられます。</p>
+  <table class="mx4"><tr><th class="cn"></th><th class="ch">使っても<br><b>減らない</b><small>（非競合性）</small></th><th class="ch">使うと<br><b>減る</b><small>（競合性）</small></th></tr>
+    <tr><th class="rh">払わない人を<br><b>締め出せる</b><small>（排除性）</small></th><td><b>クラブ財</b><small>例：有料の動画配信</small></td><td><b>ふつうの商品</b><small>例：お弁当</small></td></tr>
+    <tr><th class="rh">払わない人を<br><b>締め出せない</b><small>（非排除性）</small></th><td class="pub"><b>公共財</b><small>例：街灯・国防</small></td><td class="com"><b>共有資源<br>（コモンズ）</b><small>例：海の魚・牧草地・地下水</small></td></tr></table>
+  <p style="font-size:13.5px;color:#556">動画の公共財は<b>左下</b>（締め出せない・減らない）。このページの主役は、そのとなりの<b>右下</b>（締め出せない・<b>減る</b>）です。</p>
+  <h3>2. コモンズの悲劇</h3>
+  <p>1968年、アメリカの生物学者<b>ギャレット・ハーディン</b>は、こんなたとえ話を書きました。だれでも牛を放せる「みんなの牧草地」がある。牛を1頭ふやすと、その<b>もうけは全部自分のもの</b>。でも、草が減る<b>損はみんなで分ける</b>ので、自分の損は少しだけ。だから、みんなが「もう1頭」をくり返し、最後は草がなくなって、全員が困る——これが「<b>コモンズの悲劇</b>」です。</p>
+  <p>自分の牛がほかの人の草を減らす分を払わない、という点で、これは<b>外部不経済</b>の一種でもあります。ハーディンの答えは2つ。<b>政府が管理する</b>（規制・税）か、<b>土地を分けて私有にする</b>（柵で囲う）か。後のほうは、経済1の<b>囲い込み</b>を思い出させますね。</p>
+  <h3>3. オストロムが見つけた「第3の道」</h3>
+  <p>アメリカの政治学者<b>エリノア・オストロム</b>は、世界中の共有地を調べ、<b>使う人たち自身がルールをつくって、何百年も荒らさずに使い続けてきた例</b>がたくさんあることを示しました。スイスの山の放牧地、スペインの用水路、フィリピンの水の組合、そして<b>日本の村の入会地（いりあいち）</b>も、その例として取り上げられています。</p>
+  <p>うまくいく共有地には共通点がありました。<b>だれが使えるかの境目がはっきりしている</b>／<b>ルールを使う人たちで決め、変えられる</b>／<b>見張り役がいる</b>／<b>ルールを破ったら、軽い罰から段階的に</b>重くする／<b>もめごとを話し合う場がある</b>、など。2009年、オストロムは<b>女性として初めてノーベル経済学賞</b>を受けました。</p>
+  <h3>4. 今の問題につながる</h3>
+  <p>魚の取りすぎ（漁獲量の上限を決める取り組み）、そして<b>地球温暖化</b>。大気は「世界のコモンズ」で、二酸化炭素を出す人は、その被害の分を払っていません。だから、被害の分を税にする<b>炭素税</b>（ピグー税の考え方）や、出してよい量を決めて売り買いする<b>排出量取引</b>が議論されています。国際分野の環境問題は、この単元の続きなのです。</p>
+  <div class="hedge">※ ハーディンの牧草地は頭の中のたとえ話で、「実際の昔の共有地には村のルールがあり、荒れなかった例も多い」という批判があります。また、オストロムの「第3の道」も、使う人が多く、顔が見えない地球規模の問題にそのまま使えるかは、まだ議論が続いています。</div>
+  <div class="q4u">🤔 <b>考えてみよう</b><br>学校の自習室、共用の傘立て、部室——「みんなのもの」が、きれいに使われ続けている例と、荒れてしまう例を思い浮かべてみよう。何がちがうだろう？　オストロムの共通点と比べてみよう。</div>
+  <div class="src">参考：Garrett Hardin "The Tragedy of the Commons"（Science, 1968年）／Elinor Ostrom『Governing the Commons』（1990年）／ノーベル財団 2009年経済学賞の発表</div>` },
+/* 2026-11-05 まっさん指摘：供給の価格弾力性は高校では扱わないので、本文ではなくコラム（読みもの）に置く */
+{ id: "supply", icon: "🌾", title: "供給にも「弾力性」がある？", sub: "高校の範囲外のおまけ ― 値上がりしても、お米はすぐには増やせない",
+  html: `<h1>供給にも「弾力性」がある？</h1>
+  <div class="lead">3章では、価格が変わったとき<b>買う量</b>がどれだけ変わるか（需要の価格弾力性）を見ました。同じことは、<b>売る側＝つくる量</b>でも考えられます。</div>
+  <div class="ans"><b>まず、共通テストの答え（教科書どおり）</b><br>高校で習うのは<b>需要の価格弾力性</b>だけ（生活必需品＝急な線、ぜいたく品＝ゆるやかな線）。<b>供給の価格弾力性は、高校の教科書ではふつう扱わない</b>ので、試験では需要のほうで答える。ここから下は、おまけの話です。</div>
+  <h3>1. すぐ増やせるもの・増やせないもの</h3>
+  <p>価格が上がったとき、<b>売りたい量（つくる量）がどれだけ増やせるか</b>。これを「供給の価格弾力性」と言います。</p>
+  <p>工場でつくる文房具や飲み物は、値上がりしたら機械を動かす時間をのばしたり、人を増やしたりして、わりとすぐに増やせます＝<b>弾力性が大きい</b>（よこに近いゆるやかな線）。</p>
+  <p>お米や野菜は、育つのに何か月もかかります。今年とれた量は、値段が上がってもすぐには増やせません＝<b>弾力性が小さい</b>（たてに近い急な線）。都心の土地のように、そもそも増やせないものは、ほぼ<b>たての線</b>になります。</p>
+  <h3>2. 時間がたつと変わる</h3>
+  <p>すぐには増やせなくても、来年は田畑を広げたり、新しい工場を建てたりできます。だから、<b>長い目で見るほど、供給は動きやすく</b>なります。</p>
+  <h3>3. 共通テストとのつながり</h3>
+  <p>名前は出てこなくても、考え方は使われています。共通テスト（令和7年度の本試験）には、農産物の供給曲線を<b>たての線</b>（その年にとれた量で決まる）として描いた問題がありました。豊作でとれる量が増える＝たての線が右へ動く → 値段が大きく下がって、農家の売上がかえって減ることがある。これを<b>豊作貧乏</b>と言います。</p>
+  <div class="hedge">※ 弾力性の大きさは、同じ商品でも、考える期間（1週間か、1年か、10年か）で変わります。ここでの「大きい・小さい」は、おおまかなイメージです。</div>
+  <div class="q4u">🤔 <b>考えてみよう</b><br>コンサートのチケットは、人気が出ても席の数は増やせない。チケットの供給曲線はどんな形になるだろう？　転売で値段が上がりやすいのは、なぜだろう？</div>
+  <div class="src">参考：高校「政治・経済」教科書の市場のしくみ（需要・供給・価格弾力性）／令和7年度 大学入学共通テスト「公共，政治・経済」本試験 第6問</div>` }
+];
+
 const UNIT = {
   no: 2, label: "経済2", key: "qups02_", title: "市場のしくみ", titleHtml: "市場の<span>しくみ</span>",
   sub: "共通テスト「公共，政治・経済」｜需要と供給のグラフは「どっちに動くか」だけ見ればいい",
-  video: "https://youtu.be/q1VDVGjLiLQ", videoLen: "9分21秒",
+  video: "https://youtu.be/V7W-2Z2aKJA", videoLen: "10分13秒",
   chapters: U2_CH, traps: U2_TRAPS, kyotsu: U2_KY,
+  glossary: U2_GLOS, dict: U2_DICT,
   lab: { icon: "🧪", title: "需要と供給を動かそう", sub: "曲線を自由に動かす＋「どっちが動く？」ゲーム",
     modes: [{ label: "自由に動かす", run: u2Free }, { label: "どっちが動く？ゲーム", game: U2_GAME }] },
   next: { title: "経済3　国民所得・金融・財政", text: "GDPと景気の動き、日本銀行の金融政策、財政と税のしくみを整理しよう。計算も出るけど、途中式を1行ずつ見ていくから大丈夫。<br><a href=\"https://youtu.be/Kr3BicNdqDA\" target=\"_blank\" rel=\"noopener\">▶ 動画を見る</a>" }
@@ -573,6 +913,73 @@ TRAPS.forEach(q => q.sec = "trap");
 KY.qs.forEach(q => { q.sec = "kyotsu"; q.ky = true; });
 const ALLQ = CH.flatMap(c => c.qs).concat(TRAPS);
 const ALLQK = ALLQ.concat(KY.qs);
+
+/* ===== 2026-11-01 v2：用語タップ説明・辞書（読みもの）・アプリ内で動画を再生 =====
+   UNIT.glossary = [{ w:"語" か ["語","別名"], r:"読み", d:"短い説明(HTML可)", page?:"辞書の読みものid", t?:動画の秒 }]
+   UNIT.dict     = [{ id, icon, title, sub, html }]（深掘りの読みもの。重ねて開くので、閉じると元の画面にそのまま戻る）
+   問題の q.x    = 「📘 補足（教科書）」として解説の下に出す（動画で言っていない、教科書の説明を足すとき）
+   YouTube の動画リンク（youtu.be／watch?v=）は、どこにあってもアプリの中のプレーヤーで開く＝閉じれば同じ画面に戻れる。 */
+const GLOS = UNIT.glossary || [], DICT = UNIT.dict || [];
+const GMAP = new Map(); GLOS.forEach((g, i) => [].concat(g.w).forEach(w => GMAP.set(w, i)));
+const GSRC = [...GMAP.keys()].sort((a, b) => b.length - a.length).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+const GSKIP = "svg,button,a,input,textarea,.choices,.pool,.answer,.sortcard,.hidec,.q,.q2,.stage,h1,h2,h3,.gl,.qq,.ya,.aa,.ans,.exits,footer,.vcard,.menu,.prog,.tf,.doc,.fmt,.score,.badge,.cmp,.hist";
+/* 1回の呼び出しで、各用語の「最初の1回」だけを点線ボタンにする（問題文・選択肢・答えには付けない＝答えが漏れない） */
+function glossify(root) {
+  if (!GSRC || !root) return;
+  const re = new RegExp(GSRC, "g"), re1 = new RegExp(GSRC), seen = new Set(), nodes = [];
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement && re1.test(n.nodeValue) && !n.parentElement.closest(GSKIP) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  while (tw.nextNode()) nodes.push(tw.currentNode);
+  nodes.forEach(n => {
+    const s = n.nodeValue; let last = 0, out = null, m; re.lastIndex = 0;
+    while ((m = re.exec(s))) {
+      const gi = GMAP.get(m[0]); if (seen.has(gi)) continue; seen.add(gi);
+      out = out || document.createDocumentFragment(); out.append(s.slice(last, m.index));
+      const b = document.createElement("button"); b.type = "button"; b.className = "gl"; b.dataset.g = gi; b.textContent = m[0]; out.append(b);
+      last = m.index + m[0].length;
+    }
+    if (out) { out.append(s.slice(last)); n.replaceWith(out); }
+  });
+}
+function openSheet(gi) {
+  const g = GLOS[gi]; if (!g) return;
+  $("#gbox").innerHTML = `<div><span class="gw">${[].concat(g.w).join("／")}</span>${g.r ? `<span class="gr">${g.r}</span>` : ""}</div><div class="gd">${g.d}</div>
+    <div class="gx">${g.page && g.page !== DOPEN ? `<button class="gpage" data-page="${g.page}">📖 くわしく読む</button>` : ""}${VIDEO && (g.t || g.t === 0) ? `<a class="gvid" href="${VIDEO}?t=${g.t}">▶ 動画のこの場面</a>` : ""}<button class="gcl" id="gcl">とじる</button></div>`;
+  $("#gsheet").style.display = "flex"; track("gl");
+}
+function closeSheet() { const s = document.getElementById("gsheet"); if (s) s.style.display = "none"; }
+/* 2026-11-05 読みものを開いている間は、そのページ自身への「くわしく読む」を出さない（押しても同じ読みものの先頭に戻るだけになるため） */
+let DOPEN = null;
+function openDict(id) {
+  const d = DICT.find(x => x.id === id); if (!d) return; closeSheet();
+  const el = $("#dict");
+  el.innerHTML = `<div class="dbar"><button id="dback">← もどる</button><span>📖 ${LABEL}の辞書　読みもの</span></div>
+    <div class="wrap"><div class="card rd pop">${d.html}</div><button class="btn sub" id="dback2">← もとの画面にもどる</button></div>`;
+  el.style.display = "block"; el.scrollTop = 0; document.body.style.overflow = "hidden"; DOPEN = id;
+  glossify(el.querySelector(".rd"));
+  $("#dback").onclick = closeDict; $("#dback2").onclick = closeDict; track("dict-" + id);
+}
+function closeDict() { DOPEN = null; $("#dict").style.display = "none"; $("#dict").innerHTML = ""; document.body.style.overflow = ""; }
+function dictIndex() {
+  screen(`<div class="card pop"><div class="stage" style="color:#8a6d12">📖 辞書</div><h2 style="margin-top:8px">${LABEL}の ことば辞書</h2>
+    <div class="muted">説明や解説の中の<span style="border-bottom:2px dotted var(--main2)">点線の言葉</span>は、タップすると短い説明が出るよ。ここでは全部まとめて引けます。</div>
+    ${DICT.length ? `<div class="sec" style="color:#8a6d12">深掘りの読みもの（入試の先の「学問の入口」）</div><div class="menu">${DICT.map(d => `<button class="item dic" data-page="${d.id}"><span class="ic">${d.icon || "📖"}</span><span><b>${d.title}</b><small>${d.sub}</small></span></button>`).join("")}</div>` : ""}
+    <div class="sec">ことば（動画に出てくる順）</div><div class="glist">${GLOS.map((g, i) => `<button data-g="${i}"><span>${[].concat(g.w).join("／")}</span><small>${g.r || ""}</small></button>`).join("")}</div>
+    <button class="btn sub" onclick="home()">ホームにもどる</button></div>`);
+}
+const ytId = h => { const m = String(h).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; };
+const ytT = h => { const m = String(h).match(/[?&](?:t|start)=(\d+)/); return m ? Number(m[1]) : 0; };
+function openPlayer(href) {
+  const id = ytId(href), t = ytT(href); if (!id) return;
+  $("#vfr").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?start=${t}&autoplay=1&playsinline=1&rel=0" title="動画" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  $("#vext").href = `https://youtu.be/${id}${t ? "?t=" + t : ""}`; $("#vp").style.display = "flex"; track("play");
+}
+function closePlayer() { $("#vfr").innerHTML = ""; $("#vp").style.display = "none"; }
+document.addEventListener("click", e => {
+  const pg = e.target.closest("[data-page]"); if (pg) { e.preventDefault(); openDict(pg.dataset.page); return; }
+  const gl = e.target.closest("[data-g]"); if (gl) { e.preventDefault(); openSheet(Number(gl.dataset.g)); return; }
+  const a = e.target.closest("a[href]"); if (a && a.id !== "vext" && ytId(a.href)) { e.preventDefault(); closeSheet(); openPlayer(a.href); }
+});
+const more = q => q.x ? `<div class="more"><b class="mh">📘 補足（教科書）</b><br>${q.x}</div>` : "";
 
 /* ===== ポイント・済マーク ===== */
 let pts = Number(store.getItem(KEY + "pts") || 0);
@@ -598,6 +1005,7 @@ function savePartial(sec, res, n) {
   if (!sec || !res.length) return;
   const d = new Date();
   store.setItem(KEY + "p_" + sec, JSON.stringify({ ok: res.filter(r => r.ok).length, a: res.length, n, d: `${d.getMonth() + 1}/${d.getDate()}` }));
+  QLOG.step(logRec(sec, res, n));
 }
 function histTag(sec) {
   const h = hist(sec), p = partial(sec);
@@ -637,6 +1045,7 @@ function intro() {
     <ul class="howto">
       <li><span class="n">1</span><span><b>STEP1　動画の復習</b><br>動画と<b>同じ順番・同じ言葉</b>で、説明→確認問題。まちがえたら「▶ 動画で確認」でその場面に戻れるよ。</span></li>
       <li class="k"><span class="n">2</span><span><b>STEP2　共通テストではこう出る</b><br>同じ中身を<b>共通テストと同じ形</b>の問題（5問）で。この分野がどう出るか、解説でつかもう。</span></li>
+      ${GLOS.length ? `<li><span class="n" style="background:#8a6d12">📖</span><span><b>点線の言葉はタップ</b>すると短い説明が出るよ。ホームの「辞書」には、深掘りの読みものもあるよ。</span></li>` : ""}
       <li><span class="n">✓</span><span>どの問題も、<b>前回のスコアとベスト</b>が残るよ。やり直して記録を伸ばそう！</span></li>
     </ul>
     <button class="btn main" id="go">はじめる！</button></div>
@@ -653,6 +1062,7 @@ const FOOT = `Q-UP塾 公共・政経<br>まつり先生はAIで作ったキャ�
 
 /* ===== ホーム ===== */
 function home() {
+  QLOG.leave();
   const d = done();
   const nq = CH.reduce((s, c) => s + c.qs.length, 0);
   screen(`<div class="card pop">
@@ -669,6 +1079,9 @@ function home() {
   <div class="sec ky">STEP 2　共通テストではこう出る</div>
   <div class="secnote">STEP1が終わったら挑戦。共通テストと同じ形の問題で、この分野の出方をつかもう。</div>
   <div class="menu"><button class="item kyi" onclick="kyotsu()"><span class="ic">🎯</span><span><b>共通テスト形式 ${KY.qs.length}問</b><small>${KY.formats}</small>${histTag("kyotsu")}</span>${d.kyotsu ? '<span class="done">✔ 済</span>' : ""}</button></div>
+  ${GLOS.length || DICT.length ? `<div class="sec" style="color:#8a6d12">📖 辞書（ことば・深掘りの読みもの）</div>
+  <div class="secnote">わからない言葉を引いたり、試験の先にある「学問の入口」をのぞいたり。</div>
+  <div class="menu"><button class="item dic" onclick="dictIndex()"><span class="ic">📖</span><span><b>ことば辞書 ${GLOS.length}語${DICT.length ? `＋読みもの${DICT.length}本` : ""}</b><small>${DICT.map(d => d.title).join("／") || "動画に出てくる言葉をまとめて引ける"}</small></span></button></div>` : ""}
   ${UNIT.next ? `<div class="next">📺 次回　<b>${UNIT.next.title}</b><br>${UNIT.next.text}</div>` : ""}
   <button class="btn sub" onclick="intro()">📖 はじめに（使い方）</button>
   ${EXITS()}
@@ -700,7 +1113,7 @@ function chapter(i) {
 
 /* --- 問題ランナー（4択・○×・並べ替え・共通テスト形式・立場選択の2段 k:"st"） --- */
 function quiz(list, opt) {
-  let i = 0; const res = [];
+  let i = 0; const res = []; QLOG.t0 = Date.now();
   const one = () => {
     if (i >= list.length) return opt.done(res);
     const q = list[i];
@@ -733,9 +1146,10 @@ function quiz(list, opt) {
       savePartial(opt.sec, res, list.length);
       const why = q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : "";
       $("#fbx").innerHTML = `<div class="fb ${ok ? "ok" : "ng"} pop"><h3>${ok ? `⭕ 正解！ +${q.ky ? 20 : 10}pt` : "❌ ざんねん…"}</h3>
-        ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${why}
+        ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${more(q)}${why}
         ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>
         <button class="btn main" id="nx">${i + 1 < list.length ? "次の問題へ" : "結果を見る"}</button>`;
+      glossify($("#fbx"));
       $("#nx").onclick = () => { i++; one(); };
       $("#nx").scrollIntoView({ behavior: "smooth", block: "end" });
     };
@@ -824,6 +1238,7 @@ function resultScreen(res, opt) {
   const ok = res.filter(r => r.ok).length, n = res.length, pc = Math.round(ok / n * 100);
   const wrong = res.filter(r => !r.ok);
   track("done-" + (opt.retry ? "retry" : opt.sec || "other"));
+  QLOG.done(logRec(opt.retry ? "retry" : opt.sec, res, n));
   const r = opt.sec ? record(opt.sec, ok, n) : null;
   if (opt.sec === "test" && pc >= 70) markDone("test");
   const ansOf = q => q.k === "mc" ? (q.ky ? NO[q.a] + " " : "") + q.c[q.a] : q.k === "tf" ? (q.a ? "○" : "×") : q.k === "st" ? ansSt(q) : q.items.join(" → ");
@@ -850,7 +1265,7 @@ function resultScreen(res, opt) {
     <button class="btn sub" onclick="home()">ホームにもどる</button>
     ${EXITS()}
     ${wrong.length ? `<h2 style="margin-top:18px">📒 まちがえた問題の復習</h2>${wrong.map(x => { const q = x.q; return `<div class="rv">${q.fmt ? `<span class="fmt">${q.fmt}</span>` : ""}<div class="qq">${q.q}</div>
-      <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>
+      <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>${more(q)}
       ${q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : ""}
       ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>`; }).join("")}` : ""}
   </div>`);
@@ -897,6 +1312,7 @@ function sortGame(el, g) {
       bs.forEach(x => { x.disabled = true; if (x.dataset.k === String(c.a)) x.classList.add("ok"); }); if (!good) b.classList.add("ng");
       if (g.onPick) g.onPick(c);
       $("#sfb").innerHTML = `<div class="fb ${good ? "ok" : "ng"} pop"><h3>${good ? "⭕ 正解！ +5pt" : "❌ ざんねん…"}</h3>${c.why}${g.extra ? g.extra(c) : ""}</div><button class="btn main" id="sn">次へ</button>`;
+      glossify($("#sfb"));
       $("#sn").onclick = () => { i++; one(); };
       $("#sn").scrollIntoView({ behavior: "smooth", block: "end" });
     });
@@ -915,6 +1331,8 @@ function confetti() {
   tick();
 }
 
+$("#gsheet").onclick = e => { if (e.target.id === "gsheet" || e.target.id === "gcl") closeSheet(); };
+$("#vclose").onclick = closePlayer; $("#vp").onclick = e => { if (e.target.id === "vp") closePlayer(); };
 $("#hlogo").src = IMG["logo-dark"]; $("#hlogo").onclick = home;
 $("#ht1").textContent = LABEL; $("#ht2").innerHTML = UNIT.titleHtml || UNIT.title;
 $("#pt").textContent = pts + " pt";
