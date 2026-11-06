@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/seikei/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Q-UP 政経">
-<script>(function(){var t=document.title.split("｜")[0],s=t.split(" ")[0];if(t.indexOf("傾向と対策")>=0)s+="対策";var m=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(m&&s)m.content="Q-UP "+s;})();</script>
+<script>(function(){var t=document.title.split("｜")[0],s=t.split(" ")[0];if(t.indexOf("傾向と対策")>=0)s+="対策";if(/\/preview\//.test(location.pathname))s="確認 "+s;/* 2026-11-05 確認用（preview/）は名前を分ける */var m=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(m&&s)m.content="Q-UP "+s;})();</script>
 <meta name="description" content="共通テスト「公共，政治・経済」経済1。資本主義の歴史を「振り子」で覚える練習アプリ。動画と同じ順番で復習＋共通テスト形式の問題。">
 <style>
 :root{--main:#0e6f78;--main2:#17939e;--soft:#e6f5f5;--acc:#ff6b57;--acc2:#ffe0db;--ink:#22303c;--bg:#f5f9f9;--ok:#1f9d55;--ng:#d64545;--gold:#d4a017;--small:#2f7fd1;--big:#e0782f;--ky:#4b3fa3;--kysoft:#efedfb}
@@ -287,7 +287,7 @@ const top0 = () => window.scrollTo(0, 0);
 function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal(); if (typeof closeSheet === "function") closeSheet(); app.innerHTML = html; if (typeof glossify === "function") glossify(app); top0(); }
 </script>
 <script>
-/* ===== 経済1（旧政経1） 資本主義の歩み（動画 https://youtu.be/b5szqRArywo と同じ順番・同じ言葉） ===== */
+/* ===== 経済1（旧政経1） 資本主義の歩み（動画 https://youtu.be/-OePEgZciTM と同じ順番・同じ言葉） ===== */
 /* 各場面の開始秒（動画の目次と同じ） */
 const T1 = [0, 20, 63, 87, 123, 159, 199, 252, 280, 314, 350, 370, 437, 461];
 
@@ -754,12 +754,12 @@ const U1_DICT = [
 const UNIT = {
   no: 1, label: "経済1", key: "qups01_", title: "資本主義の歩み", titleHtml: "資本主義の<span>歩み</span>",
   sub: "共通テスト「公共，政治・経済」｜スミス→ケインズ→フリードマンを「振り子」で覚える",
-  video: "https://youtu.be/b5szqRArywo", videoLen: "9分16秒",
+  video: "https://youtu.be/-OePEgZciTM", videoLen: "9分02秒",
   chapters: U1_CH, traps: U1_TRAPS, kyotsu: U1_KY,
   glossary: U1_GLOS, dict: U1_DICT,
   lab: { icon: "🧪", title: "振り子を動かそう", sub: "時代を動かす＋小さな政府／大きな政府 仕分けゲーム",
     modes: [{ label: "時代を動かす", run: labTime }, { label: "仕分けゲーム", game: U1_GAME }] },
-  next: { title: "経済2　市場のしくみ", text: "需要と供給のグラフを「どっちに動くか」で読めるようにしよう。<br><a href=\"https://youtu.be/V7W-2Z2aKJA\" target=\"_blank\" rel=\"noopener\">▶ 動画を見る</a>" }
+  next: { title: "経済2　市場のしくみ", text: "需要と供給のグラフを「どっちに動くか」で読めるようにしよう。<br><a href=\"https://youtu.be/HMWb4Wt5OlI\" target=\"_blank\" rel=\"noopener\">▶ 動画を見る</a>" }
 };
 
 </script>
@@ -804,20 +804,22 @@ function glossify(root) {
 function openSheet(gi) {
   const g = GLOS[gi]; if (!g) return;
   $("#gbox").innerHTML = `<div><span class="gw">${[].concat(g.w).join("／")}</span>${g.r ? `<span class="gr">${g.r}</span>` : ""}</div><div class="gd">${g.d}</div>
-    <div class="gx">${g.page ? `<button class="gpage" data-page="${g.page}">📖 くわしく読む</button>` : ""}${VIDEO && (g.t || g.t === 0) ? `<a class="gvid" href="${VIDEO}?t=${g.t}">▶ 動画のこの場面</a>` : ""}<button class="gcl" id="gcl">とじる</button></div>`;
+    <div class="gx">${g.page && g.page !== DOPEN ? `<button class="gpage" data-page="${g.page}">📖 くわしく読む</button>` : ""}${VIDEO && (g.t || g.t === 0) ? `<a class="gvid" href="${VIDEO}?t=${g.t}">▶ 動画のこの場面</a>` : ""}<button class="gcl" id="gcl">とじる</button></div>`;
   $("#gsheet").style.display = "flex"; track("gl");
 }
 function closeSheet() { const s = document.getElementById("gsheet"); if (s) s.style.display = "none"; }
+/* 2026-11-05 読みものを開いている間は、そのページ自身への「くわしく読む」を出さない（押しても同じ読みものの先頭に戻るだけになるため） */
+let DOPEN = null;
 function openDict(id) {
   const d = DICT.find(x => x.id === id); if (!d) return; closeSheet();
   const el = $("#dict");
   el.innerHTML = `<div class="dbar"><button id="dback">← もどる</button><span>📖 ${LABEL}の辞書　読みもの</span></div>
     <div class="wrap"><div class="card rd pop">${d.html}</div><button class="btn sub" id="dback2">← もとの画面にもどる</button></div>`;
-  el.style.display = "block"; el.scrollTop = 0; document.body.style.overflow = "hidden";
+  el.style.display = "block"; el.scrollTop = 0; document.body.style.overflow = "hidden"; DOPEN = id;
   glossify(el.querySelector(".rd"));
   $("#dback").onclick = closeDict; $("#dback2").onclick = closeDict; track("dict-" + id);
 }
-function closeDict() { $("#dict").style.display = "none"; $("#dict").innerHTML = ""; document.body.style.overflow = ""; }
+function closeDict() { DOPEN = null; $("#dict").style.display = "none"; $("#dict").innerHTML = ""; document.body.style.overflow = ""; }
 function dictIndex() {
   screen(`<div class="card pop"><div class="stage" style="color:#8a6d12">📖 辞書</div><h2 style="margin-top:8px">${LABEL}の ことば辞書</h2>
     <div class="muted">説明や解説の中の<span style="border-bottom:2px dotted var(--main2)">点線の言葉</span>は、タップすると短い説明が出るよ。ここでは全部まとめて引けます。</div>
