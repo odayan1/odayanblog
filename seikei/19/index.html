@@ -259,12 +259,12 @@ function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal()
 /* ===== 公共の傾向と対策（番号19）公共1・2のまとめ（台本 scripts/koukyou-t_script.md＝koukyou-t_texts.py と同じ順番・同じ言葉） =====
    2026-11-04 制作スタジオ（b から依頼・作業メモ tmp/koukyou-t-app/README.md）。型は経済の傾向回（u16.js）・政治の傾向回（u15.js）と同じ：
    STEP1＝4段の地図の復習＋ひっかけ○×＋ラボ3種（4段の地図／ひっかけタグ／似た行動の振り分け）／STEP2＝5問。
-   ※ 動画は公開済み https://youtu.be/W3ZN-KIbSeI （9分52秒）。T19＝説明欄 youtube/ep_ct_desc.txt の目次の時刻。
+   ※ 動画は公開済み https://youtu.be/nbWFZvEk8BY （9分53秒・2026-11-05 差し替えの新版。旧 W3ZN-KIbSeI は非公開）。T19＝説明欄 youtube/ep_ct_desc.txt の目次の時刻。
    ※ STEP2 は A・B・D・C ＋ 公共の特色の K（推論の型＝帰納と演繹。K は公共の大問にしか出ていない＝kakomon/analysis/koukyou.md 2-3）。
      公共は計算がないので J（計算）は使わない。G（立場選択）は公共の大問では0組なので使わない。
    ※ 次回予告（UNIT.next）は入れない（2026-11-03 まっさん指示）。ほかの回への案内は まとめのカード（c9）の「あわせて見たい」に。
    ※ 問題はすべてオリジナル（架空の会話・架空の調査・架空の市）。過去問の文・資料・数字・事例は使っていない。 */
-const T19 = [0, 33, 87, 140, 196, 253, 302, 356, 402, 459, 497, 549];  /* 説明欄の目次（0:00 0:33 1:27 2:20 3:16 4:13 5:02 5:56 6:42 7:39 8:17 9:09）と同じ */
+const T19 = [0, 33, 87, 140, 196, 253, 302, 354, 403, 460, 498, 550];  /* 2026-11-09 新版 nbWFZvEk8BY の目次（ep_ct_desc.txt：0:00 0:33 1:27 2:20 3:16 4:13 5:02 5:54 6:43 7:40 8:18 9:10）。旧 W3ZN-KIbSeI は非公開 */
 
 /* 段の札・ひっかけタグ（動画の場面2・場面8と同じ名前。政治・経済の回とそろえる） */
 const U19_TIER = ["★★★ 何度も出た", "★★ 1回出た", "★ 旧課程で出た", "基本 どちらもまだ・でも土台"];
@@ -675,7 +675,7 @@ const U19_KY = {
 const UNIT = {
   no: 19, label: "公共", key: "qups19_", title: "傾向と対策", titleHtml: "公共<span> 傾向と対策</span>",
   sub: "共通テスト「公共，政治・経済」｜公共1・2のどこから勉強する？ 出た回数で4つの段に分けた地図＋ひっかけ6つのタグ＋共通テスト形式5問（推論の型つき）。「公共，倫理」の人も公共の部分に使えます",
-  video: "https://youtu.be/W3ZN-KIbSeI", videoLen: "9分52秒",   /* 2026-11-04 公開済み（完成版 koukyou-t-taisaku_ja_loud.mp4＝9:52） */
+  video: "https://youtu.be/nbWFZvEk8BY", videoLen: "9分53秒",   /* 2026-11-09 新版に付け替え（2026-11-05 場面6・7の言い方と読みの直しで差し替え・旧 W3ZN-KIbSeI は非公開） */
   chapters: U19_CH, traps: U19_TRAPS, kyotsu: U19_KY,
   lab: { icon: "🧪", title: "仕分けゲーム", sub: "4段の地図のどの段？＋ひっかけタグのどれ？＋この行動はどの思想？",
     modes: [{ label: "4段の地図ゲーム", game: U19_GAME1 }, { label: "ひっかけタグゲーム", game: U19_GAME2 }, { label: "行動の振り分けゲーム", game: U19_GAME3 }] },
