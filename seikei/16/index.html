@@ -11,7 +11,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/seikei/apple-touch-icon.png">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="apple-mobile-web-app-title" content="Q-UP 政経">
-<script>(function(){var t=document.title.split("｜")[0],s=t.split(" ")[0];if(t.indexOf("傾向と対策")>=0)s+="対策";var m=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(m&&s)m.content="Q-UP "+s;})();</script>
+<script>(function(){var t=document.title.split("｜")[0],s=t.split(" ")[0];if(t.indexOf("傾向と対策")>=0)s+="対策";if(/\/preview\//.test(location.pathname))s="確認 "+s;/* 2026-11-05 確認用（preview/）は名前を分ける */var m=document.querySelector('meta[name="apple-mobile-web-app-title"]');if(m&&s)m.content="Q-UP "+s;})();</script>
 <meta name="description" content="共通テスト「公共，政治・経済」経済の傾向と対策。経済1〜5の論点を、今の共通テスト5回分と前の課程4回分で出た回数で4つの段に分けた地図で復習＋共通テスト形式5問（資料の読み取りと計算つき）。">
 <style>
 :root{--main:#0e6f78;--main2:#17939e;--soft:#e6f5f5;--acc:#ff6b57;--acc2:#ffe0db;--ink:#22303c;--bg:#f5f9f9;--ok:#1f9d55;--ng:#d64545;--gold:#d4a017;--small:#2f7fd1;--big:#e0782f;--ky:#4b3fa3;--kysoft:#efedfb}
@@ -52,6 +52,9 @@ h2{font-size:18px;margin:0 0 8px;color:var(--main)}
 .item.labi{border-color:#d9cdf5;background:#faf7ff}.item.trap{border-color:#ffd1c9;background:#fffaf8}.item.test{border-color:var(--main2);background:var(--soft)}
 .item.kyi{border-color:#cbc4f0;background:var(--kysoft)}.item.kyi .hs{background:#fff;color:var(--ky)}
 .item .hs.part,.item.kyi .hs.part{background:#fff4d6;color:#8a5a00}
+/* 2026-11-07 続きから・もとの画面にもどった知らせ */
+.hs .cont{color:#c4302b;margin-left:4px}
+#toast{pointer-events:none;white-space:nowrap;position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:rgba(20,40,45,.92);color:#fff;font-size:13.5px;font-weight:700;padding:9px 16px;border-radius:99px;z-index:40;display:none;max-width:92vw;text-align:center}
 .sec{font-size:12.5px;font-weight:800;color:var(--acc);letter-spacing:.06em;margin-top:20px}
 .sec.ky{color:var(--ky)}
 .secnote{font-size:12px;color:#6b7885;margin-top:2px}
@@ -155,6 +158,42 @@ footer{font-size:11px;color:#8a949e;line-height:1.7;margin-top:24px;text-align:c
 #modal .mbox{background:#fff;border-radius:16px;padding:18px;max-width:360px;width:100%}
 .pop{animation:pop .35s}@keyframes pop{0%{transform:scale(.97);opacity:0}100%{transform:scale(1);opacity:1}}
 b.r{color:var(--acc)}
+.formula.vert{flex-direction:column;flex-wrap:nowrap;gap:2px}.formula.vert .v{min-width:220px}.formula.vert .op{font-size:22px;line-height:1.15}
+.formula.vert .v.hl{border-color:var(--acc);background:#fff4f1;color:var(--acc)}
+.btn.dic{background:#fff4d6;color:#7a5a00;font-size:15px;padding:12px}
+/* 2026-11-01 v2（経済1で試作）：用語タップ説明・辞書（読み物）・補足欄・アプリ内で動画を再生 */
+.gl{border:0;background:none;padding:0;margin:0;font:inherit;color:inherit;cursor:pointer;border-bottom:2px dotted var(--main2);line-height:inherit;text-align:inherit;display:inline}
+.gl:active{background:var(--soft)}
+#gsheet,#vp{position:fixed;inset:0;background:rgba(20,30,40,.45);z-index:40;display:none;align-items:flex-end;justify-content:center}
+#gsheet .gbox{background:#fff;border-radius:18px 18px 0 0;padding:16px 18px calc(18px + env(safe-area-inset-bottom));max-width:560px;width:100%;max-height:75vh;overflow:auto;animation:up .2s ease-out}
+@keyframes up{0%{transform:translateY(30px);opacity:.4}100%{transform:none;opacity:1}}
+#gsheet .gw{font-size:19px;font-weight:900;color:var(--main)}#gsheet .gr{font-size:12px;color:#6b7885;margin-left:6px;font-weight:400}
+#gsheet .gd{font-size:15px;line-height:1.75;margin-top:8px}
+#gsheet .gx{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+#gsheet .gx button,#gsheet .gx a{border:0;border-radius:99px;padding:8px 14px;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;text-decoration:none}
+.gpage{background:#fff4d6;color:#7a5a00}.gvid{background:#ffe5e3;color:#c4302b}.gcl{background:var(--soft);color:var(--main);margin-left:auto}
+#dict{position:fixed;inset:0;background:var(--bg);z-index:35;display:none;overflow:auto;-webkit-overflow-scrolling:touch}
+#dict .dbar{position:sticky;top:0;background:#7a5a00;color:#fff;display:flex;align-items:center;gap:8px;padding:10px 12px;z-index:2}
+#dict .dbar button{border:0;background:rgba(255,255,255,.18);color:#fff;border-radius:99px;padding:7px 12px;font-weight:800;font-family:inherit;font-size:14px;cursor:pointer}
+#dict .dbar span{font-weight:800;font-size:14px}
+.rd h1{font-size:21px;color:#7a5a00;margin:4px 0}.rd .lead{font-size:14px;color:#556;line-height:1.75}
+.rd h3{font-size:16px;color:var(--main);margin:18px 0 4px;border-left:4px solid var(--main2);padding-left:8px}
+.rd p{font-size:15px;line-height:1.85;margin:6px 0}
+.rd .ans{background:var(--kysoft);border-left:4px solid var(--ky);border-radius:8px;padding:9px 11px;font-size:14px;line-height:1.7;margin-top:10px}
+.rd .hedge{background:#f1f5f5;border-radius:8px;padding:9px 11px;font-size:13.5px;line-height:1.7;margin-top:10px;color:#445}
+.rd .q4u{background:#fff4d6;border-radius:12px;padding:12px;margin-top:14px;font-size:15px;line-height:1.8}
+.rd .src{font-size:12px;color:#7b8790;line-height:1.7;margin-top:14px}
+.more{background:#fffaf0;border:1.5px solid #f0dfb3;border-radius:10px;padding:9px 11px;margin-top:10px;font-size:14px;line-height:1.75}
+.more b.mh{color:#8a6d12;font-size:12.5px}
+.item.dic{border-color:#eadfb8;background:#fffdf5}
+.glist{display:grid;gap:6px;margin-top:8px}.glist button{display:flex;justify-content:space-between;align-items:center;border:1.5px solid #e1ecec;background:#fff;border-radius:10px;padding:9px 12px;font-family:inherit;font-size:15px;font-weight:700;color:var(--ink);cursor:pointer;text-align:left}
+.glist button small{font-weight:400;color:#8a97a0;font-size:12px}
+#vp{align-items:center;padding:12px;z-index:50}
+#vp .vbox{background:#111;border-radius:14px;max-width:720px;width:100%;overflow:hidden}
+#vp .vfr{position:relative;width:100%;aspect-ratio:16/9;background:#000}#vp iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+#vp .vbar{display:flex;gap:8px;align-items:center;padding:10px;flex-wrap:wrap}
+#vp .vbar button{flex:1;border:0;border-radius:12px;padding:12px;font-size:16px;font-weight:800;font-family:inherit;background:var(--acc);color:#fff;cursor:pointer}
+#vp .vbar a{color:#ddd;font-size:12px;text-decoration:underline}
 /* 経済の傾向と対策（16）。u15.css と同じ部品（段の札・4段の地図・横棒・タイル・ひっかけタグ）。色はエンジンのまま */
 .u16t{display:inline-block;border-radius:7px;padding:1px 8px;font-weight:900;font-size:12.5px;line-height:1.7;white-space:nowrap}
 .u16t.t0{background:#fde2e0;color:#b3261e}.u16t.t1{background:#fde9d6;color:#a4521b}
@@ -200,6 +239,10 @@ b.r{color:var(--acc)}
 <div class="wrap" id="app"></div>
 <canvas id="cf"></canvas>
 <div id="modal"><div class="mbox" id="mbox"></div></div>
+<div id="toast"></div>
+<div id="gsheet"><div class="gbox" id="gbox"></div></div>
+<div id="dict"></div>
+<div id="vp"><div class="vbox"><div class="vfr" id="vfr"></div><div class="vbar"><button id="vclose">✕ 閉じてアプリにもどる</button><a id="vext" href="#" target="_blank" rel="noopener">YouTubeで開く</a></div></div></div>
 <script>
 /* ============ 共通エンジン（Q-UP塾 公共・政経 アプリの型 2026-10-23） ============
    画面＝はじめに → ホーム（STEP1 動画の復習／STEP2 共通テストではこう出る）
@@ -229,10 +272,40 @@ const app = $("#app");
    数えるもの＝①ページを開いた回数（どこから来たか。広告のURLには ?utm_source=yt-ad などをつける）
              ②結果画面まで解いた回数（qup-seikei-NN/done-<章や種類>）③ラボを開いた回数（qup-seikei-NN/lab） --- */
 const GC = "qup-seikei";
-const LIVE = !!GC && /(\.github\.io|odayanblog\.com)$/.test(location.hostname);  // 2026-11-02 odayanblog.com/seikei/NN/ へ移設
+/* 2026-11-02 odayanblog.com/seikei/NN/ へ移設。2026-11-01 確認用の置き場（/preview/ 以下）は数えない */
+const LIVE = !!GC && /(\.github\.io|odayanblog\.com)$/.test(location.hostname) && !/\/preview/.test(location.pathname);
 if (LIVE) { const s = document.createElement("script"); s.async = true; s.dataset.goatcounter = `https://${GC}.goatcounter.com/count`; s.src = "https://gc.zgo.at/count.js"; document.head.appendChild(s); }
 const REPO = (location.pathname.match(/\/seikei\/(\d+)\//) ? "qup-seikei-" + location.pathname.match(/\/seikei\/(\d+)\//)[1] : location.pathname.split("/")[1]) || "local";  // 計測名は移設前と同じ qup-seikei-NN
 function track(name) { try { if (LIVE && window.goatcounter && window.goatcounter.count) window.goatcounter.count({ path: `${REPO}/${name}`, title: name, event: true }); } catch (e) { /* 計測の失敗で学習を止めない */ } }
+/* --- 学習記録（2026-11-05 まっさん：作り直した回から、自前の記録へ切り替え）
+   送り先＝Apps Script → スプレッドシート「学習記録（アプリ）」。build.py の LOG_UNITS に入っている回だけ URL が入る（ほかの回は空＝何もしない）。
+   送るのは LIVE と同じ条件（公開ページだけ。プレビュー・E2Eは送らない）。一般の人向けなので名前・IDは送らない（?id= があればそれだけ）。端末ごとの乱数で同じ人をまとめる。
+   1問答えるごとに「途中」を用意 → ホームにもどる／画面を閉じたら1件、結果画面で「完了」を1件。開いただけでは送らない（ボット除け）。
+   まちがえた問題は「章id-番号」（例 c2-3）・ひっかけ「T番号」・共通テスト形式「K番号」で送る＝問題ごとの正答率がわかる。 */
+const LOG_URL = "";
+const QLOG = (() => {
+  const ON = LIVE && /^https:\/\//.test(LOG_URL);
+  const sid = (new URLSearchParams(location.search).get("id") || "").toLowerCase().replace(/[^a-z0-9-]/g, "").slice(0, 20);
+  const dev = (() => { try { let d = localStorage.getItem("__dev"); if (!d) { d = Math.random().toString(36).slice(2, 12); localStorage.setItem("__dev", d); } return d; } catch (e) { return "nostore"; } })();
+  let pending = null;
+  const queue = rec => { try { const q = JSON.parse(localStorage.getItem("__q") || "[]"); q.push(rec); localStorage.setItem("__q", JSON.stringify(q.slice(-50))); } catch (e) {} };
+  const post = rec => { try { fetch(LOG_URL, { method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(rec) }).catch(() => queue(rec)); } catch (e) { queue(rec); } };
+  const L = { t0: 0, on: ON,
+    done(r) { if (!ON) return; pending = null; post(Object.assign({ v: 1, sid, dev, st: "done" }, r)); },
+    step(r) { if (!ON) return; if (r && r.n > 0) pending = Object.assign({ v: 1, sid, dev, st: "part" }, r); },
+    leave() { if (!ON || !pending) return; const body = JSON.stringify(pending); pending = null; try { if (!(navigator.sendBeacon && navigator.sendBeacon(LOG_URL, body))) queue(JSON.parse(body)); } catch (e) {} } };
+  addEventListener("pagehide", () => L.leave());
+  addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") L.leave(); });
+  if (ON) { try { const q = JSON.parse(localStorage.getItem("__q") || "[]"); if (q.length) { localStorage.setItem("__q", "[]"); q.forEach(post); } } catch (e) {} }
+  return L;
+})();
+function qid(q) {
+  const k = KY.qs.indexOf(q); if (k >= 0) return "K" + (k + 1);
+  const t = TRAPS.indexOf(q); if (t >= 0) return "T" + (t + 1);
+  for (const c of CH) { const j = c.qs.indexOf(q); if (j >= 0) return c.id + "-" + (j + 1); }
+  return "?";
+}
+function logRec(sec, res, n) { return { app: REPO, sec: String(sec || "other"), ok: res.filter(r => r.ok).length, n: res.length, of: n, wrong: res.filter(r => !r.ok).map(r => qid(r.q)), ms: Date.now() - (QLOG.t0 || Date.now()) }; }
 const shuffle = a => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
 const mmss = t => Math.floor(t / 60) + ":" + String(t % 60).padStart(2, "0");
 const NO = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧"];
@@ -245,7 +318,7 @@ const prog = (i, n) => `<div class="prog">${Array.from({ length: n }, (_, k) => 
 let KEY = "qups_";
 let cleanup = null;
 const top0 = () => window.scrollTo(0, 0);
-function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal(); app.innerHTML = html; top0(); }
+function screen(html) { if (cleanup) { cleanup(); cleanup = null; } closeModal(); if (typeof closeSheet === "function") closeSheet(); app.innerHTML = html; if (typeof glossify === "function") glossify(app); top0(); }
 </script>
 <script>
 /* ===== 経済の傾向と対策（番号16）経済1〜5のまとめ（台本 scripts/keizai-t_script.md＝keizai-t_texts.py と同じ順番・同じ言葉） =====
@@ -695,6 +768,75 @@ KY.qs.forEach(q => { q.sec = "kyotsu"; q.ky = true; });
 const ALLQ = CH.flatMap(c => c.qs).concat(TRAPS);
 const ALLQK = ALLQ.concat(KY.qs);
 
+/* ===== 2026-11-01 v2：用語タップ説明・辞書（読みもの）・アプリ内で動画を再生 =====
+   UNIT.glossary = [{ w:"語" か ["語","別名"], r:"読み", d:"短い説明(HTML可)", page?:"辞書の読みものid", t?:動画の秒 }]
+   UNIT.dict     = [{ id, icon, title, sub, html }]（深掘りの読みもの。重ねて開くので、閉じると元の画面にそのまま戻る）
+   問題の q.x    = 「📘 補足（教科書）」として解説の下に出す（動画で言っていない、教科書の説明を足すとき）
+   YouTube の動画リンク（youtu.be／watch?v=）は、どこにあってもアプリの中のプレーヤーで開く＝閉じれば同じ画面に戻れる。 */
+const GLOS = UNIT.glossary || [], DICT = UNIT.dict || [];
+const GMAP = new Map(); GLOS.forEach((g, i) => [].concat(g.w).forEach(w => GMAP.set(w, i)));
+const GSRC = [...GMAP.keys()].sort((a, b) => b.length - a.length).map(w => w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|");
+const GSKIP = "svg,button,a,input,textarea,.choices,.pool,.answer,.sortcard,.hidec,.q,.q2,.stage,h1,h2,h3,.gl,.qq,.ya,.aa,.ans,.exits,footer,.vcard,.menu,.prog,.tf,.doc,.fmt,.score,.badge,.cmp,.hist";
+/* 1回の呼び出しで、各用語の「最初の1回」だけを点線ボタンにする（問題文・選択肢・答えには付けない＝答えが漏れない） */
+function glossify(root) {
+  if (!GSRC || !root) return;
+  const re = new RegExp(GSRC, "g"), re1 = new RegExp(GSRC), seen = new Set(), nodes = [];
+  const tw = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, { acceptNode: n => n.parentElement && re1.test(n.nodeValue) && !n.parentElement.closest(GSKIP) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT });
+  while (tw.nextNode()) nodes.push(tw.currentNode);
+  nodes.forEach(n => {
+    const s = n.nodeValue; let last = 0, out = null, m; re.lastIndex = 0;
+    while ((m = re.exec(s))) {
+      const gi = GMAP.get(m[0]); if (seen.has(gi)) continue; seen.add(gi);
+      out = out || document.createDocumentFragment(); out.append(s.slice(last, m.index));
+      const b = document.createElement("button"); b.type = "button"; b.className = "gl"; b.dataset.g = gi; b.textContent = m[0]; out.append(b);
+      last = m.index + m[0].length;
+    }
+    if (out) { out.append(s.slice(last)); n.replaceWith(out); }
+  });
+}
+function openSheet(gi) {
+  const g = GLOS[gi]; if (!g) return;
+  $("#gbox").innerHTML = `<div><span class="gw">${[].concat(g.w).join("／")}</span>${g.r ? `<span class="gr">${g.r}</span>` : ""}</div><div class="gd">${g.d}</div>
+    <div class="gx">${g.page && g.page !== DOPEN ? `<button class="gpage" data-page="${g.page}">📖 くわしく読む</button>` : ""}${VIDEO && (g.t || g.t === 0) ? `<a class="gvid" href="${VIDEO}?t=${g.t}">▶ 動画のこの場面</a>` : ""}<button class="gcl" id="gcl">とじる</button></div>`;
+  $("#gsheet").style.display = "flex"; track("gl");
+}
+function closeSheet() { const s = document.getElementById("gsheet"); if (s) s.style.display = "none"; }
+/* 2026-11-05 読みものを開いている間は、そのページ自身への「くわしく読む」を出さない（押しても同じ読みものの先頭に戻るだけになるため） */
+let DOPEN = null;
+function openDict(id) {
+  const d = DICT.find(x => x.id === id); if (!d) return; closeSheet();
+  const el = $("#dict");
+  el.innerHTML = `<div class="dbar"><button id="dback">← もどる</button><span>📖 ${LABEL}の辞書　読みもの</span></div>
+    <div class="wrap"><div class="card rd pop">${d.html}</div><button class="btn sub" id="dback2">← もとの画面にもどる</button></div>`;
+  el.style.display = "block"; el.scrollTop = 0; document.body.style.overflow = "hidden"; DOPEN = id;
+  glossify(el.querySelector(".rd"));
+  $("#dback").onclick = closeDict; $("#dback2").onclick = closeDict; track("dict-" + id);
+  if (typeof saveNow === "function") saveNow();
+}
+function closeDict() { DOPEN = null; $("#dict").style.display = "none"; $("#dict").innerHTML = ""; document.body.style.overflow = ""; if (typeof saveNow === "function") saveNow(); }
+function dictIndex() {
+  saveNow({ s: "dictidx" });
+  screen(`<div class="card pop"><div class="stage" style="color:#8a6d12">📖 辞書</div><h2 style="margin-top:8px">${LABEL}の ことば辞書</h2>
+    <div class="muted">説明や解説の中の<span style="border-bottom:2px dotted var(--main2)">点線の言葉</span>は、タップすると短い説明が出るよ。ここでは全部まとめて引けます。</div>
+    ${DICT.length ? `<div class="sec" style="color:#8a6d12">深掘りの読みもの（入試の先の「学問の入口」）</div><div class="menu">${DICT.map(d => `<button class="item dic" data-page="${d.id}"><span class="ic">${d.icon || "📖"}</span><span><b>${d.title}</b><small>${d.sub}</small></span></button>`).join("")}</div>` : ""}
+    <div class="sec">ことば（動画に出てくる順）</div><div class="glist">${GLOS.map((g, i) => `<button data-g="${i}"><span>${[].concat(g.w).join("／")}</span><small>${g.r || ""}</small></button>`).join("")}</div>
+    <button class="btn sub" onclick="home()">ホームにもどる</button></div>`);
+}
+const ytId = h => { const m = String(h).match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/))([\w-]{11})/); return m ? m[1] : null; };
+const ytT = h => { const m = String(h).match(/[?&](?:t|start)=(\d+)/); return m ? Number(m[1]) : 0; };
+function openPlayer(href) {
+  const id = ytId(href), t = ytT(href); if (!id) return;
+  $("#vfr").innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?start=${t}&autoplay=1&playsinline=1&rel=0" title="動画" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+  $("#vext").href = `https://youtu.be/${id}${t ? "?t=" + t : ""}`; $("#vp").style.display = "flex"; track("play");
+}
+function closePlayer() { $("#vfr").innerHTML = ""; $("#vp").style.display = "none"; }
+document.addEventListener("click", e => {
+  const pg = e.target.closest("[data-page]"); if (pg) { e.preventDefault(); openDict(pg.dataset.page); return; }
+  const gl = e.target.closest("[data-g]"); if (gl) { e.preventDefault(); openSheet(Number(gl.dataset.g)); return; }
+  const a = e.target.closest("a[href]"); if (a && a.id !== "vext" && ytId(a.href)) { e.preventDefault(); closeSheet(); openPlayer(a.href); }
+});
+const more = q => q.x ? `<div class="more"><b class="mh">📘 補足（教科書）</b><br>${q.x}</div>` : "";
+
 /* ===== ポイント・済マーク ===== */
 let pts = Number(store.getItem(KEY + "pts") || 0);
 function addPts(n) { pts += n; store.setItem(KEY + "pts", pts); $("#pt").textContent = pts + " pt"; }
@@ -715,14 +857,17 @@ function record(sec, ok, n) {
 /* 2026-11-01 途中までの記録（まっさん指示）：答えるたびに上書き保存。途中でやめても・ページを閉じても残る。最後まで解いたら record() が消す。
    前回・ベスト（h_）には入れない＝途中の数字でベストや前回比べがずれないように。 */
 const partial = sec => JSON.parse(store.getItem(KEY + "p_" + sec) || "null");
-function savePartial(sec, res, n) {
+function savePartial(sec, res, n, kind, list) {
   if (!sec || !res.length) return;
   const d = new Date();
-  store.setItem(KEY + "p_" + sec, JSON.stringify({ ok: res.filter(r => r.ok).length, a: res.length, n, d: `${d.getMonth() + 1}/${d.getDate()}` }));
+  /* 2026-11-07 続きから再開できるように、問題の順番（q）と答え（r）も残す */
+  store.setItem(KEY + "p_" + sec, JSON.stringify({ ok: res.filter(r => r.ok).length, a: res.length, n, d: `${d.getMonth() + 1}/${d.getDate()}`,
+    ...(kind && list ? { kind, q: list.map(qid), r: packRes(res) } : {}) }));
+  QLOG.step(logRec(sec, res, n));
 }
 function histTag(sec) {
   const h = hist(sec), p = partial(sec);
-  const pt = p ? `<span class="hs part">途中まで ${p.a}/${p.n}問（正解${p.ok}）・${p.d}</span>` : "";
+  const pt = p ? `<span class="hs part">途中まで ${p.a}/${p.n}問（正解${p.ok}）・${p.d}${canResume(p) ? `<span class="cont">▶ 続きから</span>` : ""}</span>` : "";
   if (!h.length) return pt;
   const last = h[h.length - 1], best = Math.max(...h.map(x => x.pc));
   return `<span class="hs">前回 ${last.ok}/${last.n}（${last.pc}%）・ベスト ${best}%・${h.length}回</span>${pt ? " " + pt : ""}`;
@@ -739,6 +884,79 @@ function cmpHtml(r) {
   return line + best + chips;
 }
 
+/* ===== 2026-11-07 今いる場所の保存と復帰・続きから（まっさん：「YouTubeで開く」で動画を見て戻ると、アプリが最初からになる／途中から始めたい）
+   スマホは別のアプリ（YouTube）へ行くと、戻ったときにページを読み込み直すことがある＝画面の中身（メモリ）が消えて「はじめに」に戻っていた。
+   → 画面が変わるたび・1問答えるたびに「今いる場所」を store（KEY+"now"）に保存。開いたときに NOW_MAX 以内の保存があれば、はじめにではなくその画面に戻す
+     （問題の途中なら答えた問題と点数もそのまま、解説を読んでいたらその解説の画面、辞書の読みものを開いていたらそれも開く、スクロール位置も）。
+   → 「途中まで」の記録（p_）に問題の順番と答えも残し、ホームで押すと「続きから／最初から」を選べる（ランダムな順番のひっかけ・まとめテストも同じ順番で続く）。
+   問題は qid（章id-番号／T番号／K番号）で覚える。単元のデータが変わって見つからない問題があれば、続きからは出さない（最初から）。 */
+const NOW_MAX = 3 * 3600 * 1000;
+let NOW = null;
+function saveNow(o) {
+  if (o !== undefined) NOW = o;
+  try { if (NOW) store.setItem(KEY + "now", JSON.stringify(Object.assign({}, NOW, { ts: Date.now(), dict: DOPEN || undefined, y: Math.round(window.scrollY || 0) }))); } catch (e) { /* 保存できなくても学習は止めない */ }
+}
+const QBY = new Map(ALLQK.map(q => [qid(q), q]));
+const packRes = res => res.map(x => [x.ok ? 1 : 0, x.picked === undefined ? null : x.picked, x.v === undefined ? null : x.v]);
+const unpackRes = (list, r) => r.map((x, k) => ({ q: list[k], ok: !!x[0], picked: x[1] === null ? undefined : x[1], v: x[2] === null ? undefined : x[2] }));
+const listOf = ids => { const l = (ids || []).map(id => QBY.get(id)); return l.length && l.every(Boolean) ? l : null; };
+function canResume(p) { return !!(p && p.kind && p.q && p.r && p.r.length > 0 && p.r.length < p.q.length && listOf(p.q) && qopt(p.kind)); }
+/* 問題のまとまり（kind）から、quiz の opt を作り直す＝保存した途中から同じ形で再開できる */
+function qopt(kind) {
+  if (!kind) return null;
+  if (kind.t === "ch") { const i = kind.i, c = CH[i]; if (!c) return null; const title = `${c.icon} ${i + 1}. ${c.title}`;
+    return { kind, title, label: "確認問題", sec: c.id, done: res => { markDone(c.id); resultScreen(res, { sec: c.id, title, chapter: i }); } }; }
+  if (kind.t === "trap") return { kind, title: "⚠️ ひっかけ ○×", label: "問題", sec: "trap", done: res => { markDone("trap"); resultScreen(res, { sec: "trap", title: "⚠️ ひっかけ ○×" }); } };
+  if (kind.t === "test") return { kind, title: "📝 まとめテスト", label: "問題", sec: "test", done: res => resultScreen(res, { sec: "test", title: "📝 まとめテスト" }) };
+  if (kind.t === "ky") return { kind, title: "🎯 共通テスト形式", label: "問", sec: "kyotsu", done: res => { markDone("kyotsu"); resultScreen(res, { sec: "kyotsu", title: "🎯 共通テスト形式", ky: true }); } };
+  if (kind.t === "retry" && kind.o) { const o = kind.o; return { kind, title: o.title + "（まちがえた問題）", label: "問題", done: res => resultScreen(res, { ...o, sec: null, retry: true }) }; }
+  return null;
+}
+function resumeQuiz(kind, ids, r, fb) {
+  const list = listOf(ids), opt = list && qopt(kind);
+  if (!opt || !Array.isArray(r) || r.length > list.length) return false;
+  quiz(list, opt, { r, fb });
+  return true;
+}
+/* ホームで押したとき：「途中まで」があれば 続きから／最初から を選ぶ。なければ今まで通り最初から */
+function startSec(sec, fresh) {
+  const p = partial(sec);
+  if (!canResume(p)) return fresh();
+  $("#mbox").innerHTML = `<h2>続きからやる？</h2><div class="muted">前回は <b>${p.a}/${p.n}問</b>まで（正解${p.ok}）・${p.d}<br>続きからなら <b>${p.a + 1}問目</b>から。ここまでの答えもそのまま残って、最後まで解くと記録になるよ。</div>
+    <button class="btn main" id="mr">▶ 続きから（${p.a + 1}問目〜）</button><button class="btn sub" id="mf">最初から</button>`;
+  $("#modal").style.display = "flex";
+  $("#mr").onclick = () => { closeModal(); if (!resumeQuiz(p.kind, p.q, p.r, false)) fresh(); };
+  $("#mf").onclick = () => { closeModal(); fresh(); };
+}
+const openCh = i => startSec(CH[i].id, () => chapter(i));
+/* 開いたとき：さっきの画面にもどす（もどせなければ false＝はじめに） */
+function restoreNow() {
+  let o = null; try { o = JSON.parse(store.getItem(KEY + "now") || "null"); } catch (e) { o = null; }
+  if (!o || !o.ts || Date.now() - o.ts > NOW_MAX || o.s === "intro") return false;
+  let ok = false;
+  try {
+    if (o.s === "home") { home(); ok = true; }
+    else if (o.s === "dictidx") { dictIndex(); ok = true; }
+    else if (o.s === "kyintro") { kyotsu(); ok = true; }
+    else if (o.s === "card" && CH[o.i]) { chapter(o.i, o.k); ok = true; }
+    else if (o.s === "lab" && UNIT.lab) { lab(o.m); ok = true; }
+    else if (o.s === "quiz") ok = resumeQuiz(o.kind, o.q, o.r, o.fb);
+    else if (o.s === "result" && o.o) { const l = listOf(o.q); if (l && Array.isArray(o.r) && o.r.length === l.length) { resultScreen(unpackRes(l, o.r), Object.assign({}, o.o, { restored: true })); ok = true; } }
+    if (ok && o.dict && DICT.some(d => d.id === o.dict)) openDict(o.dict);
+  } catch (e) { ok = false; }
+  if (ok) { const y = o.y || 0; setTimeout(() => window.scrollTo(0, y), 80); toast("↩ さっきの画面にもどりました"); }
+  return ok;
+}
+function toast(t) { const el = $("#toast"); el.textContent = t; el.style.display = "block"; clearTimeout(toast.h); toast.h = setTimeout(() => { el.style.display = "none"; }, 2600); }
+/* 別のアプリへ行く直前に、スクロール位置も保存 */
+addEventListener("pagehide", () => saveNow());
+addEventListener("visibilitychange", () => { if (document.visibilityState === "hidden") saveNow(); });
+function histNow(sec) {
+  const h = hist(sec); if (!h.length) return null;
+  const cur = h[h.length - 1], before = h.slice(0, -1);
+  return { prev: before.length ? before[before.length - 1] : null, best: before.reduce((m, x) => Math.max(m, x.pc), -1), pc: cur.pc, all: h.slice(-6) };
+}
+
 /* ===== 確認ダイアログ（解答中にホームへ戻るとき） ===== */
 function closeModal() { const m = document.getElementById("modal"); if (m) m.style.display = "none"; }
 function askHome() {
@@ -750,6 +968,7 @@ function askHome() {
 
 /* ===== はじめに（毎回最初に出る） ===== */
 function intro() {
+  saveNow({ s: "intro" });
   screen(`<div class="card pop">
     <img class="intro-logo" src="${IMG.logo}" alt="Q-UP塾 公共・政経">
     <h1 style="margin-top:14px;text-align:center">${LABEL}　${UNIT.title}</h1>
@@ -758,6 +977,7 @@ function intro() {
     <ul class="howto">
       <li><span class="n">1</span><span><b>STEP1　動画の復習</b><br>動画と<b>同じ順番・同じ言葉</b>で、説明→確認問題。まちがえたら「▶ 動画で確認」でその場面に戻れるよ。</span></li>
       <li class="k"><span class="n">2</span><span><b>STEP2　共通テストではこう出る</b><br>同じ中身を<b>共通テストと同じ形</b>の問題（5問）で。この分野がどう出るか、解説でつかもう。</span></li>
+      ${GLOS.length ? `<li><span class="n" style="background:#8a6d12">📖</span><span><b>点線の言葉はタップ</b>すると短い説明が出るよ。ホームの「辞書」には、深掘りの読みものもあるよ。</span></li>` : ""}
       <li><span class="n">✓</span><span>どの問題も、<b>前回のスコアとベスト</b>が残るよ。やり直して記録を伸ばそう！</span></li>
     </ul>
     <button class="btn main" id="go">はじめる！</button></div>
@@ -774,6 +994,7 @@ const FOOT = `Q-UP塾 公共・政経<br>まつり先生はAIで作ったキャ�
 
 /* ===== ホーム ===== */
 function home() {
+  QLOG.leave(); saveNow({ s: "home" });
   const d = done();
   const nq = CH.reduce((s, c) => s + c.qs.length, 0);
   screen(`<div class="card pop">
@@ -783,13 +1004,16 @@ function home() {
       : `<div class="vcard"><img src="${IMG["pose-hi"]}" alt="まつり先生"><span><b>▶ 動画は近日公開</b><small>公開したら、ここから見られるよ</small></span></div>`}</div>
   <div class="sec">STEP 1　動画の復習（動画と同じ順番）</div>
   <div class="secnote">全${CH.length}章・${nq}問。上から順に進めよう。</div>
-  <div class="menu">${CH.map((c, i) => `<button class="item" onclick="chapter(${i})"><span class="ic">${c.icon}</span><span><b>${i + 1}. ${c.title}</b><small>${VIDEO ? `動画 ${mmss(c.t)}〜 ／ ` : ""}問題${c.qs.length}問</small>${histTag(c.id)}</span>${d[c.id] ? '<span class="done">✔ 済</span>' : ""}</button>`).join("")}
+  <div class="menu">${CH.map((c, i) => `<button class="item" onclick="openCh(${i})"><span class="ic">${c.icon}</span><span><b>${i + 1}. ${c.title}</b><small>${VIDEO ? `動画 ${mmss(c.t)}〜 ／ ` : ""}問題${c.qs.length}問</small>${histTag(c.id)}</span>${d[c.id] ? '<span class="done">✔ 済</span>' : ""}</button>`).join("")}
   ${UNIT.lab ? `<button class="item labi" onclick="lab()"><span class="ic">${UNIT.lab.icon}</span><span><b>${UNIT.lab.title}</b><small>${UNIT.lab.sub}</small>${histTag("lab")}</span>${d.lab ? '<span class="done">✔ 済</span>' : ""}</button>` : ""}
-  <button class="item trap" onclick="traps()"><span class="ic">⚠️</span><span><b>ひっかけ ○× ${TRAPS.length}問</b><small>テストで逆にして出してくるところ</small>${histTag("trap")}</span>${d.trap ? '<span class="done">✔ 済</span>' : ""}</button>
-  <button class="item test" onclick="test()"><span class="ic">📝</span><span><b>まとめテスト 15問</b><small>STEP1の全範囲からランダム。70%で合格、90%でS級</small>${histTag("test")}</span>${d.test ? '<span class="done">✔ 合格</span>' : ""}</button></div>
+  <button class="item trap" onclick="startSec('trap', traps)"><span class="ic">⚠️</span><span><b>ひっかけ ○× ${TRAPS.length}問</b><small>テストで逆にして出してくるところ</small>${histTag("trap")}</span>${d.trap ? '<span class="done">✔ 済</span>' : ""}</button>
+  <button class="item test" onclick="startSec('test', test)"><span class="ic">📝</span><span><b>まとめテスト 15問</b><small>STEP1の全範囲からランダム。70%で合格、90%でS級</small>${histTag("test")}</span>${d.test ? '<span class="done">✔ 合格</span>' : ""}</button></div>
   <div class="sec ky">STEP 2　共通テストではこう出る</div>
   <div class="secnote">STEP1が終わったら挑戦。共通テストと同じ形の問題で、この分野の出方をつかもう。</div>
   <div class="menu"><button class="item kyi" onclick="kyotsu()"><span class="ic">🎯</span><span><b>共通テスト形式 ${KY.qs.length}問</b><small>${KY.formats}</small>${histTag("kyotsu")}</span>${d.kyotsu ? '<span class="done">✔ 済</span>' : ""}</button></div>
+  ${GLOS.length || DICT.length ? `<div class="sec" style="color:#8a6d12">📖 辞書（ことば・深掘りの読みもの）</div>
+  <div class="secnote">わからない言葉を引いたり、試験の先にある「学問の入口」をのぞいたり。</div>
+  <div class="menu"><button class="item dic" onclick="dictIndex()"><span class="ic">📖</span><span><b>ことば辞書 ${GLOS.length}語${DICT.length ? `＋読みもの${DICT.length}本` : ""}</b><small>${DICT.map(d => d.title).join("／") || "動画に出てくる言葉をまとめて引ける"}</small></span></button></div>` : ""}
   ${UNIT.next ? `<div class="next">📺 次回　<b>${UNIT.next.title}</b><br>${UNIT.next.text}</div>` : ""}
   <button class="btn sub" onclick="intro()">📖 はじめに（使い方）</button>
   ${EXITS()}
@@ -797,13 +1021,11 @@ function home() {
 }
 
 /* --- 章：説明カード → 確認問題 --- */
-function chapter(i) {
-  const c = CH[i]; let k = 0;
+function chapter(i, k0) {
+  const c = CH[i]; let k = Math.max(0, Math.min(Number(k0) || 0, c.cards.length - 1));
   const show = () => {
-    if (k >= c.cards.length) {
-      return quiz(c.qs, { title: `${c.icon} ${i + 1}. ${c.title}`, label: "確認問題", shuffleQ: false, sec: c.id,
-        done: res => { markDone(c.id); resultScreen(res, { sec: c.id, title: `${c.icon} ${i + 1}. ${c.title}`, chapter: i }); } });
-    }
+    if (k >= c.cards.length) return quiz(c.qs, qopt({ t: "ch", i }));
+    saveNow({ s: "card", i, k });
     const cd = c.cards[k];
     screen(`<div class="card pop"><div class="stage">${c.icon} ${i + 1}. ${c.title}　｜　説明 ${k + 1}/${c.cards.length}</div>
       ${prog(k, c.cards.length)}
@@ -820,8 +1042,18 @@ function chapter(i) {
 }
 
 /* --- 問題ランナー（4択・○×・並べ替え・共通テスト形式・立場選択の2段 k:"st"） --- */
-function quiz(list, opt) {
-  let i = 0; const res = [];
+function quiz(list, opt, resume) {
+  let i = 0; const res = []; QLOG.t0 = Date.now();
+  /* 2026-11-07 続きから：resume.r＝答えた問題、resume.fb＝最後に答えた問題の解説を読んでいた（その解説の画面にもどす） */
+  let replay = null, replaying = false;
+  if (resume && Array.isArray(resume.r) && resume.r.length) {
+    res.push(...unpackRes(list, resume.r)); i = res.length;
+    const last = res[res.length - 1];
+    if ((resume.fb || i >= list.length) && last.v !== undefined) { i = res.length - 1; replay = last; }
+    else if (i >= list.length) i = list.length - 1, res.pop();
+  }
+  const ids = list.map(qid);
+  const here = fb => { if (opt.kind) saveNow({ s: "quiz", kind: opt.kind, q: ids, r: packRes(res), fb }); };
   const one = () => {
     if (i >= list.length) return opt.done(res);
     const q = list[i];
@@ -849,16 +1081,19 @@ function quiz(list, opt) {
       <div class="q">${q.k === "tf" ? "○か×か？<br>" : ""}${q.k === "st" ? `<span class="stg">STEP①</span>` : ""}${q.q}</div>${body}<div id="fbx"></div></div>
       <button class="btn sub" id="hm">ホームにもどる</button>`);
     $("#hm").onclick = askHome;
-    const finish = (ok, ansText, picked) => {
-      res.push({ q, ok, picked }); if (ok) addPts(q.ky ? 20 : 10);
-      savePartial(opt.sec, res, list.length);
+    let answered = false;
+    const finish = (ok, ansText, picked, v) => {
+      answered = true;
+      if (!replaying) { res.push({ q, ok, picked, v }); if (ok) addPts(q.ky ? 20 : 10); savePartial(opt.sec, res, list.length, opt.kind, list); }
+      here(true);
       const why = q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : "";
       $("#fbx").innerHTML = `<div class="fb ${ok ? "ok" : "ng"} pop"><h3>${ok ? `⭕ 正解！ +${q.ky ? 20 : 10}pt` : "❌ ざんねん…"}</h3>
-        ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${why}
+        ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${more(q)}${why}
         ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>
         <button class="btn main" id="nx">${i + 1 < list.length ? "次の問題へ" : "結果を見る"}</button>`;
+      glossify($("#fbx"));
       $("#nx").onclick = () => { i++; one(); };
-      $("#nx").scrollIntoView({ behavior: "smooth", block: "end" });
+      if (!replaying) $("#nx").scrollIntoView({ behavior: "smooth", block: "end" });
     };
     if (q.k === "mc") {
       const bs = document.querySelectorAll(".choices button");
@@ -866,14 +1101,14 @@ function quiz(list, opt) {
         const j = Number(b.dataset.j), ok = j === q.a;
         bs.forEach(x => { x.disabled = true; if (Number(x.dataset.j) === q.a) x.classList.add("ok"); });
         if (!ok) b.classList.add("ng");
-        finish(ok, (q.ky ? NO[q.a] + " " : "") + q.c[q.a], (q.ky ? NO[j] + " " : "") + q.c[j]);
+        finish(ok, (q.ky ? NO[q.a] + " " : "") + q.c[q.a], (q.ky ? NO[j] + " " : "") + q.c[j], j);
       });
     } else if (q.k === "tf") {
       document.querySelectorAll(".tf button").forEach(b => b.onclick = () => {
         const v = b.dataset.v === "1", ok = v === q.a;
         document.querySelectorAll(".tf button").forEach(x => { x.disabled = true; if ((x.dataset.v === "1") === q.a) x.classList.add("ok"); });
         if (!ok) b.classList.add("ng");
-        finish(ok, q.a ? "○" : "×", v ? "○" : "×");
+        finish(ok, q.a ? "○" : "×", v ? "○" : "×", v ? 1 : 0);
       });
     } else if (q.k === "st") {
       /* ①立場（答え合わせまでは選び直せる）→ ②根拠を q.a[立場] の数だけ選ぶ → 答え合わせ。立場はどちらでも正解になりうる */
@@ -896,7 +1131,7 @@ function quiz(list, opt) {
         const ok = pick.length === right.length && pick.every(j => right.includes(j));
         sbs.forEach(x => x.disabled = true); gbs.forEach(x => x.disabled = true); $("#ck2").disabled = true;
         gbs.forEach(x => { const j = Number(x.dataset.j); x.classList.remove("sel"); if (right.includes(j)) x.classList.add("ok"); else if (sel.has(j)) x.classList.add("ng"); });
-        finish(ok, `${NO[s]}（${q.st[s]}）を選んだなら ${right.map(j => KANA[j]).join("と")}`, `${NO[s]} ${q.st[s]}・${pick.map(j => KANA[j]).join("と")}`);
+        finish(ok, `${NO[s]}（${q.st[s]}）を選んだなら ${right.map(j => KANA[j]).join("と")}`, `${NO[s]} ${q.st[s]}・${pick.map(j => KANA[j]).join("と")}`, [s, pick]);
       };
     } else {
       const picked = [];
@@ -909,9 +1144,22 @@ function quiz(list, opt) {
       $("#ck").onclick = () => {
         const ok = picked.every((x, j) => x === q.items[j]);
         $("#ck").disabled = true; $("#rs").disabled = true;
-        finish(ok, q.items.map((x, j) => `${j + 1}. ${x}`).join("　→ "), picked.join(" → "));
+        finish(ok, q.items.map((x, j) => `${j + 1}. ${x}`).join("　→ "), picked.join(" → "), picked.slice());
       };
     }
+    if (replay && replay.q === q) {
+      /* 解説を読んでいた問題：保存した答えをもう一度押して、同じ解説の画面にする（記録・ポイントは二重にしない） */
+      const v = replay.v; replay = null; replaying = true;
+      try {
+        const clk = sel => { const b = document.querySelector(sel); if (b) b.click(); };
+        if (q.k === "mc") clk(`.choices button[data-j="${v}"]`);
+        else if (q.k === "tf") clk(`.tf button[data-v="${v}"]`);
+        else if (q.k === "st") { clk(`#stb button[data-s="${v[0]}"]`); v[1].forEach(j => clk(`#gr button[data-j="${j}"]`)); clk("#ck2"); }
+        else { v.forEach(t => { const b = [...document.querySelectorAll("#pool .chip:not(.used)")].find(x => x.textContent === t); if (b) b.click(); }); clk("#ck"); }
+      } catch (e) { /* もどせなければ、この問題を解き直す */ }
+      replaying = false;
+      if (!answered) { res.pop(); here(false); }
+    } else here(false);
   };
   one();
 }
@@ -925,28 +1173,33 @@ function whySt(q) {
 const ansSt = q => q.st.map((s, k) => `${NO[k]}（${s}）なら ${q.a[k].map(j => KANA[j]).join("と")}`).join("／");
 
 /* --- ひっかけ・まとめテスト・共通テスト形式 --- */
-function traps() { quiz(shuffle(TRAPS), { title: "⚠️ ひっかけ ○×", label: "問題", sec: "trap", done: res => { markDone("trap"); resultScreen(res, { sec: "trap", title: "⚠️ ひっかけ ○×" }); } }); }
-function test() { quiz(shuffle(ALLQ).slice(0, 15), { title: "📝 まとめテスト", label: "問題", sec: "test", done: res => resultScreen(res, { sec: "test", title: "📝 まとめテスト" }) }); }
+function traps() { quiz(shuffle(TRAPS), qopt({ t: "trap" })); }
+function test() { quiz(shuffle(ALLQ).slice(0, 15), qopt({ t: "test" })); }
 function kyotsu() {
+  saveNow({ s: "kyintro" });
   screen(`<div class="card pop"><div class="stage" style="color:var(--ky)">🎯 STEP2　共通テストではこう出る</div>
     <h2 style="margin-top:8px">共通テスト形式 ${KY.qs.length}問</h2>
     ${bubble("important", KY.intro)}
     <div class="tip"><b class="h">この${KY.qs.length}問の形</b><br>${KY.formats}<br>選択肢は共通テストと同じく①②③④…の番号つき。1問ごとに「共通テストではこう出る」解説が出るよ。</div>
     ${histTag("kyotsu") ? `<div style="margin-top:8px">${histTag("kyotsu")}</div>` : ""}
-    <button class="btn ky" id="go">はじめる</button><button class="btn sub" onclick="home()">ホームにもどる</button></div>`);
-  $("#go").onclick = () => quiz(KY.qs, { title: "🎯 共通テスト形式", label: "問", sec: "kyotsu", done: res => { markDone("kyotsu"); resultScreen(res, { sec: "kyotsu", title: "🎯 共通テスト形式", ky: true }); } });
+    ${canResume(partial("kyotsu")) ? `<button class="btn ky" id="kr">▶ 続きから（${partial("kyotsu").a + 1}問目〜）</button><button class="btn sub" id="go">最初から</button>` : `<button class="btn ky" id="go">はじめる</button>`}
+    <button class="btn sub" onclick="home()">ホームにもどる</button></div>`);
+  $("#go").onclick = () => quiz(KY.qs, qopt({ t: "ky" }));
+  if ($("#kr")) $("#kr").onclick = () => { const p = partial("kyotsu"); if (!resumeQuiz(p.kind, p.q, p.r, false)) quiz(KY.qs, qopt({ t: "ky" })); };
 }
 function retryWrong(list, opt) {
-  quiz(list, { title: opt.title + "（まちがえた問題）", label: "問題", done: res => resultScreen(res, { ...opt, sec: null, retry: true }) });
+  quiz(list, qopt({ t: "retry", o: { sec: opt.sec, title: opt.title, chapter: opt.chapter, ky: opt.ky } }));
 }
 
 /* --- 結果画面（前回・ベストと比べる＋まちがえた問題の復習） --- */
 function resultScreen(res, opt) {
   const ok = res.filter(r => r.ok).length, n = res.length, pc = Math.round(ok / n * 100);
   const wrong = res.filter(r => !r.ok);
-  track("done-" + (opt.retry ? "retry" : opt.sec || "other"));
-  const r = opt.sec ? record(opt.sec, ok, n) : null;
-  if (opt.sec === "test" && pc >= 70) markDone("test");
+  const rs = !!opt.restored; /* 2026-11-07 さっきの結果画面にもどしただけ＝記録・送信・紙ふぶきはしない */
+  if (!rs) { track("done-" + (opt.retry ? "retry" : opt.sec || "other")); QLOG.done(logRec(opt.retry ? "retry" : opt.sec, res, n)); }
+  const r = opt.sec ? (rs ? histNow(opt.sec) : record(opt.sec, ok, n)) : null;
+  if (!rs && opt.sec === "test" && pc >= 70) markDone("test");
+  opt = { sec: opt.sec, title: opt.title, chapter: opt.chapter, ky: opt.ky, retry: opt.retry };
   const ansOf = q => q.k === "mc" ? (q.ky ? NO[q.a] + " " : "") + q.c[q.a] : q.k === "tf" ? (q.a ? "○" : "×") : q.k === "st" ? ansSt(q) : q.items.join(" → ");
   const badge = pc === 100 ? "🎉 全問正解！" : pc >= 90 ? "🏆 S級！" : pc >= 70 ? "👍 合格ライン！" : "もう一歩！";
   const msg = opt.ky
@@ -971,23 +1224,25 @@ function resultScreen(res, opt) {
     <button class="btn sub" onclick="home()">ホームにもどる</button>
     ${EXITS()}
     ${wrong.length ? `<h2 style="margin-top:18px">📒 まちがえた問題の復習</h2>${wrong.map(x => { const q = x.q; return `<div class="rv">${q.fmt ? `<span class="fmt">${q.fmt}</span>` : ""}<div class="qq">${q.q}</div>
-      <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>
+      <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>${more(q)}
       ${q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : ""}
       ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>`; }).join("")}` : ""}
   </div>`);
-  if (pc >= 70) confetti();
+  saveNow({ s: "result", o: opt, q: res.map(x => qid(x.q)), r: packRes(res) });
+  if (pc >= 70 && !rs) confetti();
 }
 
 /* --- 単元ごとの「動かして覚える」（2026-10-24 政経3の形に統一）
    UNIT.lab.modes = [{ label, run(el) }（自由に動かす）| { label, game: {...} }（仕分けゲーム）]
    上にモード切替ボタン（①②…）、下に中身。ゲームは全単元で sortGame を使う。 --- */
-function lab() {
+function lab(m0) {
   track("lab");
   screen(`<div class="card pop"><div class="stage">${UNIT.lab.icon} ${UNIT.lab.title}</div><div id="labx"></div></div>
     <button class="btn sub" onclick="home()">ホームにもどる</button>`);
-  const L = UNIT.lab; let mode = 0, stop = null;
+  const L = UNIT.lab; let mode = L.modes[m0] ? Number(m0) : 0, stop = null;
   const render = () => {
     if (stop) { stop(); stop = null; }
+    saveNow({ s: "lab", m: mode });
     $("#labx").innerHTML = `<div class="row2" style="margin-top:6px">${L.modes.map((m, i) => `<button class="btn ${i === mode ? "main" : "sub"}" id="m${i}" style="margin-top:4px;padding:10px;font-size:14px">${NO[i]} ${m.label}</button>`).join("")}</div><div id="labin"></div>`;
     L.modes.forEach((m, i) => { $("#m" + i).onclick = () => { mode = i; render(); }; });
     const m = L.modes[mode];
@@ -1018,6 +1273,7 @@ function sortGame(el, g) {
       bs.forEach(x => { x.disabled = true; if (x.dataset.k === String(c.a)) x.classList.add("ok"); }); if (!good) b.classList.add("ng");
       if (g.onPick) g.onPick(c);
       $("#sfb").innerHTML = `<div class="fb ${good ? "ok" : "ng"} pop"><h3>${good ? "⭕ 正解！ +5pt" : "❌ ざんねん…"}</h3>${c.why}${g.extra ? g.extra(c) : ""}</div><button class="btn main" id="sn">次へ</button>`;
+      glossify($("#sfb"));
       $("#sn").onclick = () => { i++; one(); };
       $("#sn").scrollIntoView({ behavior: "smooth", block: "end" });
     });
@@ -1036,10 +1292,14 @@ function confetti() {
   tick();
 }
 
+$("#gsheet").onclick = e => { if (e.target.id === "gsheet" || e.target.id === "gcl") closeSheet(); };
+$("#vclose").onclick = closePlayer; $("#vp").onclick = e => { if (e.target.id === "vp") closePlayer(); };
 $("#hlogo").src = IMG["logo-dark"]; $("#hlogo").onclick = home;
 $("#ht1").textContent = LABEL; $("#ht2").innerHTML = UNIT.titleHtml || UNIT.title;
 $("#pt").textContent = pts + " pt";
-intro();
+/* 2026-11-07 YouTube から戻ってページが読み込み直されたときは、はじめにではなく、さっきの画面にもどす */
+$("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
+if (!restoreNow()) intro();
 </script>
 </body>
 </html>
