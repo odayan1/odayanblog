@@ -224,6 +224,14 @@ b.r{color:var(--acc)}
 .u15note{font-size:11.5px;color:#6b7885;margin-top:6px;line-height:1.6}
 /* 仕分けゲームのカード（論点名・ひっかけの文が長いので小さめ） */
 .sortcard{font-size:16px;line-height:1.5}
+/* 2026-11-10 政治★★★シリーズの章（①地方自治） */
+.u15s3{display:inline-block;background:#dc2626;color:#fff;border-radius:7px;padding:1px 9px;font-weight:900;font-size:13px;line-height:1.7}
+.u15soon{background:#fff0ec;border:2px dashed #f3b4ae;border-radius:12px;padding:8px 11px;font-size:13.5px;line-height:1.6;margin:0 0 10px}
+.u15q{background:#fff;border:2px solid #f3b4ae;border-radius:12px;padding:9px 11px;font-size:15px;line-height:1.6}
+.ok1{background:#e6f6ec;border-left:4px solid #2e9e5b;border-radius:8px;padding:8px 11px;margin-top:8px;font-size:14px;line-height:1.6}
+.u15tags div.w3{grid-column:1/-1}
+.u15bar2{display:grid;grid-template-columns:6.2em 1fr;gap:6px;align-items:center;margin:5px 0;font-size:13px;font-weight:800}
+.u15bar2 i{display:block;font-style:normal;height:20px;border-radius:5px;background:linear-gradient(90deg,#0e6f78,#4fb3ba);color:#fff;font-size:12px;text-align:right;padding-right:6px;line-height:20px}
 
 </style>
 </head>
@@ -305,7 +313,8 @@ const NO = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧"];
 const KANA = ["ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク"];
 let VIDEO = "";
 /* 動画がまだ無い回（UNIT.video が空）は「▶ 動画で確認」を出さない（2026-10-31 傾向と対策回：動画と同じ日に公開するため） */
-const vlink = t => (VIDEO && (t || t === 0)) ? `<a class="vl" href="${VIDEO}?t=${t}" target="_blank" rel="noopener">▶ 動画で確認（${mmss(t)}〜）</a>` : "";
+/* 2026-11-10 章ごとの動画：章に video があれば（傾向アプリ15に足した「★★★①」の章など）その章のカード・問題はその動画へ。"" ＝その章の動画はまだ（リンクを出さない）。v が undefined なら今まで通り UNIT.video */
+const vlink = (t, v) => { const V = v !== undefined ? v : VIDEO; return (V && (t || t === 0)) ? `<a class="vl" href="${V}?t=${t}" target="_blank" rel="noopener">▶ 動画で確認（${mmss(t)}〜）</a>` : ""; };
 const bubble = (face, t) => `<div class="bubble"><img src="${IMG["face-" + face]}" alt=""><div>${t}</div></div>`;
 const prog = (i, n) => `<div class="prog">${Array.from({ length: n }, (_, k) => `<i class="${k < i ? "d" : k === i ? "c" : ""}"></i>`).join("")}</div>`;
 let KEY = "qups_";
@@ -336,6 +345,17 @@ const u15map = (num) => `<div class="u15map">
   <div class="rw t2">${num ? '<span class="n">3</span>' : ""}<span>${u15t(2)}<small>今の5回分では<b>0回</b>・前の課程の4回分で<b>出た</b>（<b>9論点</b>）</small></span></div>
   <div class="rw t3">${num ? '<span class="n">4</span>' : ""}<span>${u15t(3)}<small>どちらでも<b>まだ出ていない</b>・でも単元の土台（<b>7論点</b>）</small></span></div></div>
   <div class="u15arrow">勉強の順番：上から ↓</div>`;
+
+/* ===== 2026-11-10 政治★★★シリーズの章（まっさん 11/6 決定「B＝アプリ15に1本ごとの章を足す」）=====
+   章ごとに動画が別なので、章に video を持たせる（エンジン 2026-11-10：c.video。"" ＝近日公開・リンクなし）。
+   ★ ①地方自治の動画を公開したら：U15_S3V1 に "https://youtu.be/<動画ID>" → build.py 15 → E2E → push。
+     S3T＝説明欄 ep_s3_01_desc.txt の目次の秒（場面0〜11）。8:38「しゅちょう」を録り直して時刻がずれたら、ここも直す。 */
+const U15_S3V1 = "https://youtu.be/6cYZepJQfso";  /* 2026-11-10 公開（9分56秒） */
+const S3T = [0, 35, 79, 138, 182, 238, 295, 353, 412, 480, 513, 552];
+const s3soon = () => U15_S3V1 ? "" : `<div class="u15soon">🎬 この章の動画「<b>【政治★★★①】地方自治</b>」は<b>近日公開</b>。公開したら、各カードの下の「▶ 動画で確認」から見られるよ。</div>`;
+/* 動画の場面7と同じ「ひっかけ 5つの型」（政治の傾向回の6つのタグとは別の、地方自治の回の呼び名） */
+const S3_TAG = ["①名前の入れかえ", "②できる↔できない", "③言い過ぎ", "④順番の逆転", "⑤資料と計算"];
+const s3g = n => `<span class="u15tag">${S3_TAG[n - 1]}</span>`;
 
 const U15_CH = [
 /* ---------- 場面0〜2 ---------- */
@@ -583,7 +603,127 @@ const U15_CH = [
   qs: [
   { k: "ord", t: T15[11], q: "動画のまとめの「勉強の順番」に並べよう。", items: ["★★★ 何度も出た", "★★ 1回出た", "★ 旧課程で出た", "基本 どちらもまだ・でも土台"], e: "<b>★★★ → ★★ → ★ → 基本</b>。上の段から。" },
   { k: "mc", t: T15[11], q: "まず最初に勉強する「4本柱」の組合せは？", c: ["判例・地方自治・選挙・司法", "国会・内閣・裁判所・地方自治", "平等・表現の自由・社会権・人権条約", "憲法改正・議院内閣制・天皇・社会契約説"], a: 0, e: "星3つの<b>4本柱＝判例・地方自治・選挙・司法</b>。" },
-  { k: "mc", t: T15[11], q: "★と基本の段は、どこで基本を確かめるとよい？", c: ["単元の動画とアプリのSTEP1", "この回のSTEP2だけ", "前の課程の過去問だけ", "確かめなくてよい"], a: 0, e: "<b>単元の動画とアプリのSTEP1</b>で、基本を確かめておこう（このカードのリンクから）。" }] }
+  { k: "mc", t: T15[11], q: "★と基本の段は、どこで基本を確かめるとよい？", c: ["単元の動画とアプリのSTEP1", "この回のSTEP2だけ", "前の課程の過去問だけ", "確かめなくてよい"], a: 0, e: "<b>単元の動画とアプリのSTEP1</b>で、基本を確かめておこう（このカードのリンクから）。" }] },
+
+/* ---------- 政治★★★① 地方自治（別の動画・台本 scripts/seiji-s3-01_script.md と同じ順番・同じ言葉）---------- */
+{ id: "s3a", icon: "🏘", title: "★★★① 地方自治（深掘り）", t: S3T[0], video: U15_S3V1,
+  cards: [
+  { h: "★★★① 地方自治", t: S3T[0], html: () => s3soon() + `<div><span class="u15s3">政治★★★①</span></div>` + bubble("hi", "政治の<b>星3つの論点</b>を、1つずつ深掘り。1本目は<b>地方自治</b>。今の共通テスト5回分で<b class='r'>7問</b>、前の課程の4回分でも<b>毎回</b>出ていたよ。") + `
+    <div class="fig"><div class="u15q">🗳 いきなり問題：住んでいる町に、新しい条例をつくってほしい。署名を集めたら、<b>だれに出す？</b></div>
+      <div class="u15note">答えは次の次のカードで。今日のゴール＝<b>出方の3つの型</b>と、<b>ひっかけを見ぬく</b>こと</div></div>` },
+  { h: "地方自治はこう出る＝3つの型", t: S3T[1], html: () => bubble("explain", "地方自治という名前の大問はなくて、<b>人口減少や地域の活性化</b>がテーマの大問の中に混ざって出てくるんだ。7問の出方は、<b>3つの型</b>に分かれるよ。") + `
+    <div class="fig"><table class="sum"><tr><th>型</th><th>中身</th><th>問数</th></tr>
+      <tr><td><b>① しくみの名前と手続き</b></td><td>直接請求・首長と議会・今の制度・住民参加</td><td><b>4問</b></td></tr>
+      <tr><td><b>② お金の分け方</b></td><td>自主財源と依存財源・ふるさと納税</td><td><b>2問</b></td></tr>
+      <tr><td><b>③ メモ・グラフを読む</b></td><td>ふるさと納税・市町村の数</td><td><b>2問</b></td></tr></table>
+      <div class="u15note">※1問が2つの型にまたがるときは両方に数えた（ふるさと納税は②と③の両方）</div></div>` },
+  { h: "直接請求：署名の数と請求先", t: S3T[2], html: () => bubble("math-trouble", "うっ、また分数……。先生、数字は苦手だけど、ここは<b>表で</b>覚えよう。") + `
+    <div class="fig"><table class="sum"><tr><th>請求の中身</th><th>署名</th><th>請求先</th><th>そのあと</th></tr>
+      <tr><td>条例の制定・改廃</td><td>有権者の<b>50分の1</b>以上</td><td class="r"><b>首長</b></td><td>首長が議会にかけて、<b>議会が決める</b></td></tr>
+      <tr><td>事務の監査</td><td><b>50分の1</b>以上</td><td><b>監査委員</b></td><td>監査の結果を公表</td></tr>
+      <tr><td>議会の解散</td><td><b>原則3分の1</b>以上</td><td><b>選挙管理委員会</b></td><td>住民投票で過半数 → 解散</td></tr>
+      <tr><td>首長・議員の解職（リコール）</td><td><b>原則3分の1</b>以上</td><td><b>選挙管理委員会</b></td><td>住民投票で過半数 → 職を失う</td></tr></table>
+      <div class="warn"><b>人の地位をうばう請求</b>＝ハードルが高い → <b>3分の1</b>・<b>選挙管理委員会</b>・最後は<b>住民投票</b></div>
+      <div class="ok1">いきなり問題の答え：条例の請求は<b>首長</b>へ（議会ではない）</div>
+      <div class="u15note">※副知事・副市町村長などの解職は、首長に請求 → 議会で決める</div></div>` },
+  { h: "カタカナ3つ：名前の入れかえ", t: S3T[3], html: () => bubble("explain", "直接請求には、カタカナの名前もついている。<b>中身と名前を1対1</b>でつなげておこう。") + `
+    <div class="fig"><table class="sum">
+      <tr><td><b>イニシアティブ</b></td><td><b>住民発案</b>＝住民が条例を提案すること（条例の制定・改廃の請求）</td></tr>
+      <tr><td><b>レファレンダム</b></td><td><b>住民投票</b>＝住民の意思を、投票で問うこと</td></tr>
+      <tr><td><b>リコール</b></td><td><b>解職請求</b>＝首長や議員を、やめさせる請求</td></tr></table>
+      <div class="warn">実際に出た誤り：住民投票のことを「イニシアティブ」と呼ぶ ✕ → 正しくは<b>レファレンダム</b><br>発案＝イニシアティブ／投票＝レファレンダム／やめさせる＝リコール</div></div>` },
+  { h: "首長と議会のやりとり", t: S3T[4], html: () => bubble("textbook", "地方では、住民が<b>首長と議員をそれぞれ直接選ぶ</b>。これが<b>二元代表制</b>。だから、おたがいにブレーキがあるんだ。") + `
+    <div class="fig"><div class="two"><div class="box"><b>首長 → 議会：拒否権</b><small>条例や予算に反対なら、議会に<b>再議</b>（もう一度話し合って）を求める<br>→ 議会は<b>出席議員の3分の2以上</b>で同じ議決を<b>もう一度できる</b></small></div>
+      <div class="box g"><b>議会 → 首長：不信任</b><small>議員の3分の2以上が出席・その<b>4分の3以上</b>が賛成で不信任の議決</small></div></div>
+      <div class="flow" style="margin-top:8px"><div class="st">議会が首長の<b>不信任</b>を議決</div><div class="ar">↓ 首長は</div>
+      <div class="st"><b>10日以内に議会を解散できる</b><small>解散しなければ、職を失う</small></div><div class="ar">↓ 選挙のあと</div>
+      <div class="st hl">新しい議会で、もう一度不信任（過半数）→ <b>職を失う</b></div></div>
+      <div class="warn">実際に出たひっかけ：議会は再議決<b>できない</b> ✕／首長は議会を解散<b>できない</b> ✕ → どちらも<b>できる</b></div>
+      <div class="u15note">国では：内閣不信任 → 10日以内に衆議院の解散か総辞職</div></div>` },
+  { h: "地方のお金：自主財源と依存財源", t: S3T[5], html: () => bubble("idea", "自分で集めるお金が<b>自主財源</b>。国から来るお金や、<b>借りたお金</b>は<b>依存財源</b>だよ。") + `
+    <div class="fig"><div class="two"><div class="box s"><b>自主財源＝自分で集める</b><small>中心は<b>地方税</b></small></div>
+      <div class="box g"><b>依存財源＝国から来る・借りる</b><small><b>地方交付税</b>（使い道は自由・財政の差をならす）<br><b>国庫支出金</b>（使い道が決まっている）<br><b>地方債</b>（自治体の借金）</small></div></div>
+      <div class="flow" style="margin-top:8px"><div class="st">三位一体の改革（2000年代）</div><div class="ar">↓</div>
+      <div class="st">国庫支出金を減らす＋国の税を地方の税へ移す（<b>税源移譲</b>）＋地方交付税を見直す</div><div class="ar">↓ 地方税が増える</div>
+      <div class="st hl"><b>自主財源が増える</b></div></div>
+      <div class="warn">国庫支出金 → 地方交付税に置きかえても、<b>どちらも依存財源</b>（依存財源が増えることにはならない）<br>地方債は借りたお金＝<b>依存財源</b>（自主財源ではない）</div></div>` },
+  { h: "メモとグラフを読む", t: S3T[6], html: () => bubble("surprised", "3つ目の型は、<b>メモやグラフを読む</b>問題。資料に書いてあること＋<b>自分で計算</b>だよ。") + `
+    <div class="fig"><div class="doc"><div class="dt">ふるさと納税のメモ（オリジナル）</div>
+      ・応援したい自治体に寄付できる<br>・寄付額のうち2,000円をこえる分が、住んでいる所の税から差し引かれる（上限あり）<br>・上限は、所得が高い人ほど高い</div>
+      <table class="sum" style="margin-top:8px"><tr><td>「所得の差が小さくなる」</td><td class="r"><b>✕</b> 上限が高い人ほど、多く使える</td></tr>
+      <tr><td>「国の財政とは関係ない」</td><td class="r"><b>✕</b> 減った住民税の分を、地方交付税で補う自治体がある<small>（交付税を受け取る自治体の場合）</small></td></tr></table>
+      <div class="ttl" style="margin-top:10px">市町村の数（平成の大合併）</div>
+      <div class="u15bar2"><span>1999年</span><i style="width:94%">約3,200</i></div><div class="u15bar2"><span>2014年以降</span><i style="width:50%">約1,700</i></div>
+      <div class="formula vert"><span class="v">1,700 ÷ 3,200</span><span class="op">＝</span><span class="v hl">約0.53</span></div>
+      <div class="warn">半分より多い → 「半分以下になった」とは<b>言えない</b></div></div>` },
+  { h: "実際に出たひっかけ：5つの型", t: S3T[7], html: () => bubble("important", "地方自治で実際に出たひっかけを、<b>5つの型</b>にまとめるよ。") + `
+    <div class="fig"><div class="u15tags">
+      <div><b>①名前の入れかえ</b>イニシアティブ ↔ レファレンダム</div>
+      <div><b>②できる↔できない</b>再議決も、解散も「<b>できる</b>」</div>
+      <div class="w3"><b>③言い過ぎ</b>道州制は「導入済み」→ <b>まだ</b>／条例で決めた住民投票の結果に「法的にしたがう義務」→ <b>ない</b>／条例に「総務大臣の認可」→ <b>要らない</b></div>
+      <div><b>④順番の逆転</b>情報公開：<b>自治体の条例が先</b> → 国の情報公開法があと</div>
+      <div><b>⑤資料と計算</b>書いていない・計算すると合わない</div></div>
+      <div class="ok1">正しい文として出た：<b>オンブズパーソン制度</b>を置いている自治体がある</div>
+      <div class="u15note">※憲法95条の住民投票（1つの自治体だけに適用される特別法）は別：住民投票で過半数の同意がないと、国会は制定できない</div></div>` },
+  { h: "📘 補足：パブリックコメント（住民参加）", html: () => bubble("idea", "動画では名前だけで扱わなかったけど、型①の「住民参加」で出た手続きだよ。ここで足しておくね。") + `
+    <div class="fig"><div class="flow"><div class="st">市が<b>条例や計画の案</b>を公表する</div><div class="ar">↓ 決める前に</div>
+      <div class="st">住民から<b>意見を募る</b>（だれでもネットや郵送で出せることが多い）</div><div class="ar">↓</div>
+      <div class="st hl">出た意見を<b>考えに入れて</b>決める＝<b>パブリックコメント</b><small>意見どおりに直す義務まではない</small></div></div>
+      <table class="sum" style="margin-top:8px"><tr><th>住民参加のしくみ</th><th>ひとことで</th></tr>
+      <tr><td>直接請求</td><td>署名を集めて、条例・監査・解散・解職を求める</td></tr>
+      <tr><td>住民投票（条例による）</td><td>結果は<b>尊重</b>する（法的な拘束力はない）</td></tr>
+      <tr><td>情報公開</td><td>自治体の<b>条例が先</b>、国の法律があと</td></tr>
+      <tr><td>オンブズパーソン</td><td>住民の苦情を受けて、行政を調べる人を置く</td></tr>
+      <tr><td><b>パブリックコメント</b></td><td>決める<b>前に</b>、案への意見を募る</td></tr></table>
+      <div class="warn">対になる言葉：<b>マニフェスト</b>＝選挙で政党や候補者が示す、目標・期限・財源などを入れた公約。「案に意見を募る手続き」ではない</div></div>` },
+  { h: "まとめ：これだけは", t: S3T[10], html: () => bubble("seeyou", "この<b>3つ</b>と、<b>ひっかけの5つの型</b>を持っていれば、地方自治の問題はこわくない！") + `
+    <div class="fig"><table class="sum">
+      <tr><td><b>① 直接請求</b></td><td>条例は<b>50分の1</b>で<b>首長</b>へ／人の地位は<b>3分の1</b>で<b>選挙管理委員会</b> → 住民投票</td></tr>
+      <tr><td><b>② 首長と議会</b></td><td>再議決も、解散も「<b>できる</b>」</td></tr>
+      <tr><td><b>③ お金</b></td><td>地方税は<b>自主財源</b>、地方交付税・国庫支出金・地方債は<b>依存財源</b></td></tr></table>
+      <div class="warn">ひっかけ＝名前・できる/できない・言い過ぎ・順番・計算</div>
+      <div class="u15note">このあとの確認問題に、動画のミニ演習2問（共通テストの形・オリジナル）も入っているよ</div></div>` }],
+  qs: [
+  { k: "mc", t: S3T[2], q: "条例をつくってほしいという直接請求で、署名を受け取った首長がすることは？", c: ["議会にかけて、議会が決める", "首長が自分で条例を制定する", "すぐに住民投票を行い、過半数で決める", "選挙管理委員会に送って、審査してもらう"], a: 0, e: "首長は<b>議会にかけ</b>、<b>議会が決める</b>。住民投票で決まるのは、議会の解散と、首長・議員の解職。",
+    x: "首長は請求を受けてから<b>20日以内に議会を開き</b>、意見をつけて議会にかける。住民が出発点、決めるのは議会＝直接請求と間接民主制の組み合わせ。" },
+  { k: "mc", t: S3T[2], q: "自治体の事務の監査を求める直接請求の、署名の数と請求先の組合せは？", c: ["有権者の50分の1以上・監査委員", "有権者の50分の1以上・首長", "原則3分の1以上・選挙管理委員会", "原則3分の1以上・監査委員"], a: 0, e: "<b>50分の1以上</b>で<b>監査委員</b>へ。監査の結果は公表される。",
+    x: "監査委員は、自治体のお金の使い方や仕事が正しいかを調べる人たち。結果は公表され、議会や首長にも出される。" },
+  { k: "mc", t: S3T[2], q: "議員の解職（リコール）が決まるまでの流れとして正しいものは？", c: ["原則3分の1以上の署名 → 選挙管理委員会 → 住民投票で過半数が賛成", "50分の1以上の署名 → 首長 → 議会で過半数が賛成", "原則3分の1以上の署名 → 議会 → 議会で3分の2以上が賛成", "50分の1以上の署名 → 選挙管理委員会 → 住民投票で3分の2以上が賛成"], a: 0, e: "人の地位をうばう請求は<b>原則3分の1以上</b> → <b>選挙管理委員会</b> → <b>住民投票で過半数</b>。",
+    x: "「原則」とつくのは、有権者が<b>40万人をこえる</b>大きな自治体では、こえた分の署名の割合がゆるくなるから（数が多すぎて集められないため）。" },
+  { k: "mc", t: S3T[3], q: "住民発案・住民投票・解職請求のカタカナの名前の組合せとして正しいものは？", c: ["住民発案＝イニシアティブ／住民投票＝レファレンダム／解職請求＝リコール", "住民発案＝レファレンダム／住民投票＝イニシアティブ／解職請求＝リコール", "住民発案＝リコール／住民投票＝レファレンダム／解職請求＝イニシアティブ", "住民発案＝イニシアティブ／住民投票＝リコール／解職請求＝レファレンダム"], a: 0, e: "発案＝<b>イニシアティブ</b>、投票＝<b>レファレンダム</b>、やめさせる＝<b>リコール</b>。住民投票を「イニシアティブ」とする入れかえが実際に出た。" },
+  { k: "mc", t: S3T[4], q: "首長が条例の議決に反対して再議を求めたとき、議会が同じ議決をもう一度するのに必要な賛成は？", c: ["出席議員の3分の2以上", "出席議員の過半数", "議員の4分の3以上", "再議を求められたら、議会は同じ議決をできない"], a: 0, e: "<b>出席議員の3分の2以上</b>で、同じ議決を<b>もう一度できる</b>。「できない」は実際に出たひっかけ。",
+    x: "首長の拒否権は、<b>アメリカの大統領の拒否権</b>（上下両院の3分の2以上で再可決）と形が近い。首長も議員も住民が選ぶ＝大統領制に近いしくみだから（政治1）。" },
+  { k: "ord", t: S3T[4], q: "議会が首長の不信任を議決してから、首長が職を失うまでの流れ（首長が議会を解散した場合）を並べよう。", items: ["議会が首長の不信任を議決する", "首長が10日以内に議会を解散する", "議員の選挙が行われる", "新しい議会で、もう一度不信任が議決される", "首長が職を失う"], e: "不信任 → <b>10日以内に解散できる</b> → 選挙 → 新しい議会で<b>もう一度不信任（過半数）</b> → 職を失う。解散しなければ、その時点で職を失う。",
+    x: "国の内閣不信任（衆議院）→ 10日以内に衆議院の解散か総辞職、と形が近い。地方では、2回目の不信任は<b>過半数</b>でよい（1回目は4分の3以上）。" },
+  { k: "mc", t: S3T[5], q: "自治体が発行する地方債は、自主財源と依存財源のどちら？", c: ["依存財源（借りたお金だから）", "自主財源（自治体が自分で発行するから）", "どちらにも入らない", "国が返すので、国の財源"], a: 0, e: "地方債は自治体の<b>借金</b>。借りたお金なので<b>依存財源</b>。地方債を自主財源とする入れかえに注意。",
+    x: "見分け方は「<b>自分で集めたお金か</b>」。地方税＝自分で集める＝自主財源。国から来る（地方交付税・国庫支出金）・借りる（地方債）＝依存財源。" },
+  { k: "mc", t: S3T[5], q: "三位一体の改革の中身として正しいものは？", c: ["国庫支出金を減らし、国の税を地方の税へ移し、地方交付税を見直した", "国庫支出金を増やし、地方の税を国の税へ移した", "地方交付税をなくして、すべて国庫支出金にした", "地方債の発行をすべて禁止した"], a: 0, e: "補助金（<b>国庫支出金</b>）を減らす＋<b>税源移譲</b>＋地方交付税の見直しの3つ。地方税が増えるので<b>自主財源が増える</b>。",
+    x: "2000年代の小泉内閣のときに進められ、所得税（国）から住民税（地方）へ約3兆円の税源が移された。" },
+  { k: "mc", t: S3T[6], q: "「ふるさと納税で差し引ける額の上限は、所得が高い人ほど高い」というメモから、正しく言えることは？", c: ["所得が高い人ほど、この制度を多く使える", "この制度で、所得の差が小さくなる", "所得が低い人ほど、多くの税が差し引かれる", "この制度は、国の財政とは関係ない"], a: 0, e: "上限が高い人ほど<b>多く使える</b>。だから「所得の差が小さくなる」は✕。国の財政も、減った住民税の分を地方交付税で補う自治体があるので関係ある。",
+    x: "2008年に始まった制度。返礼品の競争が行き過ぎたため、2019年から返礼品は<b>寄付額の3割以下</b>・<b>地場産品</b>に限るなどのルールができた。" },
+  { k: "mc", t: S3T[6], q: "市町村の数が約3,200から約1,700に減ったとき、「半分以下になった」と言える？", c: ["言えない（1,700÷3,200＝約0.53で、半分より多い）", "言える（1,700÷3,200＝約0.47で、半分より少ない）", "言える（1,500減ったので、半分以上減った）", "数字だけでは判断できない"], a: 0, e: "1,700 ÷ 3,200 ＝ <b>約0.53</b>。半分（0.5）より多いので、<b>半分以下とは言えない</b>。数字を置いて自分で確かめよう。",
+    x: "平成の大合併（1999〜2010年ごろ）で減った。国は借金の返済を助ける<b>合併特例債</b>などで合併を後押しした。" },
+  { k: "tf", t: S3T[7], q: "道州制は、すでに一部の地方で取り入れられている。", a: false, e: `${s3g(3)}×。道州制は議論されているが、<b>まだ導入されていない</b>。` },
+  { k: "tf", t: S3T[7], q: "自治体が条例を制定するには、総務大臣の認可を受けなければならない。", a: false, e: `${s3g(3)}×。条例は議会が制定する。<b>総務大臣の認可は要らない</b>（憲法94条：法律の範囲内で条例を制定できる）。` },
+  { k: "mc", t: S3T[7], q: "住民からの苦情を受けて、行政の仕事を調べ、改善を求める人を置く制度は？", c: ["オンブズパーソン制度", "パブリックコメント", "イニシアティブ", "マニフェスト"], a: 0, e: "<b>オンブズパーソン（行政監察官）</b>。一部の自治体が置いている（実際に正しい文として出た）。",
+    x: "スウェーデンで生まれた制度。日本では国の制度はなく、1990年に川崎市が初めて置いた。" },
+  { k: "mc", ky: true, t: S3T[8], fmt: "ミニ演習1　正しいものを一つ（4択）",
+    q: "日本の地方自治についての記述として正しいものを、次の①〜④のうちから一つ選べ。",
+    c: ["条例にもとづく住民投票の結果に、議会と首長は法的にしたがわなければならない。", "首長が条例の議決に反対して再議を求めても、議会は出席議員の3分の2以上の賛成で、同じ議決ができる。", "議会の解散の請求は、有権者の50分の1以上の署名で、首長に出す。", "情報公開は、国の情報公開法ができてから、自治体の条例が広がった。"], a: 1,
+    w: [`${s3g(3)} 条例による住民投票の結果に、<b>法的にしたがう義務はない</b>（尊重する）。`, "正しい。再議決は<b>できる</b>。", "数字と出す先がちがう。正しくは<b>原則3分の1以上</b>で<b>選挙管理委員会</b>。", `${s3g(4)} 順番が逆。<b>自治体の条例が先</b>（1982年 山形県金山町）、国の情報公開法があと（1999年）。`],
+    e: "正解は<b>②</b>。①言い過ぎ、③数字と請求先、④順番の逆転。今日の型そのまま。",
+    tip: "動画のミニ演習1（オリジナル）。正誤4択は、<b>1つずつ型に当てはめて</b>消していくと速い。" },
+  { k: "mc", ky: true, t: S3T[8], fmt: "ミニ演習2　空欄の組合せ（4択）",
+    pre: `<div class="doc"><div class="dt">文</div>国が使い道を決めて自治体に配るお金<span style="white-space:nowrap">［イ］</span>を減らし、その分、国の税を地方の税に移すと、自治体の収入のうち<span style="white-space:nowrap">［ウ］</span>の割合が高まる。</div>`,
+    q: "空欄［イ］・［ウ］に当てはまる語句の組合せとして最も適当なものを、次の①〜④のうちから一つ選べ。",
+    c: ["イ　地方交付税　ウ　依存財源", "イ　地方交付税　ウ　自主財源", "イ　国庫支出金　ウ　依存財源", "イ　国庫支出金　ウ　自主財源"], a: 3,
+    w: [`${s3g(1)} イもウも×。使い道が決まっているのは国庫支出金。地方税が増えると自主財源が増える。`, `${s3g(1)} イが×。地方交付税は<b>使い道が自由</b>。`, `${s3g(1)} ウが×。地方税は<b>自主財源</b>。`, "正しい。イ＝国庫支出金、ウ＝自主財源。"],
+    e: "正解は<b>④</b>。使い道が決まっている＝<b>国庫支出金</b>、地方税が増える＝<b>自主財源</b>。三位一体の改革の向きそのもの。",
+    tip: "動画のミニ演習2（オリジナル）。空欄の組合せは、<b>確実な空欄から決める</b>と4択がすぐ2択になる。" },
+  { k: "mc", q: "市が条例の案を公表して、決める前に住民から意見を募る手続きは？", c: ["パブリックコメント", "マニフェスト", "イニシアティブ", "オンブズパーソン制度"], a: 0, e: "<b>パブリックコメント</b>（意見公募手続）。マニフェストは、選挙で政党や候補者が示す公約。",
+    x: "国では、2005年の<b>行政手続法</b>の改正で「意見公募手続」として定められた（2006年から）。自治体は、それぞれの条例や要綱で決めている。" },
+  { k: "mc", q: "パブリックコメントで出された意見の扱いとして、最も適当なものは？", c: ["案を決める側は、出された意見を考えに入れて決めるが、意見どおりに直す義務まではない", "反対の意見が多ければ、案は必ず取り下げなければならない", "意見が一定の数集まると、住民投票が行われる", "意見を出せるのは、署名を集めた有権者の代表だけである"], a: 0, e: "意見は<b>考えに入れる</b>が、<b>意見どおりにする義務はない</b>。住民投票や署名（直接請求）とは別のしくみ。",
+    x: "国の手続きでは、出された意見と、それを<b>どう考えたか（理由）</b>を公表することになっている。" }] }
 ];
 
 /* ===== ひっかけ ○×10問（解説に6タグ。動画の場面8の例＋各段の入れかえやすいところ） ===== */
@@ -733,7 +873,7 @@ const U15_KY = {
 
 const UNIT = {
   no: 15, label: "政治", key: "qups15_", title: "傾向と対策", titleHtml: "政治<span> 傾向と対策</span>",
-  sub: "共通テスト「公共，政治・経済」｜政治1〜4のどこから勉強する？ 出た回数で4つの段に分けた地図＋ひっかけ6つのタグ＋共通テスト形式5問",
+  sub: "共通テスト「公共，政治・経済」｜政治1〜4のどこから勉強する？ 出た回数で4つの段に分けた地図＋ひっかけ6つのタグ＋共通テスト形式5問＋★★★深掘りの章（①地方自治）",
   video: "https://youtu.be/N7_xx93iOJ0", videoLen: "10分23秒",   /* ★動画を公開したら video に "https://youtu.be/<動画ID>"、videoLen に実際の長さ（例 "9分42秒"） */
   chapters: U15_CH, traps: U15_TRAPS, kyotsu: U15_KY,
   lab: { icon: "🧪", title: "仕分けゲーム", sub: "この論点は4段の地図のどの段？＋このひっかけは6つのタグのどれ？",
@@ -749,6 +889,8 @@ VIDEO = UNIT.video; KEY = UNIT.key;
 const LABEL = UNIT.label || ("政経" + UNIT.no);
 const CH = UNIT.chapters, TRAPS = UNIT.traps, KY = UNIT.kyotsu;
 CH.forEach((c, i) => c.qs.forEach(q => q.sec = c.id));
+CH.forEach(c => { if (c.video !== undefined) { c.cards.forEach(cd => cd.v = c.video); c.qs.forEach(q => q.v = c.video); } });  /* 2026-11-10 章ごとの動画 */
+const chV = c => c.video !== undefined ? c.video : VIDEO;
 TRAPS.forEach(q => q.sec = "trap");
 KY.qs.forEach(q => { q.sec = "kyotsu"; q.ky = true; });
 const ALLQ = CH.flatMap(c => c.qs).concat(TRAPS);
@@ -990,7 +1132,7 @@ function home() {
       : `<div class="vcard"><img src="${IMG["pose-hi"]}" alt="まつり先生"><span><b>▶ 動画は近日公開</b><small>公開したら、ここから見られるよ</small></span></div>`}</div>
   <div class="sec">STEP 1　動画の復習（動画と同じ順番）</div>
   <div class="secnote">全${CH.length}章・${nq}問。上から順に進めよう。</div>
-  <div class="menu">${CH.map((c, i) => `<button class="item" onclick="openCh(${i})"><span class="ic">${c.icon}</span><span><b>${i + 1}. ${c.title}</b><small>${VIDEO ? `動画 ${mmss(c.t)}〜 ／ ` : ""}問題${c.qs.length}問</small>${histTag(c.id)}</span>${d[c.id] ? '<span class="done">✔ 済</span>' : ""}</button>`).join("")}
+  <div class="menu">${CH.map((c, i) => `<button class="item" onclick="openCh(${i})"><span class="ic">${c.icon}</span><span><b>${i + 1}. ${c.title}</b><small>${chV(c) ? `動画 ${mmss(c.t)}〜 ／ ` : c.video === "" ? "動画は近日公開 ／ " : ""}問題${c.qs.length}問</small>${histTag(c.id)}</span>${d[c.id] ? '<span class="done">✔ 済</span>' : ""}</button>`).join("")}
   ${UNIT.lab ? `<button class="item labi" onclick="lab()"><span class="ic">${UNIT.lab.icon}</span><span><b>${UNIT.lab.title}</b><small>${UNIT.lab.sub}</small>${histTag("lab")}</span>${d.lab ? '<span class="done">✔ 済</span>' : ""}</button>` : ""}
   <button class="item trap" onclick="startSec('trap', traps)"><span class="ic">⚠️</span><span><b>ひっかけ ○× ${TRAPS.length}問</b><small>テストで逆にして出してくるところ</small>${histTag("trap")}</span>${d.trap ? '<span class="done">✔ 済</span>' : ""}</button>
   <button class="item test" onclick="startSec('test', test)"><span class="ic">📝</span><span><b>まとめテスト 15問</b><small>STEP1の全範囲からランダム。70%で合格、90%でS級</small>${histTag("test")}</span>${d.test ? '<span class="done">✔ 合格</span>' : ""}</button></div>
@@ -1016,7 +1158,7 @@ function chapter(i, k0) {
     screen(`<div class="card pop"><div class="stage">${c.icon} ${i + 1}. ${c.title}　｜　説明 ${k + 1}/${c.cards.length}</div>
       ${prog(k, c.cards.length)}
       <h2 style="margin-top:12px">${cd.h}</h2>${cd.html()}
-      ${vlink(cd.t)}
+      ${vlink(cd.t, cd.v)}
       <button class="btn main" id="nx">${k + 1 < c.cards.length ? "次へ" : "確認問題へ ✏️"}</button>
       ${k > 0 ? `<button class="btn sub" id="bk">もどる</button>` : ""}
       <button class="btn sub" onclick="home()">ホームにもどる</button></div>`);
@@ -1075,7 +1217,7 @@ function quiz(list, opt, resume) {
       const why = q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : "";
       $("#fbx").innerHTML = `<div class="fb ${ok ? "ok" : "ng"} pop"><h3>${ok ? `⭕ 正解！ +${q.ky ? 20 : 10}pt` : "❌ ざんねん…"}</h3>
         ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${more(q)}${why}
-        ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>
+        ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t, q.v)}</div>
         <button class="btn main" id="nx">${i + 1 < list.length ? "次の問題へ" : "結果を見る"}</button>`;
       glossify($("#fbx"));
       $("#nx").onclick = () => { i++; one(); };
@@ -1212,7 +1354,7 @@ function resultScreen(res, opt) {
     ${wrong.length ? `<h2 style="margin-top:18px">📒 まちがえた問題の復習</h2>${wrong.map(x => { const q = x.q; return `<div class="rv">${q.fmt ? `<span class="fmt">${q.fmt}</span>` : ""}<div class="qq">${q.q}</div>
       <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>${more(q)}
       ${q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : ""}
-      ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>`; }).join("")}` : ""}
+      ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t, q.v)}</div>`; }).join("")}` : ""}
   </div>`);
   saveNow({ s: "result", o: opt, q: res.map(x => qid(x.q)), r: packRes(res) });
   if (pc >= 70 && !rs) confetti();
