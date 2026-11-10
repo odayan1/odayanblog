@@ -202,6 +202,8 @@ b.r{color:var(--acc)}
 .era .who{font-weight:900;font-size:20px;color:var(--main)}
 .era .tx{font-size:14px;line-height:1.6}
 
+/* NETFIX 2026-11-10 電波が弱いときの一言（上に出す。Chrome の下のポップアップと重ならない） */
+#netbar{display:none;position:fixed;left:10px;right:10px;top:64px;z-index:60;background:rgba(40,55,62,.94);color:#fff;font-size:13px;font-weight:700;line-height:1.5;padding:8px 12px;border-radius:12px;text-align:center;box-shadow:0 4px 14px rgba(0,0,0,.18)}
 </style>
 </head>
 <body>
@@ -282,7 +284,8 @@ const NO = ["①", "②", "③", "④", "⑤", "⑥", "⑦", "⑧"];
 const KANA = ["ア", "イ", "ウ", "エ", "オ", "カ", "キ", "ク"];
 let VIDEO = "";
 /* 動画がまだ無い回（UNIT.video が空）は「▶ 動画で確認」を出さない（2026-10-31 傾向と対策回：動画と同じ日に公開するため） */
-const vlink = t => (VIDEO && (t || t === 0)) ? `<a class="vl" href="${VIDEO}?t=${t}" target="_blank" rel="noopener">▶ 動画で確認（${mmss(t)}〜）</a>` : "";
+/* 2026-11-10 章ごとの動画：章に video があれば（傾向アプリ15に足した「★★★①」の章など）その章のカード・問題はその動画へ。"" ＝その章の動画はまだ（リンクを出さない）。v が undefined なら今まで通り UNIT.video */
+const vlink = (t, v) => { const V = v !== undefined ? v : VIDEO; return (V && (t || t === 0)) ? `<a class="vl" href="${V}?t=${t}" target="_blank" rel="noopener">▶ 動画で確認（${mmss(t)}〜）</a>` : ""; };
 const bubble = (face, t) => `<div class="bubble"><img src="${IMG["face-" + face]}" alt=""><div>${t}</div></div>`;
 const prog = (i, n) => `<div class="prog">${Array.from({ length: n }, (_, k) => `<i class="${k < i ? "d" : k === i ? "c" : ""}"></i>`).join("")}</div>`;
 let KEY = "qups_";
@@ -774,6 +777,8 @@ VIDEO = UNIT.video; KEY = UNIT.key;
 const LABEL = UNIT.label || ("政経" + UNIT.no);
 const CH = UNIT.chapters, TRAPS = UNIT.traps, KY = UNIT.kyotsu;
 CH.forEach((c, i) => c.qs.forEach(q => q.sec = c.id));
+CH.forEach(c => { if (c.video !== undefined) { c.cards.forEach(cd => cd.v = c.video); c.qs.forEach(q => q.v = c.video); } });  /* 2026-11-10 章ごとの動画 */
+const chV = c => c.video !== undefined ? c.video : VIDEO;
 TRAPS.forEach(q => q.sec = "trap");
 KY.qs.forEach(q => { q.sec = "kyotsu"; q.ky = true; });
 const ALLQ = CH.flatMap(c => c.qs).concat(TRAPS);
@@ -1015,7 +1020,7 @@ function home() {
       : `<div class="vcard"><img src="${IMG["pose-hi"]}" alt="まつり先生"><span><b>▶ 動画は近日公開</b><small>公開したら、ここから見られるよ</small></span></div>`}</div>
   <div class="sec">STEP 1　動画の復習（動画と同じ順番）</div>
   <div class="secnote">全${CH.length}章・${nq}問。上から順に進めよう。</div>
-  <div class="menu">${CH.map((c, i) => `<button class="item" onclick="openCh(${i})"><span class="ic">${c.icon}</span><span><b>${i + 1}. ${c.title}</b><small>${VIDEO ? `動画 ${mmss(c.t)}〜 ／ ` : ""}問題${c.qs.length}問</small>${histTag(c.id)}</span>${d[c.id] ? '<span class="done">✔ 済</span>' : ""}</button>`).join("")}
+  <div class="menu">${CH.map((c, i) => `<button class="item" onclick="openCh(${i})"><span class="ic">${c.icon}</span><span><b>${i + 1}. ${c.title}</b><small>${chV(c) ? `動画 ${mmss(c.t)}〜 ／ ` : c.video === "" ? "動画は近日公開 ／ " : ""}問題${c.qs.length}問</small>${histTag(c.id)}</span>${d[c.id] ? '<span class="done">✔ 済</span>' : ""}</button>`).join("")}
   ${UNIT.lab ? `<button class="item labi" onclick="lab()"><span class="ic">${UNIT.lab.icon}</span><span><b>${UNIT.lab.title}</b><small>${UNIT.lab.sub}</small>${histTag("lab")}</span>${d.lab ? '<span class="done">✔ 済</span>' : ""}</button>` : ""}
   <button class="item trap" onclick="startSec('trap', traps)"><span class="ic">⚠️</span><span><b>ひっかけ ○× ${TRAPS.length}問</b><small>テストで逆にして出してくるところ</small>${histTag("trap")}</span>${d.trap ? '<span class="done">✔ 済</span>' : ""}</button>
   <button class="item test" onclick="startSec('test', test)"><span class="ic">📝</span><span><b>まとめテスト 15問</b><small>STEP1の全範囲からランダム。70%で合格、90%でS級</small>${histTag("test")}</span>${d.test ? '<span class="done">✔ 合格</span>' : ""}</button></div>
@@ -1041,7 +1046,7 @@ function chapter(i, k0) {
     screen(`<div class="card pop"><div class="stage">${c.icon} ${i + 1}. ${c.title}　｜　説明 ${k + 1}/${c.cards.length}</div>
       ${prog(k, c.cards.length)}
       <h2 style="margin-top:12px">${cd.h}</h2>${cd.html()}
-      ${vlink(cd.t)}
+      ${vlink(cd.t, cd.v)}
       <button class="btn main" id="nx">${k + 1 < c.cards.length ? "次へ" : "確認問題へ ✏️"}</button>
       ${k > 0 ? `<button class="btn sub" id="bk">もどる</button>` : ""}
       <button class="btn sub" onclick="home()">ホームにもどる</button></div>`);
@@ -1100,7 +1105,7 @@ function quiz(list, opt, resume) {
       const why = q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : "";
       $("#fbx").innerHTML = `<div class="fb ${ok ? "ok" : "ng"} pop"><h3>${ok ? `⭕ 正解！ +${q.ky ? 20 : 10}pt` : "❌ ざんねん…"}</h3>
         ${ok ? "" : `<div class="ans">正解：${ansText}</div>`}<div>${q.e}</div>${more(q)}${why}
-        ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>
+        ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t, q.v)}</div>
         <button class="btn main" id="nx">${i + 1 < list.length ? "次の問題へ" : "結果を見る"}</button>`;
       glossify($("#fbx"));
       $("#nx").onclick = () => { i++; one(); };
@@ -1237,7 +1242,7 @@ function resultScreen(res, opt) {
     ${wrong.length ? `<h2 style="margin-top:18px">📒 まちがえた問題の復習</h2>${wrong.map(x => { const q = x.q; return `<div class="rv">${q.fmt ? `<span class="fmt">${q.fmt}</span>` : ""}<div class="qq">${q.q}</div>
       <div class="ya">あなたの答え：${x.picked || "—"}</div><div class="aa">正解：${ansOf(q)}</div><div>${q.e}</div>${more(q)}
       ${q.k === "st" ? whySt(q) : q.w ? `<div class="why">${q.c.map((c, j) => `<div><span class="no">${NO[j]}</span><span class="${j === q.a ? "okm" : "ngm"}">${j === q.a ? "○" : "×"}</span> ${q.w[j]}</div>`).join("")}</div>` : ""}
-      ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t)}</div>`; }).join("")}` : ""}
+      ${q.tip ? `<div class="tip"><b class="h">🎯 共通テストではこう出る</b><br>${q.tip}</div>` : ""}${vlink(q.t, q.v)}</div>`; }).join("")}` : ""}
   </div>`);
   saveNow({ s: "result", o: opt, q: res.map(x => qid(x.q)), r: packRes(res) });
   if (pc >= 70 && !rs) confetti();
@@ -1310,6 +1315,41 @@ $("#ht1").textContent = LABEL; $("#ht2").innerHTML = UNIT.titleHtml || UNIT.titl
 $("#pt").textContent = pts + " pt";
 /* 2026-11-07 YouTube から戻ってページが読み込み直されたときは、はじめにではなく、さっきの画面にもどす */
 $("#modal").addEventListener("click", e => { if (e.target.id === "modal") closeModal(); });
+/* NETFIX 2026-11-10 まっさん「最初からオフラインになってて、下の『再読み込み』を押さないとオフラインのまま。ここで離脱する人が出る」
+   アプリは1ファイル完結（問題・画像・解説は全部この中）で、アプリにはオフラインを出す処理がない。
+   ＝開いた瞬間に電波がつかめず、Chrome が保存してあった写しを開いて「オフライン」と出し、そのままになっていた。
+   → 小さなファイル（manifest）で本当につながるかを確かめる。つながらなければ上に一言出して、数秒おきに確かめ直す。
+     開いたときにつながっていなかった場合は、つながった時点で自動で読み込み直す（restoreNow でさっきの画面にもどるので、やった所は消えない）。
+     途中で電波が切れて戻っただけなら、読み込み直さない（解いている途中の選択を消さない）。サービスワーカーは使わない（決定どおり）。 */
+(() => {
+  if (!/^https?:$/.test(location.protocol)) return;
+  const bar = document.createElement("div"); bar.id = "netbar";
+  bar.textContent = "📡 いま電波が弱いみたい。問題はこのまま解けるよ（つながったら自動でもどります）";
+  document.body.appendChild(bar);
+  /* no-cors＝中身は読まない。届けば（404 でも）つながっている、届かなければ切れている */
+  const ping = () => fetch("manifest.webmanifest?net=" + Date.now(), { cache: "no-store", mode: "no-cors" }).then(() => true, () => false);
+  let first = true, bad = false, again = !navigator.onLine, timer = 0, busy = false;
+  const recover = () => {
+    bar.style.display = "none"; bad = false; clearInterval(timer); timer = 0;
+    if (!again) return; again = false;
+    try { if (Date.now() - Number(sessionStorage.getItem("__netfix") || 0) < 20000) return; sessionStorage.setItem("__netfix", String(Date.now())); } catch (e) { return; }
+    try { saveNow(); } catch (e) { /* 保存できなくても読み込み直す */ }
+    location.reload();
+  };
+  const check = () => {
+    if (busy) return; busy = true;
+    ping().then(ok => {
+      busy = false;
+      if (ok) { if (bad || again) recover(); }
+      else { if (first) again = true; bad = true; bar.style.display = "block"; if (!timer) timer = setInterval(check, 4000); }
+      first = false;
+    });
+  };
+  addEventListener("online", check);
+  addEventListener("offline", () => { bad = true; bar.style.display = "block"; if (!timer) timer = setInterval(check, 4000); });
+  addEventListener("visibilitychange", () => { if (document.visibilityState === "visible" && (bad || again)) check(); });
+  setTimeout(check, 300);
+})();
 if (!restoreNow()) intro();
 </script>
 </body>
