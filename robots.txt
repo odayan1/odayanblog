@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://odayanblog.com/sitemap.xml
